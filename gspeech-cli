@@ -2,25 +2,14 @@
 
 import sys
 import os
-from os.path import join, expanduser, isdir, exists
+from os.path import join, expanduser
 
-def is_debug_mode():
-    if isdir('.git'):
-        return True
-    return False
-
-def replace_dic(dict_path, text):
-    if not exists(dict_path):
-        return text
-    for line in open(dict_path, 'r').readlines():
-        bad = line.split('=')[0]
-        if line.find('=') == -1:
-            continue
-        good = line.split('=')[1].strip()
-        text = text.replace(bad, good)
-    return text
+from speech.debug import is_debug_mode
+from speech.dic import replace
 
 if __name__ == "__main__":
+    if is_debug_mode():
+        print('DEBUG MODE')
     if len(sys.argv) <= 1:
         print("first argument is mising for the text to read")
         exit(0)
@@ -40,9 +29,11 @@ if __name__ == "__main__":
     text = text.replace('-','')
 
     dict_path = CONF_DIR + '/' + lang + '.dic'
-    text = replace_dic(dict_path, text)
+    text = replace(dict_path, text)
     if len(text) <= 32768:
         cmd = 'pico2wave -l %s -w %s \"%s\" ' % ( lang, path, text )
+        if is_debug_mode():
+            print(cmd)
         os.system(cmd)
 
     elif os.path.isfile('/usr/bin/sox'):
