@@ -22,10 +22,10 @@ def replace_dic(dict_path, text):
 
 if __name__ == "__main__":
     if len(sys.argv) <= 1:
-        print("il manque un argument pour le texte à lire")
+        print("first argument is mising for the text to read")
         exit(0)
     if len(sys.argv) == 2:
-        print("il manque un second argument pour le chemin du fichier son")
+        print("a secong argument is missing : .wav path")
         exit(0)
     text = sys.argv[1]
     path = sys.argv[2]
