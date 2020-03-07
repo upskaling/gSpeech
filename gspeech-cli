@@ -9,6 +9,17 @@ def is_debug_mode():
         return True
     return False
 
+def replace_dic(dict_path, text):
+    if not exists(dict_path):
+        return text
+    for line in open(dict_path, 'r').readlines():
+        bad = line.split('=')[0]
+        if line.find('=') == -1:
+            continue
+        good = line.split('=')[1].strip()
+        text = text.replace(bad, good)
+    return text
+
 if __name__ == "__main__":
     if len(sys.argv) <= 1:
         print("il manque un argument pour le texte à lire")
@@ -22,25 +33,17 @@ if __name__ == "__main__":
     CONF_DIR = '.'
     if not is_debug_mode():
         CONF_DIR = join(expanduser('~'), '.config/gSpeech')
+
     text = text.replace('\"', '')
     text = text.replace('`', '')
     text = text.replace('´', '')
     text = text.replace('-','')
 
-    lngDict = CONF_DIR + '/' + lang + '.dic'
-
-    if exists(lngDict) :
-        for line in open(lngDict,'r').readlines():
-
-            bad = line.split('=')[0]
-            try :
-                good = line.split('=')[1]
-            except :
-                good = ' '
-            text = text.replace(bad, good)
-
+    dict_path = CONF_DIR + '/' + lang + '.dic'
+    text = replace_dic(dict_path, text)
     if len(text) <= 32768:
-        os.system('pico2wave -l %s -w %s \"%s\" ' % ( lang, path, text ))
+        cmd = 'pico2wave -l %s -w %s \"%s\" ' % ( lang, path, text )
+        os.system(cmd)
 
     elif os.path.isfile('/usr/bin/sox'):
         discours = text.split('\n\n')
