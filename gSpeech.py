@@ -19,6 +19,9 @@ import gettext
 localdir = os.path.abspath(SCRIPT_DIR) + "/locale"
 gettext.install(APPNAME, localdir)
 
+from speech.debug import is_debug_mode
+from speech.dic import replace
+
 #########################
 # Application info
 ICON = os.path.join(SCRIPT_DIR, 'icons', APPNAME + '.svg')
@@ -364,24 +367,16 @@ class MainApp:
             except:
                 pass
 
-            #~ text = text.lower()
+            CONF_DIR = '.'
+            if not is_debug_mode():
+                CONF_DIR = join(expanduser('~'), '.config/gSpeech')
             text = text.replace('\"', '')
             text = text.replace('`', '')
             text = text.replace('´', '')
             text = text.replace('-','')
 
-            lngDict = CONFIGDIR + '/' + self.lang + '.dic'
-
-            if os.path.exists(lngDict) :
-                for line in open(lngDict,'r').readlines():
-
-                    bad = line.split('=')[0]
-                    #~ bad = bad.lower()
-                    try :
-                        good = line.split('=')[1]
-                    except :
-                        good = ' '
-                    text = text.replace(bad, good)
+            dict_path = CONF_DIR + '/' + self.lang + '.dic'
+            text = replace(dict_path, text)
 
             if len(text) <= 32768:
                 os.system('pico2wave -l %s -w %s \"%s\" ' % ( self.lang, SPEECH, text ))
@@ -548,6 +543,8 @@ def IniRead(configfile, section, key, default):
 
 
 if __name__ == "__main__":
+    if is_debug_mode():
+        print('DEBUG MODE')
     # is PID exists?
     if os.path.isfile(PID):
         # yes. read it
