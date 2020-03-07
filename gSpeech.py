@@ -2,6 +2,7 @@
 # -*- Mode: Python; coding: utf-8; indent-tabs-mode: nil; tab-width: 4 -*-
 
 import os, sys, shutil, tempfile, ConfigParser, subprocess, multiprocessing
+from os.path import join, dirname, abspath
 
 import gi
 gi.require_version('Gtk', '3.0')
@@ -12,20 +13,21 @@ gi.require_version('Gst', '1.0')
 from gi.repository import Gst
 Gst.init("")
 
-APPNAME = "gSpeech"
-SCRIPT_DIR = os.path.abspath(os.path.dirname(sys.argv[0]))
+from speech import __version__
+from speech.debug import is_debug_mode
+from speech.conf import Conf, LISTLANG
+from speech.dic import replace
+
+script_dir = abspath(dirname(sys.argv[0]))
+conf = Conf(script_dir)
 
 import gettext
-localdir = os.path.abspath(SCRIPT_DIR) + "/locale"
-gettext.install(APPNAME, localdir)
-
-from speech.debug import is_debug_mode
-from speech.dic import replace
+localdir = abspath(script_dir) + "/locale"
+gettext.install(conf.app_name, localdir)
 
 #########################
 # Application info
-ICON = os.path.join(SCRIPT_DIR, 'icons', APPNAME + '.svg')
-VERSION = "0.7.0.0"
+
 AUTHORNAME = "Lahire Biette,Sardi Carlo"
 AUTHOREMAIL = "<tuxmouraille@gmail.com>,<lusumdev@zoho.eu>"
 AUTHOR = AUTHORNAME + ' ' + AUTHOREMAIL
@@ -59,22 +61,15 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with %s.  If not, see <http://www.gnu.org/licenses/>.
-""" % (COPYRIGHT_YEAR, AUTHOR, APPNAME, APPNAME, APPNAME)
+""" % (COPYRIGHT_YEAR, AUTHOR, conf.app_name, conf.app_name, conf.app_name)
 
-# Supported SVOX Pico's languages
-LISTLANG = ["de-DE", "en-GB", "en-US", "es-ES", "fr-FR", "it-IT"]
-
-
-# Temporaries files
-CACHEFOLDER = os.getenv('HOME') + '/.cache/' + APPNAME + '/'
-
-if not os.path.exists(CACHEFOLDER):
-    os.makedirs(CACHEFOLDER)
+if not os.path.exists(conf.cache_path):
+    os.makedirs(conf.cache_path)
 
 # Temporary PID file
-PID = CACHEFOLDER + 'gspeech.pid'
+PID = conf.cache_path + 'gspeech.pid'
 # Temporary wav speech file
-SPEECH = CACHEFOLDER + 'speech.wav'
+SPEECH = conf.cache_path + 'speech.wav'
 
 ###############################
 ###############################
@@ -83,21 +78,20 @@ SPEECH = CACHEFOLDER + 'speech.wav'
 # Main Class
 class MainApp:
     """ the main class of the software """
-    def __init__(self):
+    def __init__(self, conf):
         # init app name in notification
         Notify.init('gSpeech')
-        # define speech language
-        self.lang = DefaultLang
-        # select related icon
-        #~ self.icon = APPNAME + '-' + self.lang
-        self.icon = ICON
+        self.conf = conf
 
-        if IsAppIndicator == True :
-            self.ind =appindicator.Indicator.new(APPNAME, self.icon, appindicator.IndicatorCategory.APPLICATION_STATUS)
+        if conf.has_app_indicator == True:
+            self.ind =appindicator.Indicator.new(
+                conf.app_name,
+                conf.icon,
+                appindicator.IndicatorCategory.APPLICATION_STATUS
+            )
             self.ind.set_status (appindicator.IndicatorStatus.ACTIVE)
             self.onRightClick(self)
-
-        elif IsAppIndicator == False :
+        elif conf.has_app_indicator == False:
             # create GTK status icon
             self.tray = Gtk.StatusIcon()
             self.tray.set_from_file(self.icon) # select icon
@@ -105,13 +99,18 @@ class MainApp:
             self.tray.connect('activate', self.onLeftClick) # left click
             self.tray.set_tooltip_text((_(u"SVOX Pico simple GUI")))
 
-        self.window = Gtk.Dialog(APPNAME,
-                           None,
-                           Gtk.DialogFlags.MODAL| Gtk.DialogFlags.DESTROY_WITH_PARENT)
+        self.window = Gtk.Dialog(
+            conf.app_name,
+            None,
+            Gtk.DialogFlags.MODAL| Gtk.DialogFlags.DESTROY_WITH_PARENT
+        )
         self.window.set_border_width(10)
         self.window.set_keep_above(True)
-        self.window.set_icon_from_file(ICON)
-        self.window.connect('delete-event', lambda w, e: w.hide() or True)
+        self.window.set_icon_from_file(conf.lang_icon)
+        self.window.connect(
+            'delete-event',
+            lambda w, e: w.hide() or True
+        )
 
         hbox = Gtk.HBox()
 
@@ -162,7 +161,7 @@ class MainApp:
         count = 0
         for i in LISTLANG:
             combobox.append_text(i)
-            if i == self.lang:
+            if i == self.conf.lang:
                 combobox.set_active(count)
             count += 1
         combobox.connect('changed', self.changed_cb)
@@ -257,7 +256,7 @@ class MainApp:
             # linking it with onLang fonction
             smItem.connect("toggled", self.onLang, i)
             # i is defaut language activating radio button
-            if i == self.lang :
+            if i == self.conf.lang :
                 smItem.set_active(True)
             # show item
             smItem.show()
@@ -282,45 +281,43 @@ class MainApp:
         item.show()
         menu.append(item)
 
-        if IsAppIndicator == True :
+        if self.conf.has_app_indicator == True:
             menu.show()
             self.ind.set_menu(menu)
-
-        elif IsAppIndicator == False :
-            menu.popup(None, None, None,self.tray, event_button, event_time)
+        elif self.conf.has_app_indicator == False :
+            menu.popup(
+                None, None, None,self.tray, event_button, event_time
+            )
 
 
     ## open the dictionnary file
     def onDictionnary(self, widget):
-        lngDict = CONFIGDIR + '/' + self.lang + '.dic'
-
-        if not os.path.exists(lngDict) :
-            open(lngDict, 'a').close()
-
-        os.system('xdg-open "%s"' % ( lngDict ))
-
+        if not os.path.exists(self.conf.dict_path):
+            open(self.conf.dict_path, 'a').close()
+        os.system('xdg-open "%s"' % self.conf.dict_path)
 
     ## onReload item function: reload script
     def onReload(self, widget):
-        myscript = os.path.abspath(sys.argv[0])
+        myscript = abspath(sys.argv[0])
         subprocess.Popen(myscript)
         sys.exit()
 
     ## action on language submenu items
-    def onLang(self, widget, lng):
-        self.lang = lng
-        #~ self.icon = APPNAME + '-' + self.lang
-        self.icon = os.path.join(SCRIPT_DIR, 'icons', APPNAME + '-' + self.lang + '.svg')
-
-        if IsAppIndicator == True :
-            self.ind.set_icon(self.icon)
-
-        elif IsAppIndicator == False :
-            self.tray.set_from_file(self.icon)
+    def onLang(self, widget, lang):
+        self.conf.lang = lang
+        self.conf.lang_icon = join(
+            script_dir,
+            'icons',
+            self.conf.app_name + '-' + self.conf.lang + '.svg'
+        )
+        if self.conf.has_app_indicator == True :
+            self.ind.set_icon( self.conf.lang_icon)
+        elif self.conf.has_app_indicator == False :
+            self.tray.set_from_file( self.conf.lang_icon)
 
     # show about dialog
     def onAbout(self, widget):
-        self.aboutdiag = AboutDialog()
+        self.aboutdiag = AboutDialog(self.conf)
         self.aboutdiag
 
     # show multimedia control dialog
@@ -357,29 +354,33 @@ class MainApp:
 
         if text == None :
             try:
-                Notify.Notification.new(APPNAME, _(u"No text selected."), self.icon).show()
+                Notify.Notification.new(
+                    self.conf.app_name,
+                    _(u"No text selected."),
+                    self.conf.lang_icon
+                ).show()
             except:
                 pass
 
         else :
             try:
-                Notify.Notification.new(APPNAME, _(u"I'm reading the text. One moment please."), self.icon).show()
+                Notify.Notification.new(
+                    self.conf.app_name,
+                    _(u"I'm reading the text. One moment please."),
+                    self.conf.lang_icon
+                ).show()
             except:
                 pass
 
-            CONF_DIR = '.'
-            if not is_debug_mode():
-                CONF_DIR = join(expanduser('~'), '.config/gSpeech')
             text = text.replace('\"', '')
             text = text.replace('`', '')
             text = text.replace('´', '')
             text = text.replace('-','')
 
-            dict_path = CONF_DIR + '/' + self.lang + '.dic'
-            text = replace(dict_path, text)
+            text = replace(self.conf.dict_path, text)
 
             if len(text) <= 32768:
-                os.system('pico2wave -l %s -w %s \"%s\" ' % ( self.lang, SPEECH, text ))
+                os.system('pico2wave -l %s -w %s \"%s\" ' % ( self.conf.lang, SPEECH, text ))
 
             elif os.path.isfile('/usr/bin/sox'):
                 discours = text.split('\n\n')
@@ -389,8 +390,8 @@ class MainApp:
                 for idx,paragraph in enumerate(discours):
                     text += paragraph
                     if idx == len(discours)-1 or len(text) + len(discours[idx+1]) >= 32767:
-                        filename = CACHEFOLDER + 'speech' + str(idx) + '.wav'
-                        cmds.append('pico2wave -l %s -w %s \"%s\" ' % ( self.lang, filename, text ))
+                        filename = self.conf.cache_path + 'speech' + str(idx) + '.wav'
+                        cmds.append('pico2wave -l %s -w %s \"%s\" ' % ( self.conf.lang, filename, text ))
                         names.append(filename)
                         text = ''
 
@@ -471,20 +472,19 @@ class MainApp:
 # About dialog class
 class AboutDialog:
     """ the about dialog class """
-    def __init__(self):
+    def __init__(self, conf):
         # Create AboutDialog object
         dialog = Gtk.AboutDialog()
-        #~ dialog.set_logo_icon_name(APPNAME)
-        dialog.set_logo(GdkPixbuf.Pixbuf.new_from_file(ICON))
-        dialog.set_name(APPNAME)
-        dialog.set_version(VERSION)
+        dialog.set_logo(GdkPixbuf.Pixbuf.new_from_file(conf.icon))
+        dialog.set_name(conf.app_name)
+        dialog.set_version(__version__)
         dialog.set_copyright(COPYRIGHTS)
         dialog.set_license(LICENSE)
         dialog.set_authors(AUTHORS)
         dialog.set_comments(COMMENT)
         dialog.set_translator_credits(TRANSLATORS)
         dialog.set_website(WEBSITE)
-        dialog.set_website_label(_("%s's Website") % APPNAME)
+        dialog.set_website_label(_("%s's Website") % conf.app_name)
         #~ dialog.set_artists(ARTISTS)
 
         dialog.connect("response", lambda self, *f: self.destroy())
@@ -522,29 +522,7 @@ class SaveFile:
         dialog.destroy()
 
 
-def IniRead(configfile, section, key, default):
-    if os.path.isfile(configfile):
-        parser = ConfigParser.SafeConfigParser()
-        parser.read(configfile)
-
-        try:
-            var = parser.get( section , key )
-        except:
-            var = default
-    else:
-        var = default
-
-    if var.lower() in ['1', 'yes', 'true', 'on'] :
-        return True
-    elif var.lower() in ['0', 'no', 'false', 'off'] :
-        return False
-    else :
-        return var
-
-
 if __name__ == "__main__":
-    if is_debug_mode():
-        print('DEBUG MODE')
     # is PID exists?
     if os.path.isfile(PID):
         # yes. read it
@@ -570,31 +548,6 @@ if __name__ == "__main__":
     file.write(pid)
     file.close()
 
-    CONFIGDIR = os.path.join(os.path.expanduser('~'), '.config/gSpeech')
-    if not os.path.isdir(CONFIGDIR) :
-        os.mkdir(CONFIGDIR, 0775)
-
-    CONFIGFILE = os.path.join(CONFIGDIR,'gspeech.conf')
-    if not os.path.isfile(CONFIGFILE) :
-        config = ConfigParser.RawConfigParser()
-        config.add_section('CONFIGURATION')
-        config.set('CONFIGURATION', 'USEAPPINDICATOR', 'True')
-        config.set('CONFIGURATION', 'DEFAULTLANGUAGE', '')
-        #~ config.set('CONFIGURATION', 'SHOWMEDIADIALOG', 'False')
-        with open(CONFIGFILE, 'wb') as configfile:
-            config.write(configfile)
-
-    IsAppIndicator = bool(IniRead(CONFIGFILE, 'CONFIGURATION', 'USEAPPINDICATOR', 'True' ))
-
-    DefaultLang = str(IniRead(CONFIGFILE, 'CONFIGURATION', 'DEFAULTLANGUAGE', '' ))
-    DefaultLang = DefaultLang[ : 2 ] + '-' + DefaultLang[ 3 : ][ : 2 ]
-    # if SVOX Pico not support this language, find os environment language
-    if not DefaultLang in LISTLANG :
-        DefaultLang = os.environ.get('LANG', 'en_US')[ : 2 ] + '-' + os.environ.get('LANG', 'en_US')[ 3 : ][ : 2 ]
-        # if SVOX Pico not support this language, use US english
-        if not DefaultLang in LISTLANG :
-            DefaultLang = "en-US"
-
     try :
         gi.require_version('AppIndicator3', '0.1')
         from gi.repository import AppIndicator3 as appindicator
@@ -602,6 +555,6 @@ if __name__ == "__main__":
         IsAppIndicator = False
 
 
-    gSpeech = MainApp()
+    gSpeech = MainApp(conf)
     gSpeech.main()
 

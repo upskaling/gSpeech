@@ -1,37 +1,48 @@
-#!/usr/bin/python3
+#!/usr/bin/env python
+# -*- Mode: Python; coding: utf-8; indent-tabs-mode: nil; tab-width: 4 -*-
 
 import sys
 import os
 from os.path import join, expanduser
 
+from speech import __version__
 from speech.debug import is_debug_mode
+from speech.conf import Conf, LISTLANG
 from speech.dic import replace
 
 if __name__ == "__main__":
-    if is_debug_mode():
-        print('DEBUG MODE')
     if len(sys.argv) <= 1:
         print("first argument is mising for the text to read")
+        exit(0)
+    text = sys.argv[1]
+    conf = Conf()
+    if text in ['--version']:
+        print('%s version %s' % (conf.app_name, __version__))
+        exit(0)
+    if text in ['--help', '-h']:
+        print('%s version %s' % (conf.app_name, __version__))
+        print('')
+        print('Usage : %s-cli "[text to read]" [.wav path]...[optionnal lang]')
+        print('')
+        print('Common flags:')
+        print(' -h   --help                   show usage information')
+        print('      --version                show version information')
         exit(0)
     if len(sys.argv) == 2:
         print("a secong argument is missing : .wav path")
         exit(0)
-    text = sys.argv[1]
     path = sys.argv[2]
-    lang = 'fr-FR'
-    CONF_DIR = '.'
-    if not is_debug_mode():
-        CONF_DIR = join(expanduser('~'), '.config/gSpeech')
+    if len(sys.argv) > 3 and sys.argv[3] in LISTLANG:
+        conf.lang = sys.argv[3]
 
     text = text.replace('\"', '')
     text = text.replace('`', '')
     text = text.replace('´', '')
     text = text.replace('-','')
 
-    dict_path = CONF_DIR + '/' + lang + '.dic'
-    text = replace(dict_path, text)
+    text = replace(conf.dict_path, text)
     if len(text) <= 32768:
-        cmd = 'pico2wave -l %s -w %s \"%s\" ' % ( lang, path, text )
+        cmd = 'pico2wave -l %s -w %s \"%s\" ' % ( conf.lang, path, text )
         if is_debug_mode():
             print(cmd)
         os.system(cmd)
@@ -44,8 +55,8 @@ if __name__ == "__main__":
         for idx,paragraph in enumerate(discours):
             text += paragraph
             if idx == len(discours)-1 or len(text) + len(discours[idx+1]) >= 32767:
-                filename = CACHEFOLDER + 'speech' + str(idx) + '.wav'
-                cmds.append('pico2wave -l %s -w %s \"%s\" ' % ( lang, filename, text ))
+                filename = conf.cache + 'speech' + str(idx) + '.wav'
+                cmds.append('pico2wave -l %s -w %s \"%s\" ' % ( conf.lang, filename, text ))
                 names.append(filename)
                 text = ''
 
