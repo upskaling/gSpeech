@@ -20,6 +20,7 @@ localdir = os.path.abspath(SCRIPT_DIR) + "/locale"
 gettext.install(APPNAME, localdir)
 
 from speech.textutils import adaptTextToDict
+from speech.conf import Conf
 
 #########################
 # Application info
@@ -63,21 +64,13 @@ along with %s.  If not, see <http://www.gnu.org/licenses/>.
 # Supported SVOX Pico's languages
 LISTLANG = ["de-DE", "en-GB", "en-US", "es-ES", "fr-FR", "it-IT"]
 
-# confdir
-CONFIGDIR = os.path.join(os.path.expanduser('~'), '.config/gSpeech')
-if not os.path.isdir(CONFIGDIR) :
-    os.mkdir(CONFIGDIR, 0775)
-
-# Temporaries files
-CACHEFOLDER = os.getenv('HOME') + '/.cache/' + APPNAME + '/'
-
-if not os.path.exists(CACHEFOLDER):
-    os.makedirs(CACHEFOLDER)
+#load configuration
+conf = Conf()
 
 # Temporary PID file
-PID = CACHEFOLDER + 'gspeech.pid'
+PID = conf.cache_path + 'gspeech.pid'
 # Temporary wav speech file
-SPEECH = CACHEFOLDER + 'speech.wav'
+SPEECH = conf.cache_path + 'speech.wav'
 
 ###############################
 ###############################
@@ -90,17 +83,17 @@ class MainApp:
         # init app name in notification
         Notify.init('gSpeech')
         # define speech language
-        self.lang = DefaultLang
+        self.lang = conf.lang
         # select related icon
         #~ self.icon = APPNAME + '-' + self.lang
         self.icon = ICON
 
-        if IsAppIndicator == True :
+        if conf.has_app_indicator == True :
             self.ind =appindicator.Indicator.new(APPNAME, self.icon, appindicator.IndicatorCategory.APPLICATION_STATUS)
             self.ind.set_status (appindicator.IndicatorStatus.ACTIVE)
             self.onRightClick(self)
 
-        elif IsAppIndicator == False :
+        elif conf.has_app_indicator == False :
             # create GTK status icon
             self.tray = Gtk.StatusIcon()
             self.tray.set_from_file(self.icon) # select icon
@@ -285,17 +278,17 @@ class MainApp:
         item.show()
         menu.append(item)
 
-        if IsAppIndicator == True :
+        if conf.has_app_indicator == True :
             menu.show()
             self.ind.set_menu(menu)
 
-        elif IsAppIndicator == False :
+        elif conf.has_app_indicator == False :
             menu.popup(None, None, None,self.tray, event_button, event_time)
 
 
     ## open the dictionnary file
     def onDictionnary(self, widget):
-        lngDict = CONFIGDIR + '/' + self.lang + '.dic'
+        lngDict = conf.path + '/' + self.lang + '.dic'
 
         if not os.path.exists(lngDict) :
             open(lngDict, 'a').close()
@@ -315,10 +308,10 @@ class MainApp:
         #~ self.icon = APPNAME + '-' + self.lang
         self.icon = os.path.join(SCRIPT_DIR, 'icons', APPNAME + '-' + self.lang + '.svg')
 
-        if IsAppIndicator == True :
+        if conf.has_app_indicator == True :
             self.ind.set_icon(self.icon)
 
-        elif IsAppIndicator == False :
+        elif conf.has_app_indicator == False :
             self.tray.set_from_file(self.icon)
 
     # show about dialog
@@ -370,7 +363,7 @@ class MainApp:
             except:
                 pass
 
-            dict_path = CONFIGDIR + '/' + self.lang + '.dic'
+            dict_path = conf.path + '/' + self.lang + '.dic'
             text = adaptTextToDict(dict_path, text)
 
             if len(text) <= 32768:
@@ -384,7 +377,7 @@ class MainApp:
                 for idx,paragraph in enumerate(discours):
                     text += paragraph
                     if idx == len(discours)-1 or len(text) + len(discours[idx+1]) >= 32767:
-                        filename = CACHEFOLDER + 'speech' + str(idx) + '.wav'
+                        filename = conf.cache_path + 'speech' + str(idx) + '.wav'
                         cmds.append('pico2wave -l %s -w %s \"%s\" ' % ( self.lang, filename, text ))
                         names.append(filename)
                         text = ''
@@ -562,33 +555,12 @@ if __name__ == "__main__":
     file = open(PID, 'w')
     file.write(pid)
     file.close()
-
-    CONFIGFILE = os.path.join(CONFIGDIR,'gspeech.conf')
-    if not os.path.isfile(CONFIGFILE) :
-        config = ConfigParser.RawConfigParser()
-        config.add_section('CONFIGURATION')
-        config.set('CONFIGURATION', 'USEAPPINDICATOR', 'True')
-        config.set('CONFIGURATION', 'DEFAULTLANGUAGE', '')
-        #~ config.set('CONFIGURATION', 'SHOWMEDIADIALOG', 'False')
-        with open(CONFIGFILE, 'wb') as configfile:
-            config.write(configfile)
-
-    IsAppIndicator = bool(IniRead(CONFIGFILE, 'CONFIGURATION', 'USEAPPINDICATOR', 'True' ))
-
-    DefaultLang = str(IniRead(CONFIGFILE, 'CONFIGURATION', 'DEFAULTLANGUAGE', '' ))
-    DefaultLang = DefaultLang[ : 2 ] + '-' + DefaultLang[ 3 : ][ : 2 ]
-    # if SVOX Pico not support this language, find os environment language
-    if not DefaultLang in LISTLANG :
-        DefaultLang = os.environ.get('LANG', 'en_US')[ : 2 ] + '-' + os.environ.get('LANG', 'en_US')[ 3 : ][ : 2 ]
-        # if SVOX Pico not support this language, use US english
-        if not DefaultLang in LISTLANG :
-            DefaultLang = "en-US"
-
+    
     try :
         gi.require_version('AppIndicator3', '0.1')
         from gi.repository import AppIndicator3 as appindicator
     except :
-        IsAppIndicator = False
+        conf.has_app_indicator = False
 
 
     gSpeech = MainApp()
