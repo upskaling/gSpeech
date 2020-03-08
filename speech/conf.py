@@ -1,10 +1,10 @@
 try:
-    import configparser
+    from configparser import RawConfigParser, SafeConfigParser
 except:
-    import ConfigParser
+    from ConfigParser import RawConfigParser, SafeConfigParser
 
-from os import getenv, environ
-from os.path import join, isfile
+from os import getenv, environ, mkdir
+from os.path import join, isfile, isdir
 
 from .debug import is_debug_mode
 
@@ -14,7 +14,7 @@ LISTLANG = ["de-DE", "en-GB", "en-US", "es-ES", "fr-FR", "it-IT"]
 
 def ini_read(configfile, section, key, default):
     if isfile(configfile):
-        parser = ConfigParser.SafeConfigParser()
+        parser = SafeConfigParser()
         parser.read(configfile)
         try:
             var = parser.get( section , key )
@@ -42,12 +42,12 @@ class Conf:
             print('DEBUG MODE')
         else:
             self.dir = join(expanduser('~'), '.config/gSpeech')
-            if not os.path.isdir(conf.dir) :
-                os.mkdir(conf.dir, 0775)
+            if not isdir(conf.dir):
+                mkdir(conf.dir, '0775')
 
         self.path = join(self.dir, 'gspeech.conf')
         if not isfile(self.path):
-            config = ConfigParser.RawConfigParser()
+            config = RawConfigParser()
             config.add_section('CONFIGURATION')
             config.set('CONFIGURATION', 'USEAPPINDICATOR', 'True')
             config.set('CONFIGURATION', 'DEFAULTLANGUAGE', '')
