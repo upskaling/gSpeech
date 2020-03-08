@@ -3,7 +3,6 @@
 
 import sys
 import os
-from os.path import join, expanduser
 
 from speech import __version__
 from speech.debug import is_debug_mode
