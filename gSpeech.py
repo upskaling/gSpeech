@@ -19,8 +19,7 @@ import gettext
 localdir = os.path.abspath(SCRIPT_DIR) + "/locale"
 gettext.install(APPNAME, localdir)
 
-from speech.debug import is_debug_mode
-from speech.dic import replace
+from speech.textutils import adaptTextToDict
 
 #########################
 # Application info
@@ -371,13 +370,8 @@ class MainApp:
             except:
                 pass
 
-            text = text.replace('\"', '')
-            text = text.replace('`', '')
-            text = text.replace('´', '')
-            text = text.replace('-','')
-
             dict_path = CONFIGDIR + '/' + self.lang + '.dic'
-            text = replace(dict_path, text)
+            text = adaptTextToDict(dict_path, text)
 
             if len(text) <= 32768:
                 os.system('pico2wave -l %s -w %s \"%s\" ' % ( self.lang, SPEECH, text ))
@@ -544,8 +538,6 @@ def IniRead(configfile, section, key, default):
 
 
 if __name__ == "__main__":
-    if is_debug_mode():
-        print('DEBUG MODE')
     # is PID exists?
     if os.path.isfile(PID):
         # yes. read it

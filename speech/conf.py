@@ -3,17 +3,13 @@ try:
 except:
     from ConfigParser import RawConfigParser, SafeConfigParser
 
-from os import getenv, environ, mkdir
-from os.path import join, isfile, isdir
-
-from .debug import is_debug_mode
+import os
 
 # Supported SVOX Pico's languages
 LISTLANG = ["de-DE", "en-GB", "en-US", "es-ES", "fr-FR", "it-IT"]
 
-
 def ini_read(configfile, section, key, default):
-    if isfile(configfile):
+    if os.path.isfile(configfile):
         parser = SafeConfigParser()
         parser.read(configfile)
         try:
@@ -34,19 +30,21 @@ def ini_read(configfile, section, key, default):
 class Conf:
     app_name = "gSpeech"
     # Temporaries files
-    cache_path = join(getenv('HOME'), '.cache', app_name)
+    cache_path = os.path.join(os.getenv('HOME'), '.cache', app_name)
+
+    def setLang(self,lang):
+        if lang in LISTLANG:
+            self.lang = lang
+            self.dict_path = os.path.join(self.dir, '%s.dic' % self.lang)
 
     def __init__(self, script_dir=None):
-        self.dir = '.'
-        if is_debug_mode():
-            print('DEBUG MODE')
-        else:
-            self.dir = join(expanduser('~'), '.config/gSpeech')
-            if not isdir(conf.dir):
-                mkdir(conf.dir, '0775')
+        #self.dir = '.'
+        self.dir = os.path.join(os.path.expanduser('~'), '.config/gSpeech')
+        if not os.path.isdir(self.dir):
+            os.mkdir(self.dir, '0775')
 
-        self.path = join(self.dir, 'gspeech.conf')
-        if not isfile(self.path):
+        self.path = os.path.join(self.dir, 'gspeech.conf')
+        if not os.path.isfile(self.path):
             config = RawConfigParser()
             config.add_section('CONFIGURATION')
             config.set('CONFIGURATION', 'USEAPPINDICATOR', 'True')
@@ -65,7 +63,7 @@ class Conf:
         self.lang = lang[:2] + '-' + lang[3:][:2]
         # if SVOX Pico not support this language, find os environment language
         if not self.lang in LISTLANG:
-            self.lang = environ.get('LANG', 'en_US')[:2] + '-' + environ.get('LANG', 'en_US')[3:][:2]
+            self.lang = os.environ.get('LANG', 'en_US')[:2] + '-' + os.environ.get('LANG', 'en_US')[3:][:2]
             # if SVOX Pico not support this language, use US english
             if not self.lang in LISTLANG:
                 self.lang = "en-US"
@@ -77,4 +75,4 @@ class Conf:
                 'icons',
                 self.app_name + '-' + self.lang + '.svg'
             )
-        self.dict_path = join(self.dir, '%s.dic' % self.lang)
+        self.dict_path = os.path.join(self.dir, '%s.dic' % self.lang)
