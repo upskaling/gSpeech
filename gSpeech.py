@@ -64,6 +64,10 @@ along with %s.  If not, see <http://www.gnu.org/licenses/>.
 # Supported SVOX Pico's languages
 LISTLANG = ["de-DE", "en-GB", "en-US", "es-ES", "fr-FR", "it-IT"]
 
+# confdir
+CONFIGDIR = os.path.join(os.path.expanduser('~'), '.config/gSpeech')
+if not os.path.isdir(CONFIGDIR) :
+    os.mkdir(CONFIGDIR, 0775)
 
 # Temporaries files
 CACHEFOLDER = os.getenv('HOME') + '/.cache/' + APPNAME + '/'
@@ -367,15 +371,12 @@ class MainApp:
             except:
                 pass
 
-            CONF_DIR = '.'
-            if not is_debug_mode():
-                CONF_DIR = join(expanduser('~'), '.config/gSpeech')
             text = text.replace('\"', '')
             text = text.replace('`', '')
             text = text.replace('´', '')
             text = text.replace('-','')
 
-            dict_path = CONF_DIR + '/' + self.lang + '.dic'
+            dict_path = CONFIGDIR + '/' + self.lang + '.dic'
             text = replace(dict_path, text)
 
             if len(text) <= 32768:
@@ -569,10 +570,6 @@ if __name__ == "__main__":
     file = open(PID, 'w')
     file.write(pid)
     file.close()
-
-    CONFIGDIR = os.path.join(os.path.expanduser('~'), '.config/gSpeech')
-    if not os.path.isdir(CONFIGDIR) :
-        os.mkdir(CONFIGDIR, 0775)
 
     CONFIGFILE = os.path.join(CONFIGDIR,'gspeech.conf')
     if not os.path.isfile(CONFIGFILE) :
