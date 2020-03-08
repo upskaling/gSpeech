@@ -363,8 +363,8 @@ class MainApp:
             except:
                 pass
 
-            dict_path = conf.path + '/' + self.lang + '.dic'
-            text = adaptTextToDict(dict_path, text)
+            conf.setLang( self.lang )
+            text = adaptTextToDict(conf.dict_path, text)
 
             if len(text) <= 32768:
                 os.system('pico2wave -l %s -w %s \"%s\" ' % ( self.lang, SPEECH, text ))
