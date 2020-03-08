@@ -2,7 +2,7 @@
 # -*- Mode: Python; coding: utf-8; indent-tabs-mode: nil; tab-width: 4 -*-
 
 import sys
-import os
+import os,getopt
 
 from speech import __version__
 from speech.conf import Conf, LISTLANG
@@ -13,34 +13,52 @@ conf = Conf()
 def printHelp():
     print('%s version %s' % (conf.app_name, __version__))
     print('')
-    print('Usage : %s-cli "[text to read]" [.wav filename]...[optional lang]' %\
+    print('Usage : %s-cli -i " [text to read]" ( or -f [txt file] ) -o [.wav filename] ... -l [optional lang]' %\
             conf.app_name)
     print('')
     print('Common flags:')
     print(' -h   --help                   show usage information')
     print('      --version                show version information')
+    print(' -i   --input-text             text to read')
+    print(' -f   --input-file             file to read (supported only plain txt')
+    print(' -o   --output-file            name of the audio output file (wav type)')
+    print(' -l   --lang                   language')
+    print('possible languages:')
+    for l in LISTLANG:
+        print( l )
 
 if __name__ == "__main__":
-    if len(sys.argv) <= 1:
+
+    try:
+        opts, args = getopt.getopt(sys.argv[1:], "hvi:f:l:o:", ["help", "version",\
+                "input-text=","input-file", "lang=", "output-file="])
+    except getopt.GetoptError:
         printHelp()
-        exit(0)
-    text = sys.argv[1]
-    if text in ['--version']:
-        print('%s version %s' % (conf.app_name, __version__))
-        exit(0)
-    if text in ['--help', '-h']:
-        printHelp()
-        exit(0)
-    if len(sys.argv) == 2:
-        print("a secong argument is missing : .wav filename")
-        exit(0)
-    path = sys.argv[2]
-    if len(sys.argv) > 3 and sys.argv[3] in LISTLANG:
-        conf.setLang(sys.argv[3])
+        sys.exit(2)
+
+    for opt, arg in opts:
+        if opt in ('-h', '--help'):
+            printHelp()
+            sys.exit()
+        if opt in ('-v', '--version'):
+            print('%s version %s' % (conf.app_name, __version__))
+            sys.exit()
+        
+        if opt in ('-l', '--lang'):
+            lang = arg
+        elif opt in ('-o', '--output-file'):
+            outfile = arg
+        elif opt in ('-f', '--input-file'):
+            input_file = arg
+        elif opt in ('-i', '--input-text'):
+            text = arg
+
+    if lang in LISTLANG:
+        conf.setLang(lang)
 
     text = adaptTextToDict(conf.dict_path, text)
     if len(text) <= 32768:
-        cmd = 'pico2wave -l %s -w %s \"%s\" ' % ( conf.lang, path, text )
+        cmd = 'pico2wave -l %s -w %s \"%s\" ' % ( conf.lang,outfile, text )
         os.system(cmd)
 
     elif os.path.isfile('/usr/bin/sox'):
@@ -60,6 +78,6 @@ if __name__ == "__main__":
         if nproc == 0:
             nproc = 1
         multiprocessing.Pool(nproc).map(os.system, cmds)
-        os.system('sox %s %s' % ( ' '.join(names), path ))
+        os.system('sox %s %s' % ( ' '.join(names), outfile ))
         for fichier in names:
             os.remove(fichier)
