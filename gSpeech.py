@@ -382,7 +382,7 @@ class MainApp:
                 os.system('pico2wave -l %s -w %s \"%s\" ' % ( self.lang, SPEECH, text ))
 
             elif os.path.isfile('/usr/bin/sox'):
-                discours = text.split('\n\n')
+                discours = text.split('.')
                 cmds = []
                 names = []
                 text = ''

@@ -53,7 +53,7 @@ if __name__ == "__main__":
         os.system(cmd)
 
     elif os.path.isfile('/usr/bin/sox'):
-        discours = text.split('\n\n')
+        discours = text.split('.')
         cmds = []
         names = []
         text = ''
