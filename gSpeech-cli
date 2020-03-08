@@ -38,7 +38,6 @@ if __name__ == "__main__":
     if len(sys.argv) > 3 and sys.argv[3] in LISTLANG:
         conf.setLang(sys.argv[3])
 
-    print( conf.dict_path )
     text = adaptTextToDict(conf.dict_path, text)
     if len(text) <= 32768:
         cmd = 'pico2wave -l %s -w %s \"%s\" ' % ( conf.lang, path, text )
