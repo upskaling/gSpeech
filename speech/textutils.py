@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 # -*- Mode: Python; coding: utf-8; indent-tabs-mode: nil; tab-width: 4 -*-
 
-from os.path import exists
+import os
 
 def replace(dict_path, text):
-    if not exists(dict_path):
+    if not os.path.exists(dict_path):
         return text
     for line in open(dict_path, 'r').readlines():
         bad = line.split('=')[0]
