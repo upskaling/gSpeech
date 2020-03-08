@@ -19,6 +19,9 @@ import gettext
 localdir = os.path.abspath(SCRIPT_DIR) + "/locale"
 gettext.install(APPNAME, localdir)
 
+from speech.debug import is_debug_mode
+from speech.dic import replace
+
 #########################
 # Application info
 ICON = os.path.join(SCRIPT_DIR, 'icons', APPNAME + '.svg')
@@ -80,7 +83,7 @@ SPEECH = CACHEFOLDER + 'speech.wav'
 # Main Class
 class MainApp:
     """ the main class of the software """
-    def __init__(self, config):
+    def __init__(self):
         # init app name in notification
         Notify.init('gSpeech')
         # define speech language
@@ -88,8 +91,6 @@ class MainApp:
         # select related icon
         #~ self.icon = APPNAME + '-' + self.lang
         self.icon = ICON
-
-        self.config = config
 
         if IsAppIndicator == True :
             self.ind =appindicator.Indicator.new(APPNAME, self.icon, appindicator.IndicatorCategory.APPLICATION_STATUS)
@@ -121,14 +122,14 @@ class MainApp:
 
         button = Gtk.Button()
         button.set_image(Gtk.Image.new_from_stock(Gtk.STOCK_EXECUTE,Gtk.IconSize.MENU))
-        button.set_label(_("Read clipboard content"))
+        button.set_label(_(u"Read clipboard content"))
         button.connect("clicked", self.onExecute)
         button.add_accelerator("clicked",self.accelgroup , ord('c'), Gdk.ModifierType.SHIFT_MASK, Gtk.AccelFlags.VISIBLE)
         hbox.pack_start(button, False, False,0)
 
         button = Gtk.Button()
         button.set_image(Gtk.Image.new_from_stock(Gtk.STOCK_EXECUTE, Gtk.IconSize.MENU))
-        button.set_label(_("Read selected text"))
+        button.set_label(_(u"Read selected text"))
         button.connect("clicked", self.onExecute)
         button.add_accelerator("clicked",self.accelgroup , ord('x'),Gdk.ModifierType.SHIFT_MASK, Gtk.AccelFlags.VISIBLE)
         hbox.pack_start(button, False, False,0)
@@ -186,32 +187,32 @@ class MainApp:
         menu = Gtk.Menu()
 
         # Execute menu item : execute speeching from Desktop clipboard
-        rmItem = Gtk.MenuItem.new_with_label(_("Read clipboard content"))
+        rmItem = Gtk.MenuItem.new_with_label(_(u"Read clipboard content"))
         rmItem.connect('activate', self.onExecute)
         rmItem.show()
         menu.append(rmItem)
 
         # Execute menu item : execute speeching from X.org clipboard
-        rmItem = Gtk.MenuItem.new_with_label(_("Read selected text"))
+        rmItem = Gtk.MenuItem.new_with_label(_(u"Read selected text"))
         rmItem.connect('activate', self.onExecute)
         rmItem.show()
         menu.append(rmItem)
 
         # Play item menu
-        self.MenuPlayPause = Gtk.CheckMenuItem.new_with_label(_("Pause"))
+        self.MenuPlayPause = Gtk.CheckMenuItem.new_with_label("Pause")
         self.MenuPlayPause.set_active(False)
         self.MenuPlayPause.connect('toggled', self.onPlayPause)
         self.MenuPlayPause.show()
         menu.append(self.MenuPlayPause)
 
         # Stop  item menu
-        rmItem = Gtk.MenuItem.new_with_label(_("Stop"))
+        rmItem = Gtk.MenuItem.new_with_label("Stop")
         rmItem.connect('activate', self.onStop)
         rmItem.show()
         menu.append(rmItem)
 
         # Save item menu
-        rmItem = Gtk.MenuItem.new_with_label(_("Save"))
+        rmItem = Gtk.MenuItem.new_with_label("Save")
         rmItem.connect('activate', self.onSave)
         rmItem.show()
         menu.append(rmItem)
@@ -221,7 +222,7 @@ class MainApp:
         rmItem.show()
         menu.append(rmItem)
 
-        mediawin =  Gtk.MenuItem.new_with_label(_("Multimedia window"))
+        mediawin =  Gtk.MenuItem.new_with_label(_(u"Multimedia window"))
         mediawin.connect('activate', self.onMediaDialog)
         mediawin.show()
         menu.append(mediawin)
@@ -264,25 +265,19 @@ class MainApp:
         menu.append(rmItem)
 
         ## Reload item menu
-        item = Gtk.MenuItem.new_with_label(_("Refresh"))
+        item = Gtk.MenuItem.new_with_label("Refresh")
         item.connect('activate', self.onReload)
         item.show()
         menu.append(item)
 
         # About item menu : show About dialog
-        about = Gtk.MenuItem.new_with_label(_("About"))
+        about = Gtk.MenuItem.new_with_label("About")
         about.connect('activate', self.onAbout)
         about.show()
         menu.append(about)
 
-        # Preferences
-        options = Gtk.MenuItem.new_with_label(_("Options"))
-        options.connect('activate', self.onOptions)
-        options.show()
-        menu.append(options)
-
         # Quit item menu
-        item = Gtk.MenuItem.new_with_label(_("Quit"))
+        item = Gtk.MenuItem.new_with_label("Quit")
         item.connect('activate', self.destroy)
         item.show()
         menu.append(item)
@@ -326,10 +321,7 @@ class MainApp:
     # show about dialog
     def onAbout(self, widget):
         self.aboutdiag = AboutDialog()
-
-    # show options dialog
-    def onOptions(self, widget):
-        self.options_dialog = OptionDialog(self.config)
+        self.aboutdiag
 
     # show multimedia control dialog
     def onMediaDialog(self, widget):
@@ -358,42 +350,33 @@ class MainApp:
 
     # on Execute item function : execute speech
     def onExecute(self, widget, data=None):
-        if widget.get_label() == _("Read selected text") :
+        if widget.get_label() == _(u"Read selected text") :
             text = Gtk.Clipboard.get(Gdk.SELECTION_PRIMARY).wait_for_text()
         else :
             text = Gtk.Clipboard.get(Gdk.SELECTION_CLIPBOARD).wait_for_text()
 
-        if text == None:
-            if self.config.show_notification:
-                try:
-                    Notify.Notification.new(APPNAME, _("No text selected."), self.icon).show()
-                except:
-                    pass
-        else :
-            if self.config.show_notification:
-                try:
-                    Notify.Notification.new(APPNAME, _(u"I'm reading the text. One moment please."), self.icon).show()
-                except:
-                    pass
+        if text == None :
+            try:
+                Notify.Notification.new(APPNAME, _(u"No text selected."), self.icon).show()
+            except:
+                pass
 
-            #~ text = text.lower()
+        else :
+            try:
+                Notify.Notification.new(APPNAME, _(u"I'm reading the text. One moment please."), self.icon).show()
+            except:
+                pass
+
+            CONF_DIR = '.'
+            if not is_debug_mode():
+                CONF_DIR = join(expanduser('~'), '.config/gSpeech')
             text = text.replace('\"', '')
             text = text.replace('`', '')
             text = text.replace('´', '')
             text = text.replace('-','')
 
-            lngDict = CONFIGDIR + '/' + self.lang + '.dic'
-
-            if os.path.exists(lngDict) :
-                for line in open(lngDict,'r').readlines():
-
-                    bad = line.split('=')[0]
-                    #~ bad = bad.lower()
-                    try :
-                        good = line.split('=')[1]
-                    except :
-                        good = ' '
-                    text = text.replace(bad, good)
+            dict_path = CONF_DIR + '/' + self.lang + '.dic'
+            text = replace(dict_path, text)
 
             if len(text) <= 32768:
                 os.system('pico2wave -l %s -w %s \"%s\" ' % ( self.lang, SPEECH, text ))
@@ -507,33 +490,12 @@ class AboutDialog:
         dialog.connect("response", lambda self, *f: self.destroy())
         dialog.show_all()
 
-class OptionDialog:
-    """ the options dialog class """
-    def __init__(self, config):
-        dialog = Gtk.Dialog(
-            APPNAME,
-            None,
-            Gtk.DialogFlags.MODAL| Gtk.DialogFlags.DESTROY_WITH_PARENT
-        )
-        dialog.set_name(APPNAME)
-        dialog.set_border_width(10)
-        hbox = Gtk.HBox()
-        notification_check = Gtk.CheckButton(_("Active notification"))
-        notification_check.set_active(config.show_notification)
-        notification_check.connect("toggled", self.on_checked, config)
-        hbox.add(notification_check)
-        dialog.vbox.pack_start(hbox, False, False, 0)
-        dialog.show_all()
-
-    def on_checked(self, checkBox, config):
-        config.show_notification = checkBox.get_active()
-        config.update()
 
 # Audio speech wav file class saving
 class SaveFile:
     """ the class to save the speech .wav file """
     def __init__(self):
-        dialog = Gtk.FileChooserDialog(_("Save the speech"),
+        dialog = Gtk.FileChooserDialog(_(u"Save the speech"),
                                        None,
                                        Gtk.FileChooserAction.SAVE,
                                        (Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL,
@@ -579,45 +541,10 @@ def IniRead(configfile, section, key, default):
     else :
         return var
 
-class Config:
-    _path = ''
-    use_appindicator = True
-    default_language = ''
-    section = 'CONFIGURATION'
-    show_notification = True
-
-    def __init__(self, path):
-        self._path = path
-        raw = ConfigParser.ConfigParser()
-        raw.read(self._path)
-        if raw.has_option(self.section, 'shownotification'):
-            self.show_notification = raw.getboolean(
-                self.section,
-                'shownotification'
-            )
-
-    def update(self):
-        raw = ConfigParser.RawConfigParser()
-        raw.add_section(self.section)
-        raw.set(
-            self.section,
-            'USEAPPINDICATOR',
-            self.use_appindicator
-        )
-        raw.set(
-            self.section,
-            'DEFAULTLANGUAGE',
-            self.default_language
-        )
-        raw.set(
-            self.section,
-            'SHOWNOTIFICATION',
-            self.show_notification
-        )
-        with open(self._path, 'wb') as configfile:
-            raw.write(configfile)
 
 if __name__ == "__main__":
+    if is_debug_mode():
+        print('DEBUG MODE')
     # is PID exists?
     if os.path.isfile(PID):
         # yes. read it
@@ -647,15 +574,15 @@ if __name__ == "__main__":
     if not os.path.isdir(CONFIGDIR) :
         os.mkdir(CONFIGDIR, 0775)
 
-    CONFIGFILE = os.path.join(CONFIGDIR, 'gspeech.conf')
+    CONFIGFILE = os.path.join(CONFIGDIR,'gspeech.conf')
     if not os.path.isfile(CONFIGFILE) :
-        raw = ConfigParser.RawConfigParser()
-        raw.add_section('CONFIGURATION')
-        raw.set('CONFIGURATION', 'USEAPPINDICATOR', 'True')
-        raw.set('CONFIGURATION', 'DEFAULTLANGUAGE', '')
+        config = ConfigParser.RawConfigParser()
+        config.add_section('CONFIGURATION')
+        config.set('CONFIGURATION', 'USEAPPINDICATOR', 'True')
+        config.set('CONFIGURATION', 'DEFAULTLANGUAGE', '')
         #~ config.set('CONFIGURATION', 'SHOWMEDIADIALOG', 'False')
         with open(CONFIGFILE, 'wb') as configfile:
-            raw.write(configfile)
+            config.write(configfile)
 
     IsAppIndicator = bool(IniRead(CONFIGFILE, 'CONFIGURATION', 'USEAPPINDICATOR', 'True' ))
 
@@ -675,9 +602,5 @@ if __name__ == "__main__":
         IsAppIndicator = False
 
 
-    config = Config(CONFIGFILE)
-    config.use_appindicator = IsAppIndicator
-    config.default_language = DefaultLang
-    gSpeech = MainApp(config)
+    gSpeech = MainApp()
     gSpeech.main()
-
