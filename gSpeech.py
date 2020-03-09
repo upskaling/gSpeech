@@ -103,8 +103,7 @@ class MainApp:
             self.tray.set_tooltip_text((_(u"SVOX Pico simple GUI")))
 
         self.window = Gtk.Dialog(APPNAME,
-                           None,
-                           Gtk.DialogFlags.MODAL| Gtk.DialogFlags.DESTROY_WITH_PARENT)
+                           None,modal=True,destroy_with_parent=True)
         self.window.set_border_width(10)
         self.window.set_keep_above(True)
         self.window.set_icon_from_file(ICON)
