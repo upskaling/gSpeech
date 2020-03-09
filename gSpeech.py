@@ -19,8 +19,9 @@ import gettext
 localdir = os.path.abspath(SCRIPT_DIR) + "/locale"
 gettext.install(APPNAME, localdir)
 
-from speech.textutils import adaptTextToDict
 from speech.conf import Conf
+from speech.textutils import adaptTextToDict
+from speech.audioutils import getAudioCommands
 
 #########################
 # Application info
@@ -365,23 +366,11 @@ class MainApp:
 
             conf.setLang( self.lang )
             text = adaptTextToDict(conf.dict_path, text)
-
-            if len(text) <= 32768:
-                os.system('pico2wave -l %s -w %s \"%s\" ' % ( self.lang, SPEECH, text ))
-
+            names, cmds = getAudioCommands(text,SPEECH)
+            
+            if len(cmds) == 1 :
+                os.system(cmds[0])
             elif os.path.isfile('/usr/bin/sox'):
-                discours = text.split('.')
-                cmds = []
-                names = []
-                text = ''
-                for idx,paragraph in enumerate(discours):
-                    text += paragraph
-                    if idx == len(discours)-1 or len(text) + len(discours[idx+1]) >= 32767:
-                        filename = conf.cache_path + 'speech' + str(idx) + '.wav'
-                        cmds.append('pico2wave -l %s -w %s \"%s\" ' % ( self.lang, filename, text ))
-                        names.append(filename)
-                        text = ''
-
                 nproc = int(.5 * multiprocessing.cpu_count())
                 if nproc == 0:
                     nproc = 1

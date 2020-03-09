@@ -7,6 +7,7 @@ import os,getopt,multiprocessing
 from speech import __version__
 from speech.conf import Conf, LISTLANG
 from speech.textutils import adaptTextToDict
+from speech.audioutils import getAudioCommands
 
 conf = Conf()
 
@@ -46,16 +47,21 @@ if __name__ == "__main__":
 
     input_file = ""
     text = ""
+    lang = ""
+    outfile = "speech.wav"
+
+    if len(opts) == 0:
+        printHelp()
+        sys.exit()
 
     for opt, arg in opts:
         if opt in ('-h', '--help'):
             printHelp()
             sys.exit()
-        if opt in ('-v', '--version'):
+        elif opt in ('-v', '--version'):
             print('%s version %s' % (conf.app_name, __version__))
             sys.exit()
-        
-        if opt in ('-l', '--lang'):
+        elif opt in ('-l', '--lang'):
             lang = arg
         elif opt in ('-o', '--output-file'):
             outfile = arg
@@ -71,23 +77,11 @@ if __name__ == "__main__":
         text = text_file( input_file )
 
     text = adaptTextToDict(conf.dict_path, text)
-    if len(text) <= 32768:
-        cmd = 'pico2wave -l %s -w %s \"%s\" ' % ( conf.lang,outfile, text )
-        os.system(cmd)
-
+    names, cmds = getAudioCommands(text,outfile)
+    
+    if len(cmds) == 1 :
+        os.system(cmds[0])
     elif os.path.isfile('/usr/bin/sox'):
-        discours = text.split('.')
-        cmds = []
-        names = []
-        text = ''
-        for idx,paragraph in enumerate(discours):
-            text += paragraph
-            if idx == len(discours)-1 or len(text) + len(discours[idx+1]) >= 32767:
-                filename = conf.cache_path + 'speech' + str(idx) + '.wav'
-                cmds.append('pico2wave -l %s -w %s \"%s\" ' % ( conf.lang, filename, text ))
-                names.append(filename)
-                text = ''
-
         nproc = int(.5 * multiprocessing.cpu_count())
         if nproc == 0:
             nproc = 1
