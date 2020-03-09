@@ -243,7 +243,7 @@ class MainApp:
 
         # Creating languages items in submenu
         # one empty item to initiate radioitem group
-        smItem = Gtk.RadioMenuItem(None, None)
+        smItem = Gtk.RadioMenuItem()
         for i in LISTLANG:
             # Creating new item
             #smItem = Gtk.RadioMenuItem(smItem, i, True)
