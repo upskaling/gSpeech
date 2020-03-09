@@ -1,7 +1,11 @@
 #!/usr/bin/env python
 # -*- Mode: Python; coding: utf-8; indent-tabs-mode: nil; tab-width: 4 -*-
+try:
+    from configparser import SafeConfigParser
+except:
+    from ConfigParser import SafeConfigParser
 
-import os, sys, shutil, tempfile, ConfigParser, subprocess, multiprocessing
+import os, sys, shutil, tempfile, subprocess, multiprocessing
 
 import gi
 gi.require_version('Gtk', '3.0')
@@ -336,7 +340,7 @@ class MainApp:
             #Error ocurred, print and stop
             self.player.set_state(Gst.State.NULL)
             err, debug = message.parse_error()
-            print "Error: %s" % err, debug
+            print( "Error: %s" % err, debug)
 
     # left click on status icon function
     # function like this and not merge with onExecute
@@ -501,7 +505,7 @@ class SaveFile:
 
 def IniRead(configfile, section, key, default):
     if os.path.isfile(configfile):
-        parser = ConfigParser.SafeConfigParser()
+        parser = SafeConfigParser()
         parser.read(configfile)
 
         try:
@@ -535,7 +539,8 @@ if __name__ == "__main__":
         # process exists. print error message and quit
         else:
             # process existing => show error message
-            print "** %s is already running\nOtherwise, delete %s" % (APPNAME,PID)
+            print( "** %s is already running\nOtherwise, delete %s" %\
+                    (APPNAME,PID))
             quit()
 
     # finding pid of this process
