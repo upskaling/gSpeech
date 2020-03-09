@@ -364,8 +364,9 @@ class MainApp:
                 pass
 
             conf.setLang( self.lang )
-            text = adaptTextToDict(conf.dict_path, text)
-            names, cmds = getAudioCommands(text,SPEECH)
+            text = adaptTextToDict(text,conf. dict_path)
+            names, cmds = getAudioCommands(text, SPEECH, conf.lang,\
+                    conf.cache_path)
             
             if len(cmds) == 1 :
                 os.system(cmds[0])

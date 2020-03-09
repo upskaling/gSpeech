@@ -3,7 +3,7 @@
 
 import os
 
-def replace(dict_path, text):
+def replace(text, dict_path):
     if not os.path.exists(dict_path):
         return text
     for line in open(dict_path, 'r').readlines():
@@ -14,11 +14,11 @@ def replace(dict_path, text):
         text = text.replace(bad, good)
     return text
 
-def adaptTextToDict( dict_path , text ):
+def adaptTextToDict (text, dict_path):
     text = text.replace('\"', '')
     text = text.replace('`', '')
     text = text.replace('´', '')
     text = text.replace('-','')
-    text = replace(dict_path, text)
+    text = replace(text, dict_path)
     return text
 

@@ -76,8 +76,8 @@ if __name__ == "__main__":
     if input_file:
         text = text_file( input_file )
 
-    text = adaptTextToDict(conf.dict_path, text)
-    names, cmds = getAudioCommands(text,outfile)
+    text = adaptTextToDict(text, conf.dict_path)
+    names, cmds = getAudioCommands(text, outfile, conf.lang, conf.cache_path)
     
     if len(cmds) == 1 :
         os.system(cmds[0])
