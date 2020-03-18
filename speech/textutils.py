@@ -14,11 +14,12 @@ def replace(text, dict_path):
         text = text.replace(bad, good)
     return text
 
-def adaptTextToDict (text, dict_path):
+def adaptTextToDict(text, dict_path, lang):
     text = text.replace('\"', '')
     text = text.replace('`', '')
     text = text.replace('´', '')
-    text = text.replace('-','')
+    if lang != 'fr-FR':
+        text = text.replace('-','')
     text = replace(text, dict_path)
     return text
 

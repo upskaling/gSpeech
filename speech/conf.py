@@ -38,8 +38,10 @@ class Conf:
             self.dict_path = os.path.join(self.dir, '%s.dic' % self.lang)
 
     def __init__(self, script_dir=None):
-        #self.dir = '.'
         self.dir = os.path.join(os.path.expanduser('~'), '.config/gSpeech')
+        if os.path.isdir('.git'):
+            self.dir = './dict'
+
         if not os.path.isdir(self.dir):
             os.mkdir(self.dir, '0775')
 
