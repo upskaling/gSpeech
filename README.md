@@ -1,11 +1,13 @@
-gSpeech
-=======
+# gSpeech
+
+[![Build Status](https://travis-ci.org/mothsART/gSpeech.png?branch=master)](https://travis-ci.org/mothsART/gSpeech)
+
+## Introduction
 
 gSpeech: a simple GUI for SVox Pico TTS
 
 
-Installation instruction:
-=========================
+## Installation instruction
 
 Ubuntu:
 

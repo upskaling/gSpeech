@@ -36,7 +36,7 @@ def asset_sum(file_name):
 
 
 sounds = [
-    [ 'le chat est mort', 'chat_mort' ]
+    [ '"Il aime son chat.', 'aime_son_chat' ]
 ]
 
 
