@@ -4,6 +4,7 @@ except:
     from ConfigParser import RawConfigParser, SafeConfigParser
 
 import os
+from os.path import join, dirname
 
 # Supported SVOX Pico's languages
 LISTLANG = ["de-DE", "en-GB", "en-US", "es-ES", "fr-FR", "it-IT"]
@@ -40,7 +41,7 @@ class Conf:
     def __init__(self, script_dir=None):
         self.dir = os.path.join(os.path.expanduser('~'), '.config/gSpeech')
         if os.path.isdir('.git'):
-            self.dir = './dict'
+            self.dir = join(dirname(dirname(__file__)), 'dict')
 
         if not os.path.isdir(self.dir):
             os.mkdir(self.dir, '0775')

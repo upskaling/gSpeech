@@ -14,7 +14,7 @@ conf = Conf()
 def printHelp():
     print('%s version %s' % (conf.app_name, __version__))
     print('')
-    print('Usage : %s-cli -i " [text to read]" ( or -f [txt file] ) -o [.wav filename] ... -l [optional lang]' %\
+    print('Usage : %s-cli -i "[text to read]" ( or -f [txt file] ) -o [.wav filename] ... -l [optional lang]' %\
             conf.app_name)
     print('')
     print('Common flags:')

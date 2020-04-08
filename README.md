@@ -27,3 +27,14 @@ git clone https://github.com/lusum/gSpeech.git
 
 NB:
 - sox is needed to speech text with more than 2^15 characters
+
+## Tests
+
+```
+python3 -m unittest speech/tests/tests.py
+```
+
+```
+./gSpeech-cli -i "mon chat s'appelle maurice" -o speech/tests/fr_FR/assets/chat_maurice.wav
+```
+
