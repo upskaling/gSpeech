@@ -1,5 +1,5 @@
 import os
-from os.path import join
+from os.path import join, dirname
 import shutil
 import tempfile
 from hashlib import md5
@@ -7,20 +7,23 @@ from unittest import TestCase
 
 from speech.textutils import adaptTextToDict
 from speech.audioutils import getAudioCommands
-from speech.conf import Conf
 
-conf = Conf()
 assets_path = './assets'
 temp_path = tempfile.mkdtemp()
 
 def create_sound(text, file_name):
     output_file = join(temp_path, '%s.wav' % file_name)
-    text = adaptTextToDict(text, conf.dict_path, conf.lang)
+    lang = 'fr-FR'
+    text = adaptTextToDict(
+        text,
+        join(dirname(dirname(__file__)), 'dict', '%s.dic' % lang),
+        lang
+    )
     names, cmds = getAudioCommands(
         text,
         output_file,
-        conf.lang,
-        conf.cache_path
+        lang,
+        join(os.getenv('HOME'), '.cache', 'gSpeech')
     )
     os.system(cmds[0])
 
