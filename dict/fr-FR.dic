@@ -72,7 +72,9 @@ upload=eupe lo oude
 vm=machine virtuelle
 
 sac=saque
-parc=parque
+parce que=parceu que
+parc =parque
+parc.=parque
 Marc=marque
 
 lapin=lapun
@@ -107,6 +109,7 @@ s'est=sè
 
 Sam =same 
 n'y a plus=ny a plu
+n'est=nai
 n'=n
 N'=n
 yaourt= ya ourte
@@ -119,3 +122,4 @@ ne veux plus=ne veu plu
 Reconnais tu=reconnaitu
 parent=paran
 fille=fi
+
