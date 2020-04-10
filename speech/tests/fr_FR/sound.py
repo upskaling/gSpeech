@@ -28,7 +28,8 @@ def create_sound(text, file_name):
     os.system(cmds[0])
 
 def md5_sum(path, file_name):
-    with open(join(temp_path, '%s.wav' % file_name), 'rb') as f:
+    with open(join(path, '%s.wav' % file_name), 'rb') as f:
+        print(md5(f.read()).hexdigest())
         return md5(f.read()).hexdigest()
 
 def tmp_sum(file_name):
