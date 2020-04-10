@@ -40,7 +40,7 @@ def asset_sum(file_name):
 
 sounds = [
     [ 'Il aime son chat.', 'aime_son_chat' ],
-    [ 'Sam est un élève très doué', 'sam_eleve_doue' ],
+    #[ 'Sam est un élève très doué', 'sam_eleve_doue' ],
     [ 'N\'oublie pas ton manteau', 'noublie_pas_ton_manteau' ],
     [ 'Tu veux du sucre dans ton yaourt ?', 'tu_veux_du_sucre_dans_ton_yaourt' ],
     [ 'Veux-tu manger une poire bien juteuse ?', 'veux_tu_manger_une_poire_bien_juteuse' ],
@@ -82,6 +82,8 @@ class TestSound(TestCase):
             text = sound[0]
             file_name = sound[1]
             create_sound(text, file_name)
+            print(tmp_sum(file_name) + ' %s' % file_name)
+            print(asset_sum(file_name) + ' %s' % file_name)
             self.assertEqual(
                 tmp_sum(file_name) + ' %s' % file_name,
                 asset_sum(file_name) + ' %s' % file_name
