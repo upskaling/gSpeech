@@ -8,7 +8,7 @@ from unittest import TestCase
 from speech.textutils import adaptTextToDict
 from speech.audioutils import getAudioCommands
 
-assets_path = './assets'
+assets_path = join(dirname(__file__), 'assets')
 temp_path = tempfile.mkdtemp()
 
 def create_sound(text, file_name):
@@ -16,7 +16,7 @@ def create_sound(text, file_name):
     lang = 'fr-FR'
     text = adaptTextToDict(
         text,
-        join(dirname(dirname(__file__)), 'dict', '%s.dic' % lang),
+        join(dirname(dirname(dirname(dirname(__file__)))), 'dict', '%s.dic' % lang),
         lang
     )
     names, cmds = getAudioCommands(
@@ -29,7 +29,6 @@ def create_sound(text, file_name):
 
 def md5_sum(path, file_name):
     with open(join(path, '%s.wav' % file_name), 'rb') as f:
-        print(md5(f.read()).hexdigest())
         return md5(f.read()).hexdigest()
 
 def tmp_sum(file_name):
@@ -84,6 +83,6 @@ class TestSound(TestCase):
             file_name = sound[1]
             create_sound(text, file_name)
             self.assertEqual(
-                tmp_sum(file_name),
-                asset_sum(file_name)
+                tmp_sum(file_name) + ' %s' % file_name,
+                asset_sum(file_name) + ' %s' % file_name
             )
