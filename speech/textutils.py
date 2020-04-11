@@ -3,7 +3,7 @@ import codecs
 
 def replace(text, dict_path):
     if not os.path.exists(dict_path):
-        return text.lower()
+        return text
     with codecs.open(dict_path, 'r', encoding='utf-8') as f:
         for line in f.readlines():
             bad = line.split('=')[0]
@@ -11,7 +11,7 @@ def replace(text, dict_path):
                 continue
             good = line.split('=')[1].replace('\n', '')
             text = text.replace(bad, good)
-    return text.lower()
+    return text
 
 def adaptTextToDict(text, dict_path, lang):
     text = text.replace('\"', '')
@@ -20,4 +20,7 @@ def adaptTextToDict(text, dict_path, lang):
     if lang != 'fr-FR':
         text = text.replace('-','')
     text = replace(text, dict_path)
-    return text
+    if lang == 'fr-FR':
+        from .workers.fr_FR import acronyme
+        text = acronyme.too_consonnant(text)
+    return text.lower()

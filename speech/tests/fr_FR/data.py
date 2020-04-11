@@ -148,5 +148,13 @@ datas = [
         "init": "Il n'est pas là parce que le train a du retard.",
         "transform": "il nai pas là parceu que le train a du retard.",
         "file": "il_nest_pas_la_parce_que_le_train_a_du_retard"
-    }
+    },
+    {
+        "init": "SNCF",
+        "transform": "s n c f"
+    },
+    {
+        "init": "l'ADEME",
+        "transform": "l'ademe"
+    },
 ]

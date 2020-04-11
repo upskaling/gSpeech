@@ -47,6 +47,8 @@ class TestSound(TestCase):
     def test_sounds(self):
         for data in datas:
             text = data['init']
+            if 'file' not in data:
+                continue
             file_name = data['file']
             create_sound(text, file_name)
             self.assertEqual(
