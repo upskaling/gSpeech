@@ -3,7 +3,7 @@ import codecs
 
 def replace(text, dict_path):
     if not os.path.exists(dict_path):
-        return text
+        return text.lower()
     with codecs.open(dict_path, 'r', encoding='utf-8') as f:
         for line in f.readlines():
             bad = line.split('=')[0]
@@ -11,7 +11,7 @@ def replace(text, dict_path):
                 continue
             good = line.split('=')[1].replace('\n', '')
             text = text.replace(bad, good)
-    return text
+    return text.lower()
 
 def adaptTextToDict(text, dict_path, lang):
     text = text.replace('\"', '')

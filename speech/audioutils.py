@@ -3,7 +3,6 @@ def getAudioCommands(text,outfile,lang,cache_path):
     names = []
     if len(text) <= 32768:
         stream = 'pico2wave -l %s -w %s \"%s\" ' % ( lang, outfile, text )
-        print(stream)
         cmds.append(stream)
         names.append(outfile)
     else:
