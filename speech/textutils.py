@@ -13,8 +13,6 @@ def replace(text, dict_path):
     if not os.path.isdir(dict_path):
         return text
     dict_list = glob.glob('%s/*dic' % dict_path)
-    #print(dict_list)
-    #dict_list = [ '/home/jferry/projects/gSpeech/dict/fr_FR/misc.dic']
     for path in dict_list:
         with codecs.open(path, 'r', encoding='utf-8') as f:
             for line in f.readlines():
