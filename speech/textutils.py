@@ -13,7 +13,7 @@ def replace(text, dict_path):
     if not os.path.isdir(dict_path):
         return text
     dict_list = glob.glob('%s/*dic' % dict_path)
-    for path in dict_list:
+    for path in sorted(dict_list):
         with codecs.open(path, 'r', encoding='utf-8') as f:
             for line in f.readlines():
                 text = _replacetxt(text, line)

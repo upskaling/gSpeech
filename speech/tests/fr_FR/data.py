@@ -157,4 +157,8 @@ datas = [
         "init": "l'ADEME",
         "transform": "l'ademe"
     },
+    {
+        "init": "Le parc d'attraction. Le parc.",
+        "transform": "le parc d'attraction. le parc."
+    },
 ]
