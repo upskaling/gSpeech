@@ -5,7 +5,7 @@ def replace(text, dict_path):
     if not os.path.exists(dict_path):
         return text
     with codecs.open(dict_path, 'r', encoding='utf-8') as f:
-        for line in f.read():
+        for line in f.readlines():
             bad = line.split('=')[0]
             if line.find('=') == -1:
                 continue
