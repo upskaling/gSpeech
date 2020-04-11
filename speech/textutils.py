@@ -1,10 +1,11 @@
 import os
+import codecs
 
 def replace(text, dict_path):
     if not os.path.exists(dict_path):
         return text
-    with open(dict_path, 'r') as f:
-        for line in f.readlines():
+    with codecs.open(dict_path, 'r', encoding='utf-8') as f:
+        for line in f.read():
             bad = line.split('=')[0]
             if line.find('=') == -1:
                 continue
@@ -20,4 +21,3 @@ def adaptTextToDict(text, dict_path, lang):
         text = text.replace('-','')
     text = replace(text, dict_path)
     return text
-
