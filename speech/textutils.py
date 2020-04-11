@@ -1,12 +1,9 @@
-#!/usr/bin/env python
-# -*- Mode: Python; coding: utf-8; indent-tabs-mode: nil; tab-width: 4 -*-
-
 import os
 
 def replace(text, dict_path):
     if not os.path.exists(dict_path):
         return text
-    with open(dict_path, 'r', encoding="utf-8") as f:
+    with open(dict_path, 'r') as f:
         for line in f.readlines():
             bad = line.split('=')[0]
             if line.find('=') == -1:
