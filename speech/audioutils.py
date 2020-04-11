@@ -2,7 +2,9 @@ def getAudioCommands(text,outfile,lang,cache_path):
     cmds = []
     names = []
     if len(text) <= 32768:
-        cmds.append('pico2wave -l %s -w %s \"%s\" ' % ( lang, outfile, text ))
+        stream = 'pico2wave -l %s -w %s \"%s\" ' % ( lang, outfile, text )
+        print(stream)
+        cmds.append(stream)
         names.append(outfile)
     else:
         discours = text.split('.')

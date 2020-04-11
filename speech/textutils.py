@@ -4,11 +4,9 @@
 import os
 
 def replace(text, dict_path):
-    print('before', dict_path)
     if not os.path.exists(dict_path):
         return text
-    print('after', dict_path)
-    with open(dict_path, 'r') as f:
+    with open(dict_path, 'r', encoding="utf-8") as f:
         for line in f.readlines():
             bad = line.split('=')[0]
             if line.find('=') == -1:
