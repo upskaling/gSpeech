@@ -1,16 +1,24 @@
 import os
+import glob
 import codecs
 
-def replace(text, dict_path):
-    if not os.path.exists(dict_path):
+def _replacetxt(text, line):
+    bad = line.split('=')[0]
+    if line.find('=') == -1:
         return text
-    with codecs.open(dict_path, 'r', encoding='utf-8') as f:
-        for line in f.readlines():
-            bad = line.split('=')[0]
-            if line.find('=') == -1:
-                continue
-            good = line.split('=')[1].replace('\n', '')
-            text = text.replace(bad, good)
+    good = line.split('=')[1].replace('\n', '')
+    return text.replace(bad, good)
+
+def replace(text, dict_path):
+    if not os.path.isdir(dict_path):
+        return text
+    dict_list = glob.glob('%s/*dic' % dict_path)
+    #print(dict_list)
+    #dict_list = [ '/home/jferry/projects/gSpeech/dict/fr_FR/misc.dic']
+    for path in dict_list:
+        with codecs.open(path, 'r', encoding='utf-8') as f:
+            for line in f.readlines():
+                text = _replacetxt(text, line)
     return text
 
 def adaptTextToDict(text, dict_path, lang):

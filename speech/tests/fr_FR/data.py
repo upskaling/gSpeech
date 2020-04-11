@@ -41,7 +41,7 @@ datas = [
     },
     {
         "init": "Je ne veux plus rien.",
-        "transform": "je ne veu plue rien.",
+        "transform": "je ne veu plu rien.",
         "file": "je_ne_veux_plus_rien"
     },
     {
@@ -81,7 +81,7 @@ datas = [
     },
     {
         "init": "Il n'y a plus de sucre.",
-        "transform": "il ny a plue de sucre.",
+        "transform": "il ny a plu de sucre.",
         "file": "il_ny_a_plus_de_sucre"
     },
     {

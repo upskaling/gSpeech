@@ -18,7 +18,7 @@ def create_sound(text, file_name):
     lang = 'fr-FR'
     text = adaptTextToDict(
         text,
-        join(dirname(dirname(dirname(dirname(__file__)))), 'dict', '%s.dic' % lang),
+        join(dirname(dirname(dirname(dirname(__file__)))), 'dict', lang.replace('-', '_')),
         lang
     )
     names, cmds = getAudioCommands(

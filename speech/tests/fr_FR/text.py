@@ -14,7 +14,11 @@ class TestTextConversion(TestCase):
             lang = 'fr-FR'
             result = adaptTextToDict(
                 text,
-                join(dirname(dirname(dirname(dirname(__file__)))), 'dict', '%s.dic' % lang),
+                join(
+                    dirname(dirname(dirname(dirname(__file__)))),
+                    'dict',
+                    lang.replace('-', '_')
+                ),
                 lang
             )
             self.assertEqual(transform, result)

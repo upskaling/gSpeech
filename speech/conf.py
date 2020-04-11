@@ -36,7 +36,7 @@ class Conf:
     def setLang(self,lang):
         if lang in LISTLANG:
             self.lang = lang
-            self.dict_path = os.path.join(self.dir, '%s.dic' % self.lang)
+            self.dict_path = os.path.join(self.dir, self.lang.replace('-', '_'))
 
     def __init__(self, script_dir=None):
         self.dir = os.path.join(os.path.expanduser('~'), '.config/gSpeech')
@@ -78,4 +78,4 @@ class Conf:
                 'icons',
                 self.app_name + '-' + self.lang + '.svg'
             )
-        self.dict_path = os.path.join(self.dir, '%s.dic' % self.lang)
+        self.dict_path = os.path.join(self.dir, self.lang.replace('-', '_'))
