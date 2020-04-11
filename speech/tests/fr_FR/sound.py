@@ -46,7 +46,7 @@ class TestSound(TestCase):
 
     def test_sounds(self):
         for data in datas:
-            text = data['init']
+            text = data['ini']
             if 'file' not in data:
                 continue
             file_name = data['file']

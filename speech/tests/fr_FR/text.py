@@ -9,8 +9,8 @@ from .data import datas
 class TestTextConversion(TestCase):
     def test_text(self):
         for data in datas:
-            text = data['init']
-            transform = data['transform']
+            text = data['ini']
+            transform = data['new']
             lang = 'fr-FR'
             result = adaptTextToDict(
                 text,
