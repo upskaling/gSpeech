@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- Mode: Python; coding: utf-8; indent-tabs-mode: nil; tab-width: 4 -*-
 try:
     from configparser import SafeConfigParser
@@ -265,13 +265,13 @@ class MainApp:
         menu.append(rmItem)
 
         ## Reload item menu
-        item = Gtk.MenuItem.new_with_label("Refresh")
+        item = Gtk.MenuItem.new_with_label(_("Refresh"))
         item.connect('activate', self.onReload)
         item.show()
         menu.append(item)
 
         # About item menu : show About dialog
-        about = Gtk.MenuItem.new_with_label("About")
+        about = Gtk.MenuItem.new_with_label(_("About"))
         about.connect('activate', self.onAbout)
         about.show()
         menu.append(about)
