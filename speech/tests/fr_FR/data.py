@@ -159,6 +159,18 @@ datas = [
     },
     {
         "ini": "Le parc d'attraction. Le parc. Ce parc, ou ce parc; ou ce parc ? Enfin, le parc",
-        "new": "le parc d'attraction. le parque. ce parque, ou ce parque; ou ce parque ? enfin, le parque"
+        "new": "le parque d'attraction. le parque. ce parque, ou ce parque; ou ce parque ? enfin, le parque"
     },
+    {
+        "ini": "Nous chantons en chœur.",
+        "new": "nous chantons en coeur."
+    },
+    {
+        "ini": "Le lapin et la lapine.",
+        "new": "le lapun et la lapine."
+    },
+    {
+        "ini": "Un coq et le coquin.",
+        "new": "un coque et le coquin."
+    }
 ]

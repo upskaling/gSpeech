@@ -22,11 +22,7 @@ def _replace_ponctuation(text, line):
     text = text.replace(bad + '!', good + '!')
     text = re.sub(bad + '$', good, text)
 
-    text = text.replace(bad + ' .', good + ' .')
-    text = text.replace(bad + ' ;', good + ' ;')
-    text = text.replace(bad + ' ,', good + ' ,')
-    text = text.replace(bad + ' ?', good + ' ?')
-    text = text.replace(bad + ' !', good + ' !')
+    text = text.replace(bad + ' ', good + ' ')
     text = re.sub(bad + ' $', good, text)
     return text
 
