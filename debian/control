@@ -1,0 +1,10 @@
+Source: gspeech
+Section: sound
+Priority: optional
+Maintainer: Ferry Jérémie <ferryjeremie@free.fr>
+Build-Depends: debhelper (>= 9), python3-dev
+
+Package: gspeech
+Architecture: all
+Depends: ${python3:Depends}, python-gst-1.0, python3-gi, gstreamer1.0-plugins-base, gstreamer1.0-plugins-good, gstreamer1.0-pulseaudio 
+Description: Interface graphique au synthétiseur vocal Svoxpico

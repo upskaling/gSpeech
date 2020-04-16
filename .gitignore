@@ -1,5 +1,13 @@
 ### Debian package
 
+debian/files
+debian/debhelper-build-stamp
+debian/*.debhelper.log
+debian/*.debhelper
+debian/*.substvars
+debian/gspeech
+
+build
 backup
 
 ### Python

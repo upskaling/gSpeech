@@ -11,32 +11,41 @@ gSpeech: a simple GUI for SVox Pico TTS
 
 Ubuntu:
 
-Depends: python (>=2.7) python-gst1.0 (>=1.0) python-gtk2 (>=2.24) libttspico-utils (>= 1.0) python-notify (>=0.1) gstreamer1.0-plugins-base gstreamer1.0-plugins-good gstreamer1.0-pulseaudio
+Depends: python (>=3.5) python-gst1.0 (>=1.0) python3-gi (>=2.24) libttspico-utils (>= 1.0) python-notify (>=0.1) gstreamer1.0-plugins-base gstreamer1.0-plugins-good gstreamer1.0-pulseaudio
 
-Suggests: sox
+Suggests: sox (is needed to speech text with more than 2^15 characters)
 
+## CLI usage
 
-In any directory, where you want to install
+```sh
+./gspeech-cli -i "mon chat s'appelle maurice" -o speech/tests/fr_FR/assets/chat_maurice.wav
+```
 
-1) Clone git repository
+## Docker
 
-git clone https://github.com/lusum/gSpeech.git
-
-2) Create .desktop launcher for gSpeech.sh
-
-3) Use it
-
-
-NB:
-- sox is needed to speech text with more than 2^15 characters
+```sh
+git clone https://github.com/mothsART/gspeech.git
+cd gspeech/docker
+docker build .
+docker run -i -t gspeech /bin/bash
+```
 
 ## Tests
 
-```
+```sh
 python3 -m unittest speech/tests/tests.py
 ```
 
-```
-./gSpeech-cli -i "mon chat s'appelle maurice" -o speech/tests/fr_FR/assets/chat_maurice.wav
+## Create a Debian package
+
+```sh
+git clone https://github.com/mothsART/gspeech.git
+cd gspeech
+dpkg-buildpackage -b -rfakeroot -us -uc
 ```
 
+and launch with :
+
+```sh
+sudo dpkg -i ../gspeech*_all.deb
+```

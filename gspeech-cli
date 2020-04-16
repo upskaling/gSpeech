@@ -39,8 +39,18 @@ def text_file(filename):
 if __name__ == "__main__":
 
     try:
-        opts, args = getopt.getopt(sys.argv[1:], "hvi:f:l:o:", ["help", "version",\
-                "input-text=","input-file", "lang=", "output-file="])
+        opts, args = getopt.getopt(
+            sys.argv[1:],
+            "hvi:f:l:o:",
+            [
+                "help",
+                "version",
+                "input-text=",
+                "input-file",
+                "lang=",
+                "output-file="
+            ]
+        )
     except getopt.GetoptError:
         printHelp()
         sys.exit(2)
@@ -74,10 +84,15 @@ if __name__ == "__main__":
         conf.setLang(lang)
 
     if input_file:
-        text = text_file( input_file )
+        text = text_file(input_file)
 
     text = adaptTextToDict(text, conf.dict_path, conf.lang)
-    names, cmds = getAudioCommands(text, outfile, conf.lang, conf.cache_path)
+    names, cmds = getAudioCommands(
+        text,
+        outfile,
+        conf.lang,
+        conf.cache_path
+    )
     
     if len(cmds) == 1 :
         os.system(cmds[0])
