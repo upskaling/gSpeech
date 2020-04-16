@@ -172,5 +172,9 @@ datas = [
     {
         "ini": "Un coq et le coquin.",
         "new": "un coque et le coquin."
-    }
+    },
+    {
+        "ini": "J'ai de plus en plus peur.",
+        "new": "j'ai de plusanplu peur."
+    },
 ]
