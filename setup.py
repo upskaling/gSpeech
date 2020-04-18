@@ -19,7 +19,7 @@ setup(
         'A GUI for the Text To Speech Svoxpico.'
     ),
     author='mothsart',
-    author_email='ferryjeremie@free.fr',
+    author_email='jerem.ferry@gmail.com',
     url='https://github.com/mothsart/gSpeech',
     packages=[ 'speech' ],
     data_files= I18NFILES

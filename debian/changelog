@@ -2,4 +2,4 @@ gspeech (0.8.0) xenial; urgency=medium
   * i18n on French GUI
   * migration to python 3
 
- -- jferry <jerem.ferry@gmail.com>  Mon, 13 Apr 2020 10:55:10 +0100
+ -- Jérémie Ferry <jerem.ferry@gmail.com>  Mon, 13 Apr 2020 10:55:10 +0100
