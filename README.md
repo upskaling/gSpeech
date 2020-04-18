@@ -49,3 +49,9 @@ and launch with :
 ```sh
 sudo dpkg -i ../gspeech*_all.deb
 ```
+
+## Clean (generate files)
+
+```sh
+git clean -xdf // dry run : git clean -xdn
+```
