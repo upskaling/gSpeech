@@ -41,7 +41,7 @@ python3 -m unittest speech/tests/tests.py
 ```sh
 git clone https://github.com/mothsART/gspeech.git
 cd gspeech
-dpkg-buildpackage -b -rfakeroot -us -uc
+debuild -S // alias of dpkg-buildpackage -rfakeroot -d -us -uc -S
 ```
 
 and launch with :
