@@ -1,4 +1,4 @@
-gspeech (0.8.0) xenial; urgency=medium
+gspeech (0.8.0.1) xenial; urgency=medium
   * i18n on French GUI
   * migration to python 3
 
