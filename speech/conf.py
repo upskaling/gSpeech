@@ -1,50 +1,70 @@
 import sys
 import os
-from os.path import join, dirname, abspath, isdir
+from os.path import join, dirname, abspath, isdir, isfile, expanduser
 from configparser import RawConfigParser, SafeConfigParser
 
-APPNAME = "gSpeech"
+import gettext
 
-# Supported SVOX Pico's languages
-LISTLANG = ["de-DE", "en-GB", "en-US", "es-ES", "fr-FR", "it-IT"]
-
-def ini_read(configfile, section, key, default):
-    if os.path.isfile(configfile):
+def ini_read(config_path, section, key, default):
+    if isfile(config_path):
         parser = SafeConfigParser()
-        parser.read(configfile)
+        parser.read(config_path)
         try:
-            var = parser.get( section , key )
+            _property = parser.get(section, key)
         except:
-            var = default
+            _property = default
     else:
-        var = default
-    if var.lower() in ['1', 'yes', 'true', 'on'] :
+        _property = default
+    if _property.lower() in ['1', 'yes', 'true', 'on'] :
         return True
-    if var.lower() in ['0', 'no', 'false', 'off'] :
+    if _property.lower() in ['0', 'no', 'false', 'off'] :
         return False
-    return var
+    return _property
 
 
 class Conf:
     app_name = "gSpeech"
     # Temporaries files
-    cache_path = os.path.join(os.getenv('HOME'), '.cache', app_name)
+    cache_path = join(os.getenv('HOME'), '.cache', app_name)
+
+    developers_name = "Lahire Biette, Sardi Carlo, Jérémie Ferry"
+    authors_email = "<tuxmouraille@gmail.com>, <lusumdev@zoho.eu>, <jerem.ferry@gmail.com>"
+    developers = developers_name + ' ' + authors_email
+    copyright_year = '2011, 2014, 2018, 2020'
+    copyrights = "Copyright © %s %s" % (copyright_year, developers_name)
+
+    # Supported SVOX Pico's languages
+    list_lang = ["de-DE", "en-GB", "en-US", "es-ES", "fr-FR", "it-IT"]
+
+    translators = "pt-PT, pt-BR, es-ES &amp; it-IT :\n\
+    Dupouy Paul"
+
+    website = 'https://github.com/mothsart/gSpeech'
 
     def setLang(self, lang):
-        if lang in LISTLANG:
+        if lang in self.list_lang:
             self.lang = lang
+        if self.icons_dir:
+            self.icon_path = join(
+                self.icons_dir,
+                'icons',
+                self.app_name + '-' + lang + '.svg'
+            )
 
     def __init__(self, script_dir=None):
-        self.dir = os.path.join(os.path.expanduser('~'), '.config/gSpeech')
+        self.pid = join(self.cache_path, 'gspeech.pid')
+        self.temp_path = join(self.cache_path, 'speech.wav')
+
+        self.dir = join(expanduser('~'), '.config/gSpeech')
         self.local_dir = '/usr/share/locale'
         self.icons_dir = '/usr/share/icons/hicolor/scalable/apps'
         if isdir('.git') and isdir('speech'):
             self.dir = join(dirname(dirname(__file__)))
             self.local_dir = join(self.dir, 'locale')
-            self.icons_dir = abspath(dirname(sys.argv[0]))
+            self.icons_dir = self.dir
 
-        self.path = os.path.join(self.dir, 'gspeech.conf')
-        if not os.path.isfile(self.path):
+        self.path = join(self.dir, 'gspeech.conf')
+        if not isfile(self.path):
             os.makedirs(self.dir, exist_ok=True)
             config = RawConfigParser()
             config.add_section('CONFIGURATION')
@@ -54,18 +74,17 @@ class Conf:
                 config.write(stream)
 
         self.has_app_indicator = bool(ini_read(
-            self.path, 'CONFIGURATION', 'USEAPPINDICATOR', 'True' )
-        )
-
+            self.path, 'CONFIGURATION', 'USEAPPINDICATOR', 'True'
+        ))
         lang = str(ini_read(
             self.dir, 'CONFIGURATION', 'DEFAULTLANGUAGE', ''
         ))
         self.lang = lang[:2] + '-' + lang[3:][:2]
         # if SVOX Pico not support this language, find os environment language
-        if not self.lang in LISTLANG:
+        if not self.lang in self.list_lang:
             self.lang = os.environ.get('LANG', 'en_US')[:2] + '-' + os.environ.get('LANG', 'en_US')[3:][:2]
             # if SVOX Pico not support this language, use US english
-            if not self.lang in LISTLANG:
+            if not self.lang in self.list_lang:
                 self.lang = "en-US"
 
         self.dict_path = join(
@@ -78,12 +97,27 @@ class Conf:
                 'dict',
                 self.lang.replace('-', '_')
             )
+        self.setLang(self.lang)
+ 
+        gettext.install(self.app_name, self.local_dir)
 
-        if self.icons_dir:
-            #self.icon = join(self.icons_dir, 'icons', self.app_name + '.svg')
-            self.icon = join(
-                self.icons_dir,
-                'icons',
-                self.app_name + '-' + self.lang + '.svg'
-            )
-            print(self.icon)
+        self.comment = _("A little script to read SVOX Pico texts selected with the mouse.")
+        self.authors = [
+            _("Developers :"),
+            "%s" % (self.developers),
+        ]
+        self.license = """Copyright © {0} - {1}.
+
+        {2} is free software: you can redistribute it and/or modify
+        it under the terms of the GNU General Public License as published by
+        the Free Software Foundation, either version 3 of the License, or
+        (at your option) any later version.
+
+        {2} is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU General Public License for more details.
+
+        You should have received a copy of the GNU General Public License
+        along with {2}.  If not, see <http://www.gnu.org/licenses/>.
+        """.format(self.copyright_year, self.authors, self.app_name)

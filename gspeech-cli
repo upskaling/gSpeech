@@ -1,11 +1,10 @@
 #!/usr/bin/env python3
 # -*- Mode: Python; coding: utf-8; indent-tabs-mode: nil; tab-width: 4 -*-
 
-import sys
-import os,getopt,multiprocessing
+import sys, os, getopt, multiprocessing
 
 from speech import __version__
-from speech.conf import Conf, LISTLANG
+from speech.conf import Conf
 from speech.textutils import adaptTextToDict
 from speech.audioutils import getAudioCommands
 
@@ -15,7 +14,8 @@ def printHelp():
     print('%s version %s' % (conf.app_name, __version__))
     print('')
     print('Usage : %s-cli -i "[text to read]" ( or -f [txt file] ) -o [.wav filename] ... -l [optional lang]' %\
-            conf.app_name)
+            conf.app_name
+    )
     print('')
     print('Common flags:')
     print(' -h   --help                   show usage information')
@@ -25,19 +25,18 @@ def printHelp():
     print(' -o   --output-file            name of the audio output file (wav type)')
     print(' -l   --lang                   language')
     print('possible languages:')
-    for l in LISTLANG:
-        print( l )
+    for l in conf.list_lang:
+        print(l)
 
-#read text file
-def text_file(filename):
-    try:
-        f = open(filename, 'r')
-    except IOError:
-        return "Error: file not found"
-    return f.read()
+def text_file(file_name):
+    '''Read text file'''
+    if not os.path.isfile(file_name):
+        print('Error: file not found')
+        exit()
+    with open(filename, 'r') as f:
+        return f.read()
 
 if __name__ == "__main__":
-
     try:
         opts, args = getopt.getopt(
             sys.argv[1:],
@@ -67,11 +66,11 @@ if __name__ == "__main__":
     for opt, arg in opts:
         if opt in ('-h', '--help'):
             printHelp()
-            sys.exit()
-        elif opt in ('-v', '--version'):
+            exit()
+        if opt in ('-v', '--version'):
             print('%s version %s' % (conf.app_name, __version__))
-            sys.exit()
-        elif opt in ('-l', '--lang'):
+            exit()
+        if opt in ('-l', '--lang'):
             lang = arg
         elif opt in ('-o', '--output-file'):
             outfile = arg
@@ -80,7 +79,7 @@ if __name__ == "__main__":
         elif opt in ('-i', '--input-text'):
             text = arg
 
-    if lang in LISTLANG:
+    if lang in conf.list_lang:
         conf.setLang(lang)
 
     if input_file:
@@ -93,7 +92,7 @@ if __name__ == "__main__":
         conf.lang,
         conf.cache_path
     )
-    
+
     if len(cmds) == 1 :
         os.system(cmds[0])
     elif os.path.isfile('/usr/bin/sox'):

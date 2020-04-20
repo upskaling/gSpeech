@@ -22,5 +22,10 @@ setup(
     author_email='jerem.ferry@gmail.com',
     url='https://github.com/mothsart/gSpeech',
     packages=[ 'speech' ],
-    data_files= I18NFILES
+    data_files= I18NFILES,
+    entry_points={
+        'console_scripts': [
+            'gspeech = gspeech:main'
+        ]
+    }
 )
