@@ -93,7 +93,7 @@ if __name__ == "__main__":
         conf.cache_path
     )
 
-    if len(cmds) == 1 :
+    if len(cmds) == 1:
         os.system(cmds[0])
     elif os.path.isfile('/usr/bin/sox'):
         nproc = int(.5 * multiprocessing.cpu_count())

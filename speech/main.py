@@ -17,10 +17,10 @@ from .widgets.about import AboutDialog
 from .widgets.save import SaveFileDialog
 from .widgets import notify
 
-try :
+try:
     gi.require_version('AppIndicator3', '0.1')
     from gi.repository import AppIndicator3 as appindicator
-except :
+except:
     conf.has_app_indicator = False
 
 #load configuration
@@ -31,7 +31,7 @@ class MainApp:
     def __init__(self, conf):
         notify.init(conf)
 
-        if conf.has_app_indicator == True:
+        if conf.has_app_indicator:
             self.ind = appindicator.Indicator.new(
                 conf.app_name,
                 conf.icon_path,
@@ -46,12 +46,7 @@ class MainApp:
             self.tray.connect('activate', self.onLeftClick, conf)
             self.tray.set_tooltip_text((_("SVOX Pico simple GUI")))
 
-        self.window = Gtk.Dialog(
-            conf.app_name,
-            None,
-            modal=True,
-            destroy_with_parent=True
-        )
+        self.window = Gtk.Window(title = conf.app_name, modal = True)
         self.window.set_border_width(10)
         self.window.set_keep_above(True)
         self.window.set_icon_from_file(conf.icon_path)
@@ -59,6 +54,8 @@ class MainApp:
             'delete-event',
             lambda w, e: w.hide() or True
         )
+        vbox = Gtk.VBox()
+        self.window.add(vbox)
 
         hbox = Gtk.HBox()
 
@@ -100,8 +97,7 @@ class MainApp:
             Gtk.AccelFlags.VISIBLE
         )
         hbox.pack_start(button, False, False, 0)
-
-        self.window.vbox.pack_start(hbox, False, False, 0)
+        vbox.pack_start(hbox, False, False, 0)
 
         hbox = Gtk.HBox()
 
@@ -138,7 +134,7 @@ class MainApp:
         )
         hbox.pack_end(button, False, False, 0)
 
-        self.window.vbox.pack_start(hbox, False, False, 0)
+        vbox.pack_start(hbox, False, False, 0)
 
         hbox = Gtk.HBox()
 
@@ -156,7 +152,7 @@ class MainApp:
         button.connect_object("clicked", Gtk.Widget.hide, self.window)
         hbox.pack_end(button, False, False, 0)
 
-        self.window.vbox.pack_start(hbox, False, False, 0)
+        vbox.pack_start(hbox, False, False, 0)
 
     def changed_cb(self, combobox):
         model = combobox.get_model()
@@ -291,7 +287,7 @@ class MainApp:
 
     def onAbout(self, widget, conf):
         '''Show about dialog'''
-        self.aboutdiag = AboutDialog(conf)
+        self.aboutdiag = AboutDialog(self.window, conf)
 
     def onMediaDialog(self, widget):
         '''Show multimedia control dialog'''
@@ -336,7 +332,7 @@ class MainApp:
             conf.cache_path
         )
 
-        if len(cmds) == 1 :
+        if len(cmds) == 1:
             os.system(cmds[0])
         elif os.path.isfile('/usr/bin/sox'):
             nproc = int(.5 * multiprocessing.cpu_count())
@@ -406,7 +402,7 @@ class MainApp:
 
     def onSave(self, widget, conf):
         '''Saving file speech on clicking Save item'''
-        SaveFileDialog(conf.temp_path)
+        SaveFileDialog(self.window, conf.temp_path)
 
     def destroy(self, widget, conf):
         '''Destroy app on clicking Quit item'''
