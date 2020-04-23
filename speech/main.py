@@ -15,6 +15,7 @@ from .textutils import adaptTextToDict
 from .audioutils import getAudioCommands
 from .widgets.about import AboutDialog
 from .widgets.save import SaveFileDialog
+from .widgets.option import OptionDialog
 from .widgets import notify
 
 try:
@@ -251,6 +252,12 @@ class MainApp:
         about.show()
         menu.append(about)
 
+       # Preferences
+        options = Gtk.MenuItem.new_with_label(_("Options"))
+        options.connect('activate', self.onOptions, conf)
+        options.show()
+        menu.append(options)
+
         # Quit item menu
         item = Gtk.MenuItem.new_with_label(_("Quit"))
         item.connect('activate', self.destroy, conf)
@@ -288,6 +295,10 @@ class MainApp:
     def onAbout(self, widget, conf):
         '''Show about dialog'''
         self.aboutdiag = AboutDialog(self.window, conf)
+
+    # show options dialog
+    def onOptions(self, widget, config):
+        self.options_dialog = OptionDialog(self.window, conf)
 
     def onMediaDialog(self, widget):
         '''Show multimedia control dialog'''

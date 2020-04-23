@@ -4,6 +4,7 @@ from os.path import join, dirname, abspath, isdir, isfile, expanduser
 from configparser import RawConfigParser, SafeConfigParser
 
 import gettext
+import gi
 
 def ini_read(config_path, section, key, default):
     if isfile(config_path):
@@ -41,6 +42,10 @@ class Conf:
 
     website = 'https://github.com/mothsart/gSpeech'
 
+    show_notification = True
+    use_appindicator = True
+    lang = ''
+
     def setLang(self, lang):
         if lang in self.list_lang:
             self.lang = lang
@@ -64,21 +69,14 @@ class Conf:
             self.icons_dir = self.dir
 
         self.path = join(self.dir, 'gspeech.conf')
-        if not isfile(self.path):
-            os.makedirs(self.dir, exist_ok=True)
-            config = RawConfigParser()
-            config.add_section('CONFIGURATION')
-            config.set('CONFIGURATION', 'USEAPPINDICATOR', 'True')
-            config.set('CONFIGURATION', 'DEFAULTLANGUAGE', '')
-            with open(self.path, 'w') as stream:
-                config.write(stream)
 
         self.has_app_indicator = bool(ini_read(
             self.path, 'CONFIGURATION', 'USEAPPINDICATOR', 'True'
         ))
         lang = str(ini_read(
-            self.dir, 'CONFIGURATION', 'DEFAULTLANGUAGE', ''
+            self.path, 'CONFIGURATION', 'DEFAULTLANGUAGE', ''
         ))
+        self.show_notification = bool(ini_read(self.path, 'CONFIGURATION', 'SHOWNOTIFICATION', 'True'))
         self.lang = lang[:2] + '-' + lang[3:][:2]
         # if SVOX Pico not support this language, find os environment language
         if not self.lang in self.list_lang:
@@ -86,6 +84,12 @@ class Conf:
             # if SVOX Pico not support this language, use US english
             if not self.lang in self.list_lang:
                 self.lang = "en-US"
+
+        try:
+            gi.require_version('AppIndicator3', '0.1')
+            from gi.repository import AppIndicator3 as appindicator
+        except:
+            self.use_appindicator = False
 
         self.dict_path = join(
             '/usr/share/gspeech/dict',
@@ -121,3 +125,28 @@ class Conf:
         You should have received a copy of the GNU General Public License
         along with {2}.  If not, see <http://www.gnu.org/licenses/>.
         """.format(self.copyright_year, self.authors, self.app_name)
+
+        if not isfile(self.path):
+            os.makedirs(self.dir, exist_ok = True)
+            self.update()
+
+    def update(self):
+        raw = RawConfigParser()
+        raw.add_section('CONFIGURATION')
+        raw.set(
+            'CONFIGURATION',
+            'USEAPPINDICATOR',
+            self.use_appindicator
+        )
+        raw.set(
+            'CONFIGURATION',
+            'DEFAULTLANGUAGE',
+            self.lang
+        )
+        raw.set(
+            'CONFIGURATION',
+            'SHOWNOTIFICATION',
+            self.show_notification
+        )
+        with open(self.path, 'w') as stream:
+            raw.write(stream)
