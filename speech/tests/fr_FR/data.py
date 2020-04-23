@@ -177,4 +177,8 @@ datas = [
         "ini": "J'ai de plus en plus peur.",
         "new": "j'ai de plusanplu peur."
     },
+    {
+        "ini": "Je suis un grand fan.",
+        "new": "je suis un grand fane."
+    },
 ]

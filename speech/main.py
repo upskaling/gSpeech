@@ -285,7 +285,7 @@ class MainApp:
 
     def onLang(self, widget, lang, conf):
         '''Action on language submenu items'''
-        conf.setLang(lang)
+        conf.set_lang(lang)
         conf.lang = lang
         if conf.has_app_indicator == True:
             self.ind.set_icon(conf.icon_path)
@@ -334,7 +334,7 @@ class MainApp:
         notify.get(conf, text)
         if text == None:
             return
-        conf.setLang(conf.lang)
+        conf.set_lang(conf.lang)
         text = adaptTextToDict(text, conf.dict_path, conf.lang)
         names, cmds = getAudioCommands(
             text,

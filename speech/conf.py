@@ -46,7 +46,19 @@ class Conf:
     use_appindicator = True
     lang = ''
 
-    def setLang(self, lang):
+    def set_dict(self, lang):
+        self.dict_path = join(
+            '/usr/share/gspeech/dict',
+            lang.replace('-', '_')
+        )
+        if isdir('.git') and isdir('speech'):
+            self.dict_path = join(
+                self.dir,
+                'dict',
+                lang.replace('-', '_')
+            )
+
+    def set_lang(self, lang):
         if lang in self.list_lang:
             self.lang = lang
         if self.icons_dir:
@@ -55,6 +67,7 @@ class Conf:
                 'icons',
                 self.app_name + '-' + lang + '.svg'
             )
+        self.set_dict(lang)
 
     def __init__(self, script_dir=None):
         self.pid = join(self.cache_path, 'gspeech.pid')
@@ -91,17 +104,7 @@ class Conf:
         except:
             self.use_appindicator = False
 
-        self.dict_path = join(
-            '/usr/share/gspeech/dict',
-            self.lang.replace('-', '_')
-        )
-        if isdir('.git') and isdir('speech'):
-            self.dict_path = join(
-                self.dir,
-                'dict',
-                self.lang.replace('-', '_')
-            )
-        self.setLang(self.lang)
+        self.set_lang(self.lang)
  
         gettext.install(self.app_name, self.local_dir)
 

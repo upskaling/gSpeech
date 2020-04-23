@@ -80,7 +80,7 @@ if __name__ == "__main__":
             text = arg
 
     if lang in conf.list_lang:
-        conf.setLang(lang)
+        conf.set_lang(lang)
 
     if input_file:
         text = text_file(input_file)
