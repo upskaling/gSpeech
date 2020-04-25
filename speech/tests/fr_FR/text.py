@@ -2,7 +2,7 @@ from os.path import join, dirname
 
 from unittest import TestCase
 
-from speech.textutils import adaptTextToDict
+from speech.textutils import text_to_dict
 from .data import datas
 
 
@@ -12,7 +12,7 @@ class TestTextConversion(TestCase):
             text = data['ini']
             transform = data['new']
             lang = 'fr-FR'
-            result = adaptTextToDict(
+            result = text_to_dict(
                 text,
                 join(
                     dirname(dirname(dirname(dirname(__file__)))),

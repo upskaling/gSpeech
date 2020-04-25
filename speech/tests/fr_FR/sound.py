@@ -5,8 +5,8 @@ import tempfile
 from hashlib import md5
 from unittest import TestCase
 
-from speech.textutils import adaptTextToDict
-from speech.audioutils import getAudioCommands
+from speech.textutils import text_to_dict
+from speech.audioutils import get_audio_commands
 
 from .data import datas
 
@@ -16,12 +16,16 @@ temp_path = tempfile.mkdtemp()
 def create_sound(text, file_name):
     output_file = join(temp_path, '%s.wav' % file_name)
     lang = 'fr-FR'
-    text = adaptTextToDict(
+    text = text_to_dict(
         text,
-        join(dirname(dirname(dirname(dirname(__file__)))), 'dict', lang.replace('-', '_')),
+        join(
+            dirname(dirname(dirname(dirname(__file__)))),
+            'dict',
+            lang.replace('-', '_')
+        ),
         lang
     )
-    names, cmds = getAudioCommands(
+    names, cmds = get_audio_commands(
         text,
         output_file,
         lang,
