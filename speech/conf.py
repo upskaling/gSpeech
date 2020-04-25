@@ -28,17 +28,24 @@ class Conf:
     # Temporaries files
     cache_path = join(os.getenv('HOME'), '.cache', app_name)
 
-    developers_name = "Lahire Biette, Sardi Carlo, Jérémie Ferry"
-    authors_email = "<tuxmouraille@gmail.com>, <lusumdev@zoho.eu>, <jerem.ferry@gmail.com>"
-    developers = developers_name + ' ' + authors_email
+    developers = [
+        [ 'Lahire Biette', '<tuxmouraille@gmail.com>' ],
+        [ 'Sardi Carlo', '<lusumdev@zoho.eu>' ],
+        [ 'Ferry Jérémie', '<jerem.ferry@gmail.com>' ]
+    ]
     copyright_year = '2011, 2014, 2018, 2020'
-    copyrights = "Copyright © %s %s" % (copyright_year, developers_name)
+    copyrights = "Copyright © %s %s" % (
+        copyright_year,
+        ', '.join([name for name, mail in developers])
+    )
 
     # Supported SVOX Pico's languages
     list_lang = ["de-DE", "en-GB", "en-US", "es-ES", "fr-FR", "it-IT"]
 
-    translators = "pt-PT, pt-BR, es-ES &amp; it-IT :\n\
-    Dupouy Paul"
+    translators = [
+        'Dupouy Paul (it-IT)',
+        'Ferry Jérémie (fr-FR)'
+    ]
 
     website = 'https://github.com/mothsart/gSpeech'
 
@@ -89,11 +96,17 @@ class Conf:
         lang = str(ini_read(
             self.path, 'CONFIGURATION', 'DEFAULTLANGUAGE', ''
         ))
-        self.show_notification = bool(ini_read(self.path, 'CONFIGURATION', 'SHOWNOTIFICATION', 'True'))
+        self.show_notification = bool(ini_read(
+            self.path,
+            'CONFIGURATION',
+            'SHOWNOTIFICATION',
+            'True'
+        ))
         self.lang = lang[:2] + '-' + lang[3:][:2]
         # if SVOX Pico not support this language, find os environment language
         if not self.lang in self.list_lang:
-            self.lang = os.environ.get('LANG', 'en_US')[:2] + '-' + os.environ.get('LANG', 'en_US')[3:][:2]
+            self.lang = os.environ.get('LANG', 'en_US')[:2]
+            self.lang += '-' + os.environ.get('LANG', 'en_US')[3:][:2]
             # if SVOX Pico not support this language, use US english
             if not self.lang in self.list_lang:
                 self.lang = "en-US"
@@ -109,11 +122,16 @@ class Conf:
         gettext.install(self.app_name, self.local_dir)
 
         self.comment = _("A little script to read SVOX Pico texts selected with the mouse.")
-        self.authors = [
+        self.authors = '%s %s' % (
             _("Developers :"),
-            "%s" % (self.developers),
-        ]
-        self.license = """Copyright © {0} - {1}.
+            ', '.join([
+                '%s (%s)' % (name, mail.replace('<', '').replace('>', ''))
+                for name, mail in self.developers
+            ]),
+        )
+        self.license = """
+        Copyright © {0}
+        {1}
 
         {2} is free software: you can redistribute it and/or modify
         it under the terms of the GNU General Public License as published by
@@ -127,7 +145,11 @@ class Conf:
 
         You should have received a copy of the GNU General Public License
         along with {2}.  If not, see <http://www.gnu.org/licenses/>.
-        """.format(self.copyright_year, self.authors, self.app_name)
+        """.format(
+            self.copyright_year,
+            self.authors,
+            self.app_name
+        )
 
         if not isfile(self.path):
             os.makedirs(self.dir, exist_ok = True)

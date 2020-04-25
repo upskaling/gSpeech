@@ -1,16 +1,16 @@
 #!/usr/bin/env python3
 # -*- Mode: Python; coding: utf-8; indent-tabs-mode: nil; tab-width: 4 -*-
 
-import sys, os, getopt, multiprocessing
+import sys, os, getopt
 
 from speech import __version__
 from speech.conf import Conf
-from speech.textutils import adaptTextToDict
-from speech.audioutils import getAudioCommands
+from speech.textutils import text_to_dict
+from speech.audioutils import get_audio_commands, run_audio_files
 
 conf = Conf()
 
-def printHelp():
+def print_help():
     print('%s version %s' % (conf.app_name, __version__))
     print('')
     print('Usage : %s-cli -i "[text to read]" ( or -f [txt file] ) -o [.wav filename] ... -l [optional lang]' %\
@@ -51,8 +51,8 @@ if __name__ == "__main__":
             ]
         )
     except getopt.GetoptError:
-        printHelp()
-        sys.exit(2)
+        print_help()
+        exit(2)
 
     input_file = ""
     text = ""
@@ -60,12 +60,12 @@ if __name__ == "__main__":
     outfile = "speech.wav"
 
     if len(opts) == 0:
-        printHelp()
-        sys.exit()
+        print_help()
+        exit()
 
     for opt, arg in opts:
         if opt in ('-h', '--help'):
-            printHelp()
+            print_help()
             exit()
         if opt in ('-v', '--version'):
             print('%s version %s' % (conf.app_name, __version__))
@@ -85,21 +85,11 @@ if __name__ == "__main__":
     if input_file:
         text = text_file(input_file)
 
-    text = adaptTextToDict(text, conf.dict_path, conf.lang)
-    names, cmds = getAudioCommands(
+    text = text_to_dict(text, conf.dict_path, conf.lang)
+    names, cmds = get_audio_commands(
         text,
         outfile,
         conf.lang,
         conf.cache_path
     )
-
-    if len(cmds) == 1:
-        os.system(cmds[0])
-    elif os.path.isfile('/usr/bin/sox'):
-        nproc = int(.5 * multiprocessing.cpu_count())
-        if nproc == 0:
-            nproc = 1
-        multiprocessing.Pool(nproc).map(os.system, cmds)
-        os.system('sox %s %s' % ( ' '.join(names), outfile ))
-        for fichier in names:
-            os.remove(fichier)
+    run_audio_files(names, cmds, outfile)

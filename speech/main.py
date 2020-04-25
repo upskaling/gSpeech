@@ -1,4 +1,4 @@
-import os, sys, tempfile, subprocess, multiprocessing
+import os, sys, tempfile, subprocess
 from configparser import SafeConfigParser
 
 import gi
@@ -11,8 +11,8 @@ Gst.init("")
 
 from .conf import Conf
 from . import pid
-from .textutils import adaptTextToDict
-from .audioutils import getAudioCommands
+from .textutils import text_to_dict
+from .audioutils import get_audio_commands, run_audio_files
 from .widgets.about import AboutDialog
 from .widgets.save import SaveFileDialog
 from .widgets.option import OptionDialog
@@ -26,6 +26,17 @@ except:
 
 #load configuration
 conf = Conf()
+
+def on_lang(widget, ind, lang, conf):
+    '''Action on language submenu items'''
+    conf.set_lang(lang)
+    conf.lang = lang
+    conf.update()
+    if conf.has_app_indicator == True:
+        ind.set_icon(conf.icon_path)
+        return
+    self.tray.set_from_file(conf.icon_path)
+
 
 class MainApp:
     ''' the main class of the software'''
@@ -159,7 +170,7 @@ class MainApp:
         model = combobox.get_model()
         index = combobox.get_active()
         if index:
-            self.onLang(self, model[index][0], conf)
+            on_lang(None, self.ind, model[index][0], conf)
         return
 
     # action on right click
@@ -233,7 +244,7 @@ class MainApp:
                 i
             )
             menulngs.append(smItem)
-            smItem.connect("toggled", self.onLang, i, conf)
+            smItem.connect("toggled", on_lang, self.ind, i, conf)
             if i == conf.lang:
                 smItem.set_active(True)
             smItem.show()
@@ -283,15 +294,6 @@ class MainApp:
         subprocess.Popen(myscript)
         exit()
 
-    def onLang(self, widget, lang, conf):
-        '''Action on language submenu items'''
-        conf.set_lang(lang)
-        conf.lang = lang
-        if conf.has_app_indicator == True:
-            self.ind.set_icon(conf.icon_path)
-            return
-        self.tray.set_from_file(conf.icon_path)
-
     def onAbout(self, widget, conf):
         '''Show about dialog'''
         self.aboutdiag = AboutDialog(self.window, conf)
@@ -335,33 +337,15 @@ class MainApp:
         if text == None:
             return
         conf.set_lang(conf.lang)
-        text = adaptTextToDict(text, conf.dict_path, conf.lang)
-        names, cmds = getAudioCommands(
+
+        text = text_to_dict(text, conf.dict_path, conf.lang)
+        names, cmds = get_audio_commands(
             text,
             conf.temp_path,
             conf.lang,
             conf.cache_path
         )
-
-        if len(cmds) == 1:
-            os.system(cmds[0])
-        elif os.path.isfile('/usr/bin/sox'):
-            nproc = int(.5 * multiprocessing.cpu_count())
-            if nproc == 0:
-                nproc = 1
-            multiprocessing.Pool(nproc).map(os.system, cmds)
-            os.system(
-                'sox %s %s' % (
-                    ' '.join(names),
-                    conf.temp_path
-                )
-            )
-            for fichier in names:
-                os.remove(fichier)
-
-        else:
-            print("Le text est trop long pour être lue sans utiliser sox")
-            exit()
+        run_audio_files(names, cmds, conf.temp_path)
 
         if hasattr(self, 'player'):
             self.player.set_state(Gst.State.NULL)
