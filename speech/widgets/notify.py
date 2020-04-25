@@ -15,7 +15,6 @@ def get(conf, text):
                 conf.icon_path
             ).show()
         except:
-            print('paf')
             pass
         return
     try:
@@ -25,5 +24,4 @@ def get(conf, text):
             conf.icon_path
         ).show()
     except:
-        print('pif')
         pass
