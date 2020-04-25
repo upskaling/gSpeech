@@ -42,7 +42,7 @@ def replace(text, dict_path):
                 text = _replace_ponctuation(text, line)
     return text
 
-def adaptTextToDict(text, dict_path, lang):
+def text_to_dict(text, dict_path, lang):
     text = text.replace('\"', '')
     text = text.replace('`', '')
     text = text.replace('´', '')
