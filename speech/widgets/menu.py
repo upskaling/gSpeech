@@ -5,13 +5,13 @@ from gi.repository import Gtk
 from .about import on_about
 from .events import (
     on_destroy, on_execute, on_lang, on_media_dialog,
-    on_reload, on_stop, on_play_pause
+    on_play_pause, on_reload, on_stop
 )
 from .option import on_options
 from .save import on_save
 from ..i18n import (
     _about, _languages, _multimedia_window, _options, _quit,
-    _read_clipboard, _read_selected, _refresh, _save, _stop, _pause
+    _read_clipboard, _read_selected, _refresh, _save, _stop
 )
 
 

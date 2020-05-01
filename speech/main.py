@@ -68,17 +68,17 @@ def generic_button(
 
 
 def lang_combobox(hbox, ind, tray, conf):
-        combobox = Gtk.ComboBoxText.new()
-        label = Gtk.Label(_languages)
-        hbox.pack_start(label, False, False, 0)
-        hbox.pack_start(combobox, False, False, 0)
-        count = 0
-        for lang in conf.list_langs:
-            combobox.append_text(lang)
-            if lang == conf.lang:
-                combobox.set_active(count)
-            count += 1
-        combobox.connect('changed', changed_cb, ind, tray, conf)
+    combobox = Gtk.ComboBoxText.new()
+    label = Gtk.Label(_languages)
+    hbox.pack_start(label, False, False, 0)
+    hbox.pack_start(combobox, False, False, 0)
+    count = 0
+    for lang in conf.list_langs:
+        combobox.append_text(lang)
+        if lang == conf.lang:
+            combobox.set_active(count)
+        count += 1
+    combobox.connect('changed', changed_cb, ind, tray, conf)
 
 
 class MainApp:

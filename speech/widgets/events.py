@@ -1,5 +1,4 @@
 import os
-from os.path import isfile
 import subprocess
 import sys
 
@@ -12,7 +11,7 @@ from gi.repository import Gdk, Gst, Gtk
 from . import notify
 from .. import pid
 from ..audioutils import get_audio_commands, run_audio_files
-from ..i18n import _read_selected, _pause, _play
+from ..i18n import _pause, _play, _read_selected
 from ..textutils import text_to_dict
 
 
@@ -65,7 +64,7 @@ def on_destroy(
     player=None
 ):
     """Destroy app on clicking Quit item"""
-    if isfile(conf.temp_path):
+    if os.path.isfile(conf.temp_path):
         os.remove(conf.temp_path)
     pid.remove(conf.pid)
     Gtk.main_quit()
@@ -181,7 +180,7 @@ def on_stop(
 
 def button_state(menu_play_pause, win_play_pause, player):
     gst_state = player.get_state(Gst.CLOCK_TIME_NONE)[1]
-    if  gst_state == Gst.State.PLAYING:
+    if gst_state == Gst.State.PLAYING:
         win_play_pause.set_label(Gtk.STOCK_MEDIA_PAUSE)
         menu_play_pause.set_label(_pause)
         menu_play_pause.set_active(False)
