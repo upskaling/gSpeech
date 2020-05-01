@@ -1,8 +1,8 @@
-from os.path import join, dirname
-
+from os.path import dirname, join
 from unittest import TestCase
 
 from speech.textutils import text_to_dict
+
 from .data import datas
 
 

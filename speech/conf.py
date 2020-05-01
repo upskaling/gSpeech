@@ -1,10 +1,12 @@
-import sys
 import os
-from os.path import join, dirname, abspath, isdir, isfile, expanduser
 from configparser import RawConfigParser, SafeConfigParser
+from os.path import dirname, expanduser, isfile, join
 
-import gettext
 import gi
+
+from .debug import is_debug_mode
+from .i18n import _comment, _developpers
+
 
 def ini_read(config_path, section, key, default):
     if isfile(config_path):
@@ -12,35 +14,35 @@ def ini_read(config_path, section, key, default):
         parser.read(config_path)
         try:
             _property = parser.get(section, key)
-        except:
+        except Exception:
             _property = default
     else:
         _property = default
-    if _property.lower() in ['1', 'yes', 'true', 'on'] :
+    if _property.lower() in ['1', 'yes', 'true', 'on']:
         return True
-    if _property.lower() in ['0', 'no', 'false', 'off'] :
+    if _property.lower() in ['0', 'no', 'false', 'off']:
         return False
     return _property
 
 
 class Conf:
-    app_name = "gSpeech"
+    app_name = 'gSpeech'
     # Temporaries files
     cache_path = join(os.getenv('HOME'), '.cache', app_name)
 
     developers = [
-        [ 'Lahire Biette', '<tuxmouraille@gmail.com>' ],
-        [ 'Sardi Carlo', '<lusumdev@zoho.eu>' ],
-        [ 'Ferry Jérémie', '<jerem.ferry@gmail.com>' ]
+        ['Lahire Biette', '<tuxmouraille@gmail.com>'],
+        ['Sardi Carlo', '<lusumdev@zoho.eu>'],
+        ['Ferry Jérémie', '<jerem.ferry@gmail.com>']
     ]
     copyright_year = '2011, 2014, 2018, 2020'
-    copyrights = "Copyright © %s %s" % (
+    copyrights = 'Copyright © %s %s' % (
         copyright_year,
         ', '.join([name for name, mail in developers])
     )
 
     # Supported SVOX Pico's languages
-    list_lang = ["de-DE", "en-GB", "en-US", "es-ES", "fr-FR", "it-IT"]
+    list_langs = ['de-DE', 'en-GB', 'en-US', 'es-ES', 'fr-FR', 'it-IT']
 
     translators = [
         'Dupouy Paul (it-IT)',
@@ -58,7 +60,7 @@ class Conf:
             '/usr/share/gspeech/dict',
             lang.replace('-', '_')
         )
-        if isdir('.git') and isdir('speech'):
+        if is_debug_mode():
             self.dict_path = join(
                 self.dir,
                 'dict',
@@ -66,12 +68,11 @@ class Conf:
             )
 
     def set_lang(self, lang):
-        if lang in self.list_lang:
+        if lang in self.list_langs:
             self.lang = lang
         if self.icons_dir:
             self.icon_path = join(
                 self.icons_dir,
-                'icons',
                 self.app_name + '-' + lang + '.svg'
             )
         self.set_dict(lang)
@@ -83,10 +84,10 @@ class Conf:
         self.dir = join(expanduser('~'), '.config/gSpeech')
         self.local_dir = '/usr/share/locale'
         self.icons_dir = '/usr/share/icons/hicolor/scalable/apps'
-        if isdir('.git') and isdir('speech'):
+        if is_debug_mode():
             self.dir = join(dirname(dirname(__file__)))
             self.local_dir = join(self.dir, 'locale')
-            self.icons_dir = self.dir
+            self.icons_dir = join(self.dir, 'icons')
 
         self.path = join(self.dir, 'gspeech.conf')
 
@@ -104,26 +105,24 @@ class Conf:
         ))
         self.lang = lang[:2] + '-' + lang[3:][:2]
         # if SVOX Pico not support this language, find os environment language
-        if not self.lang in self.list_lang:
+        if self.lang not in self.list_langs:
             self.lang = os.environ.get('LANG', 'en_US')[:2]
             self.lang += '-' + os.environ.get('LANG', 'en_US')[3:][:2]
             # if SVOX Pico not support this language, use US english
-            if not self.lang in self.list_lang:
-                self.lang = "en-US"
+            if self.lang not in self.list_langs:
+                self.lang = 'en-US'
 
         try:
             gi.require_version('AppIndicator3', '0.1')
-            from gi.repository import AppIndicator3 as appindicator
-        except:
+            from gi.repository import AppIndicator3  # noqa: F401
+        except ImportError:
             self.use_appindicator = False
 
         self.set_lang(self.lang)
- 
-        gettext.install(self.app_name, self.local_dir)
 
-        self.comment = _("A little script to read SVOX Pico texts selected with the mouse.")
+        self.comment = _comment
         self.authors = '%s %s' % (
-            _("Developers :"),
+            _developpers,
             ', '.join([
                 '%s (%s)' % (name, mail.replace('<', '').replace('>', ''))
                 for name, mail in self.developers
@@ -152,7 +151,7 @@ class Conf:
         )
 
         if not isfile(self.path):
-            os.makedirs(self.dir, exist_ok = True)
+            os.makedirs(self.dir, exist_ok=True)
             self.update()
 
     def update(self):

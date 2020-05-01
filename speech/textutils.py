@@ -1,7 +1,8 @@
-import os
-import glob
-import re
 import codecs
+import glob
+import os
+import re
+
 
 def _replace_txt(text, line):
     bad = line.split('=')[0]
@@ -9,6 +10,7 @@ def _replace_txt(text, line):
         return text
     good = line.split('=')[1].replace('\n', '')
     return text.replace(bad, good)
+
 
 def _replace_ponctuation(text, line):
     bad = line.split('=')[0]
@@ -26,6 +28,7 @@ def _replace_ponctuation(text, line):
     text = re.sub(bad + ' $', good, text)
     return text
 
+
 def replace(text, dict_path):
     if not os.path.isdir(dict_path):
         return text
@@ -42,12 +45,13 @@ def replace(text, dict_path):
                 text = _replace_ponctuation(text, line)
     return text
 
+
 def text_to_dict(text, dict_path, lang):
     text = text.replace('\"', '')
     text = text.replace('`', '')
     text = text.replace('´', '')
     if lang != 'fr-FR':
-        text = text.replace('-','')
+        text = text.replace('-', '')
     text = replace(text, dict_path)
     if lang == 'fr-FR':
         from .workers.fr_FR import acronyme

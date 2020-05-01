@@ -3,5 +3,7 @@ before_install:
 language: python
 python:
   - "3.5"
+before_install:
+  - pip install -r requirements-dev.txt
 script:
-  - python -m unittest speech/tests/tests.py
+  - make test

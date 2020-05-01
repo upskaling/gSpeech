@@ -1,6 +1,7 @@
 # gSpeech
 
 [![Build Status](https://travis-ci.org/mothsART/gSpeech.png?branch=master)](https://travis-ci.org/mothsART/gSpeech)
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
 ## Introduction
 
@@ -33,7 +34,7 @@ docker run -i -t gspeech /bin/bash
 ## Tests
 
 ```sh
-python3 -m unittest speech/tests/tests.py
+python3 -m unittest
 ```
 
 ## Create a Debian package
@@ -41,7 +42,8 @@ python3 -m unittest speech/tests/tests.py
 ```sh
 git clone https://github.com/mothsART/gspeech.git
 cd gspeech
-debuild -S // alias of dpkg-buildpackage -rfakeroot -d -us -uc -S
+debuild // binary package : .deb, alias of dpkg-buildpackage -rfakeroot -d -us -uc
+debuild -S // source package : alias of dpkg-buildpackage -rfakeroot -d -us -uc -S
 ```
 
 and launch with :

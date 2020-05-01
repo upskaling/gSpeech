@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased : 1.0]
 
+### Added
+- GTK unit tests
+- Nix support
+- speed management
+
 ## [Unreleased : 0.9]
 
 ### Bugfix
@@ -18,3 +23,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - option dialog : can enable/disable notification popup
+- create a changelog file
+- create a Debian package
+- create a ppa : https://launchpad.net/~jerem-ferry/+archive/ubuntu/tts

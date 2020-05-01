@@ -1,9 +1,13 @@
+import gettext
 import os
 import shutil
 
 import gi
-gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
+
+gi.require_version('Gtk', '3.0')
+
+_ = gettext.gettext
 
 
 class SaveFileDialog(Gtk.FileChooserDialog):
@@ -12,7 +16,7 @@ class SaveFileDialog(Gtk.FileChooserDialog):
     def __init__(self, parent, temp_path):
         Gtk.FileChooserDialog.__init__(
             self,
-            _("Save the speech"),
+            _('Save the speech'),
             parent,
             Gtk.FileChooserAction.SAVE,
             (
@@ -26,12 +30,25 @@ class SaveFileDialog(Gtk.FileChooserDialog):
         self.set_current_folder(os.path.expanduser('~'))
 
         _filter = Gtk.FileFilter()
-        _filter.set_name(_("Wave file (*.wav)"))
-        _filter.add_mime_type("audio/x-wav")
-        _filter.add_pattern("*.wav")
+        _filter.set_name(_('Wave file (*.wav)'))
+        _filter.add_mime_type('audio/x-wav')
+        _filter.add_pattern('*.wav')
         self.add_filter(_filter)
 
         response = self.run()
         if response == Gtk.ResponseType.OK:
-            dest_path = dialog.get_filename() + '.wav'
+            dest_path = self.get_filename() + '.wav'
             shutil.copy(temp_path, dest_path)
+        self.destroy()
+
+
+def on_save(
+    widget,
+    window=None,
+    conf=None,
+    menu_play_pause=None,
+    win_play_pause=None,
+    player=None
+):
+    """Saving file speech on clicking Save item"""
+    SaveFileDialog(window, conf.temp_path)

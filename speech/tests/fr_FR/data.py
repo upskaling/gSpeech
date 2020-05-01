@@ -1,184 +1,192 @@
 datas = [
     {
-        "ini": "Il aime son chat.",
-        "new": "il aime son chat.",
-        "file": "aime_son_chat"
+        'ini': 'Il aime son chat.',
+        'new': 'il aime son chat.',
+        'file': 'aime_son_chat'
     },
     {
-        "ini": "Sam est un élève très doué",
-        "new": "same ai un élève très doué",
-        "file": "sam_eleve_doue"
-    },
-    { 
-        "ini": "N'oublie pas ton manteau",
-        "new": "noublie pas ton manteau",
-        "file": "noublie_pas_ton_manteau"
+        'ini': 'Sam est un élève très doué',
+        'new': 'same ai un élève très doué',
+        'file': 'sam_eleve_doue'
     },
     {
-        "ini": "Tu veux du sucre dans ton yaourt ?",
-        "new": "tu veux du sucre dans ton  ya ourte ?",
-        "file": "tu_veux_du_sucre_dans_ton_yaourt"
+        'ini': """N'oublie pas ton manteau""",
+        'new': 'noublie pas ton manteau',
+        'file': 'noublie_pas_ton_manteau'
     },
     {
-        "ini": "Veux-tu manger une poire bien juteuse ?",
-        "new": "veux-tu manger une poire bien juteuse ?",
-        "file": "veux_tu_manger_une_poire_bien_juteuse"
+        'ini': 'Tu veux du sucre dans ton yaourt ?',
+        'new': 'tu veux du sucre dans ton  ya ourte ?',
+        'file': 'tu_veux_du_sucre_dans_ton_yaourt'
     },
     {
-        "ini": "Jeudi nous avons sport toute l'après-midi.",
-        "new": "jeudi nous avons sport toute l'après-midi.",
-        "file": "jeudi_nous_avons_sport_toute_lapresmidi"
+        'ini': 'Veux-tu manger une poire bien juteuse ?',
+        'new': 'veux-tu manger une poire bien juteuse ?',
+        'file': 'veux_tu_manger_une_poire_bien_juteuse'
     },
     {
-        "ini": "J'ai regardé un bon film hier soir.",
-        "new": "j'ai regardé un bon filme hier soir.",
-        "file": "jai_regarde_un_bon_film_hier_soir"
+        'ini': """Jeudi nous avons sport toute l'après-midi.""",
+        'new': """jeudi nous avons sport toute l'après-midi.""",
+        'file': 'jeudi_nous_avons_sport_toute_lapresmidi'
     },
     {
-        "ini": "Claire a une chevelure rousse.",
-        "new": "claire a une cheveulure rousse.",
-        "file": "claire_a_une_chevelure_rousse"
+        'ini': """J'ai regardé un bon film hier soir.""",
+        'new': """j'ai regardé un bon filme hier soir.""",
+        'file': 'jai_regarde_un_bon_film_hier_soir'
     },
     {
-        "ini": "Je ne veux plus rien.",
-        "new": "je ne veu plu rien.",
-        "file": "je_ne_veux_plus_rien"
+        'ini': 'Claire a une chevelure rousse.',
+        'new': 'claire a une cheveulure rousse.',
+        'file': 'claire_a_une_chevelure_rousse'
     },
     {
-        "ini": "Ma bille a roulé sous l'armoire.",
-        "new": "ma bi a roulé sous l'armoire.",
-        "file": "ma_bille_a_roule_sous_larmoire"
+        'ini': 'Je ne veux plus rien.',
+        'new': 'je ne veu plu rien.',
+        'file': 'je_ne_veux_plus_rien'
     },
     {
-        "ini": "Passe-toi de l'eau sur le visage.",
-        "new": "passe-toi de l'eau sur le visage.",
-        "file": "passe_toi_de_leau_sur_le_visage"
+        'ini': """Ma bille a roulé sous l'armoire.""",
+        'new': """ma bi a roulé sous l'armoire.""",
+        'file': 'ma_bille_a_roule_sous_larmoire'
     },
     {
-        "ini": "Je me lève a huit heure.",
-        "new": "je me lève a huit heure.",
-        "file": "je_me_leve_a_huit_heure"
+        'ini': """Passe-toi de l'eau sur le visage.""",
+        'new': """passe-toi de l'eau sur le visage.""",
+        'file': 'passe_toi_de_leau_sur_le_visage'
     },
     {
-        "ini": "Marion a trois frères.",
-        "new": "marion a trois frères.",
-        "file": "marion_a_trois_freres"
+        'ini': 'Je me lève a huit heure.',
+        'new': 'je me lève a huit heure.',
+        'file': 'je_me_leve_a_huit_heure'
     },
     {
-        "ini": "Le ciel est gris aujourd'hui",
-        "new": "le ciel ai gris aujourd'hui",
-        "file": "le_ciel_est_gris_aujourdhui"
+        'ini': 'Marion a trois frères.',
+        'new': 'marion a trois frères.',
+        'file': 'marion_a_trois_freres'
     },
     {
-        "ini": "Reconnais-tu l'écriture de ce document ?",
-        "new": "reconnais-tu l'écriture de ce document ?",
-        "file": "reconnais_tu_lecriture_de_ce_document"
+        'ini': """Le ciel est gris aujourd'hui""",
+        'new': """le ciel ai gris aujourd'hui""",
+        'file': 'le_ciel_est_gris_aujourdhui'
     },
     {
-        "ini": "Est-ce un parent à toi ?",
-        "new": "est-ce un paran à toi ?",
-        "file": "est_ce_un_parent_a_toi"
+        'ini': """Reconnais-tu l'écriture de ce document ?""",
+        'new': """reconnais-tu l'écriture de ce document ?""",
+        'file': 'reconnais_tu_lecriture_de_ce_document'
     },
     {
-        "ini": "Il n'y a plus de sucre.",
-        "new": "il ny a plu de sucre.",
-        "file": "il_ny_a_plus_de_sucre"
+        'ini': 'Est-ce un parent à toi ?',
+        'new': 'est-ce un paran à toi ?',
+        'file': 'est_ce_un_parent_a_toi'
     },
     {
-        "ini": "C'est ma chaise.",
-        "new": "c'est ma chaise.",
-        "file": "cest_ma_chaise"
+        'ini': """Il n'y a plus de sucre.""",
+        'new': 'il ny a plu de sucre.',
+        'file': 'il_ny_a_plus_de_sucre'
     },
     {
-        "ini": "Cette tache est invisible à l'oeil nu.",
-        "new": "cette tache ai invisible à l'euil nu.",
-        "file": "cette_tache_est_invisible_a_loeil_nu"
+        'ini': """C'est ma chaise.""",
+        'new': """c'est ma chaise.""",
+        'file': 'cest_ma_chaise'
     },
     {
-        "ini": "C'est ma chaise.",
-        "new": "c'est ma chaise.",
-        "file": "cest_ma_chaise"
+        'ini': """Cette tache est invisible à l'oeil nu.""",
+        'new': """cette tache ai invisible à l'euil nu.""",
+        'file': 'cette_tache_est_invisible_a_loeil_nu'
     },
     {
-        "ini": "Dirigez-vous vers la sortie.",
-        "new": "dirigez-vous vers la sortie.",
-        "file": "dirigez_vous_vers_la_sortie"
+        'ini': """C'est ma chaise.""",
+        'new': """c'est ma chaise.""",
+        'file': 'cest_ma_chaise'
     },
     {
-        "ini": "Pierre est un garçon très sourriant.",
-        "new": "pierre ai un garçon très sourriant.",
-        "file": "pierre_est_un_garcon_tres_sourriant"
+        'ini': 'Dirigez-vous vers la sortie.',
+        'new': 'dirigez-vous vers la sortie.',
+        'file': 'dirigez_vous_vers_la_sortie'
     },
     {
-        "ini": "Claire est une fille très gai.",
-        "new": "claire ai une fi très gai.",
-        "file": "claire_est_une_fille_tres_gai"
+        'ini': 'Pierre est un garçon très sourriant.',
+        'new': 'pierre ai un garçon très sourriant.',
+        'file': 'pierre_est_un_garcon_tres_sourriant'
     },
     {
-        "ini": "Nous pourrons mettre un meuble devant ce mur.",
-        "new": "nous pourrons mettre un meuble devant ce mur.",
-        "file": "nous_pourrons_mettre_un_meuble_devant_ce_mur"
+        'ini': 'Claire est une fille très gai.',
+        'new': 'claire ai une fi très gai.',
+        'file': 'claire_est_une_fille_tres_gai'
     },
     {
-        "ini": "La route qui passe devant chez moi est très étroite.",
-        "new": "la route qui passe devant chez moi ai très étroite.",
-        "file": "la_route_qui_passe_devant_chez_moi_est_tres_etroite"
+        'ini': 'Nous pourrons mettre un meuble devant ce mur.',
+        'new': 'nous pourrons mettre un meuble devant ce mur.',
+        'file': 'nous_pourrons_mettre_un_meuble_devant_ce_mur'
     },
     {
-        "ini": "La tempête a fait une victime.",
-        "new": "la tempête, a fait une victime.",
-        "file": "la_tempete_a_fait_une_victime"
+        'ini': 'La route qui passe devant chez moi est très étroite.',
+        'new': 'la route qui passe devant chez moi ai très étroite.',
+        'file': 'la_route_qui_passe_devant_chez_moi_est_tres_etroite'
     },
     {
-        "ini": "La rosée du matin arrose les plantes.",
-        "new": "la rosée du matin arrose les plantes.",
-        "file": "la_rosee_du_matin_arrose_les_plantes"
+        'ini': 'La tempête a fait une victime.',
+        'new': 'la tempête, a fait une victime.',
+        'file': 'la_tempete_a_fait_une_victime'
     },
     {
-        "ini": "C'est à toi ou à moi.",
-        "new": "c'est à toi ou à moi.",
-        "file": "cest_a_toi_ou_a_moi"
+        'ini': 'La rosée du matin arrose les plantes.',
+        'new': 'la rosée du matin arrose les plantes.',
+        'file': 'la_rosee_du_matin_arrose_les_plantes'
     },
     {
-        "ini": "Nous pourrons mettre un meuble devant ce mur.",
-        "new": "nous pourrons mettre un meuble devant ce mur.",
-        "file": "nous_pourrons_mettre_un_meuble_devant_ce_mur"
+        'ini': """C'est à toi ou à moi.""",
+        'new': """c'est à toi ou à moi.""",
+        'file': 'cest_a_toi_ou_a_moi'
     },
     {
-        "ini": "Il n'est pas là parce que le train a du retard.",
-        "new": "il nai pas là parceu que le train a du retard.",
-        "file": "il_nest_pas_la_parce_que_le_train_a_du_retard"
+        'ini': 'Nous pourrons mettre un meuble devant ce mur.',
+        'new': 'nous pourrons mettre un meuble devant ce mur.',
+        'file': 'nous_pourrons_mettre_un_meuble_devant_ce_mur'
     },
     {
-        "ini": "SNCF",
-        "new": "s n c f"
+        'ini': """Il n'est pas là parce que le train a du retard.""",
+        'new': 'il nai pas là parceu que le train a du retard.',
+        'file': 'il_nest_pas_la_parce_que_le_train_a_du_retard'
     },
     {
-        "ini": "l'ADEME",
-        "new": "l'ademe"
+        'ini': 'SNCF',
+        'new': 's n c f'
     },
     {
-        "ini": "Le parc d'attraction. Le parc. Ce parc, ou ce parc; ou ce parc ? Enfin, le parc",
-        "new": "le parque d'attraction. le parque. ce parque, ou ce parque; ou ce parque ? enfin, le parque"
+        'ini': """l'ADEME""",
+        'new': """l'ademe"""
     },
     {
-        "ini": "Nous chantons en chœur.",
-        "new": "nous chantons en coeur."
+        'ini': ''.join((
+            """Le parc d'attraction. """,
+            """Le parc. Ce parc, ou ce parc; """,
+            """ou ce parc ? Enfin, le parc"""
+        )),
+        'new': ''.join((
+            """le parque d'attraction. """,
+            """le parque. ce parque, ou ce parque; """,
+            """ou ce parque ? enfin, le parque"""
+        ))
     },
     {
-        "ini": "Le lapin et la lapine.",
-        "new": "le lapun et la lapine."
+        'ini': 'Nous chantons en chœur.',
+        'new': 'nous chantons en coeur.'
     },
     {
-        "ini": "Un coq et le coquin.",
-        "new": "un coque et le coquin."
+        'ini': 'Le lapin et la lapine.',
+        'new': 'le lapun et la lapine.'
     },
     {
-        "ini": "J'ai de plus en plus peur.",
-        "new": "j'ai de plusanplu peur."
+        'ini': 'Un coq et le coquin.',
+        'new': 'un coque et le coquin.'
     },
     {
-        "ini": "Je suis un grand fan.",
-        "new": "je suis un grand fane."
+        'ini': """J'ai de plus en plus peur.""",
+        'new': """j'ai de plusanplu peur."""
+    },
+    {
+        'ini': 'Je suis un grand fan.',
+        'new': 'je suis un grand fane.'
     },
 ]
