@@ -52,6 +52,12 @@ and launch with :
 sudo dpkg -i ../gspeech*_all.deb
 ```
 
+## Create a Nix package
+
+```sh
+nix build
+```
+
 ## Clean (generate files)
 
 ```sh
