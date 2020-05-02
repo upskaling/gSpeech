@@ -2,6 +2,8 @@ import multiprocessing
 import os
 import subprocess
 
+from .i18n import _text_to_long
+
 
 def get_audio_commands(text, outfile, lang, cache_path):
     cmds = []
@@ -42,7 +44,7 @@ def run_audio_files(names, cmds, outfile):
     )
     path, _ = p.communicate()
     if not os.path.isfile(path):
-        print('Le text est trop long pour être lue sans utiliser sox')
+        print(_text_to_long)
         return
     nproc = int(.5 * multiprocessing.cpu_count())
     if nproc == 0:

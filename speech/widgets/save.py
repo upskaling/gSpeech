@@ -1,13 +1,12 @@
-import gettext
 import os
 import shutil
 
 import gi
 from gi.repository import Gtk
 
-gi.require_version('Gtk', '3.0')
+from ..i18n import _save_speech, _wave_file
 
-_ = gettext.gettext
+gi.require_version('Gtk', '3.0')
 
 
 class SaveFileDialog(Gtk.FileChooserDialog):
@@ -16,7 +15,7 @@ class SaveFileDialog(Gtk.FileChooserDialog):
     def __init__(self, parent, temp_path):
         Gtk.FileChooserDialog.__init__(
             self,
-            _('Save the speech'),
+            _save_speech,
             parent,
             Gtk.FileChooserAction.SAVE,
             (
@@ -30,7 +29,7 @@ class SaveFileDialog(Gtk.FileChooserDialog):
         self.set_current_folder(os.path.expanduser('~'))
 
         _filter = Gtk.FileFilter()
-        _filter.set_name(_('Wave file (*.wav)'))
+        _filter.set_name(_wave_file)
         _filter.add_mime_type('audio/x-wav')
         _filter.add_pattern('*.wav')
         self.add_filter(_filter)

@@ -1,11 +1,9 @@
-import gettext
-
 import gi
 gi.require_version('Notify', '0.7')  # noqa E402
 from gi.repository import Notify
 from gi.repository.Notify import Notification
 
-_ = gettext.gettext
+from ..i18n import _no_text_selected, _reading_text_loading
 
 
 def init(conf):
@@ -17,7 +15,7 @@ def get(conf, text):
         try:
             Notification.new(
                 conf.app_name,
-                _('No text selected.'),
+                _no_text_selected,
                 conf.icon_path
             ).show()
         except Exception:
@@ -26,7 +24,7 @@ def get(conf, text):
     try:
         Notification.new(
             conf.app_name,
-            _("""I'm reading the text. One moment please."""),
+            _reading_text_loading,
             conf.icon_path
         ).show()
     except Exception:

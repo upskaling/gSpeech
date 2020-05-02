@@ -1,5 +1,8 @@
 .PHONY: unittest flake8 test clean
 
+mo:
+	./compile_language.sh
+
 unittest:
 	python3 -m unittest
 

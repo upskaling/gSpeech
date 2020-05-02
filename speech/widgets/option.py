@@ -1,10 +1,9 @@
-import gettext
-
 import gi
 from gi.repository import Gtk
-gi.require_version('Gtk', '3.0')
 
-_ = gettext.gettext
+from ..i18n import _active_notification
+
+gi.require_version('Gtk', '3.0')
 
 
 class OptionDialog(Gtk.Dialog):
@@ -17,7 +16,7 @@ class OptionDialog(Gtk.Dialog):
         box = self.get_content_area()
         box.add(vbox)
         hbox = Gtk.HBox()
-        notification_check = Gtk.CheckButton(_('Active notification'))
+        notification_check = Gtk.CheckButton(_active_notification)
         notification_check.set_active(conf.show_notification)
         notification_check.connect('toggled', self.on_checked, conf)
         hbox.add(notification_check)

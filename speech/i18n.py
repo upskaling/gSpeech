@@ -33,3 +33,12 @@ _refresh = _('Refresh')
 _about = _('About')
 _options = _('Options')
 _quit = _('Quit')
+
+_wave_file = _('Wave file (*.wav)')
+_reading_text_loading = _(
+    """I'm reading the text. One moment please."""
+)
+_no_text_selected = _('No text selected.')
+_active_notification = _('Active notification')
+_save_speech = _('Save the speech')
+_text_to_long = _('this text is too long for reading without SOX')
