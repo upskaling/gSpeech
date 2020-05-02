@@ -25,8 +25,8 @@ conf = Conf()
 try:
     gi.require_version('AppIndicator3', '0.1')
     from gi.repository import AppIndicator3 as appindicator
-except ImportError:
-    conf.has_app_indicator = False
+except (ValueError, ImportError):
+    pass
 
 
 def generic_button(

@@ -1,4 +1,5 @@
 import os
+import sys
 from configparser import RawConfigParser, SafeConfigParser
 from os.path import dirname, expanduser, isfile, join
 
@@ -52,12 +53,13 @@ class Conf:
     website = 'https://github.com/mothsart/gSpeech'
 
     show_notification = True
-    use_appindicator = True
+    has_app_indicator = True
     lang = ''
 
     def set_dict(self, lang):
         self.dict_path = join(
-            '/usr/share/gspeech/dict',
+            self.share_path,
+            'gspeech/dict',
             lang.replace('-', '_')
         )
         if is_debug_mode():
@@ -82,8 +84,14 @@ class Conf:
         self.temp_path = join(self.cache_path, 'speech.wav')
 
         self.dir = join(expanduser('~'), '.config/gSpeech')
-        self.local_dir = '/usr/share/locale'
-        self.icons_dir = '/usr/share/icons/hicolor/scalable/apps'
+        self.share_path = join(
+            dirname(sys.modules['speech'].__file__),
+            '..', '..', '..', '..', 'share'
+        )
+        self.local_dir = join(self.share_path, 'locale')
+        self.icons_dir = join(
+            self.share_path, 'icons/hicolor/scalable/apps'
+        )
         if is_debug_mode():
             self.dir = join(dirname(dirname(__file__)))
             self.local_dir = join(self.dir, 'locale')
@@ -115,8 +123,8 @@ class Conf:
         try:
             gi.require_version('AppIndicator3', '0.1')
             from gi.repository import AppIndicator3  # noqa: F401
-        except ImportError:
-            self.use_appindicator = False
+        except (ValueError, ImportError):
+            self.has_app_indicator = False
 
         self.set_lang(self.lang)
 
@@ -160,7 +168,7 @@ class Conf:
         raw.set(
             'CONFIGURATION',
             'USEAPPINDICATOR',
-            self.use_appindicator
+            self.has_app_indicator
         )
         raw.set(
             'CONFIGURATION',
