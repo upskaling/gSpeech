@@ -1,4 +1,4 @@
-.PHONY: unittest flake8 test clean
+.PHONY: unittest flake8 test deploy clean
 
 mo:
 	./compile_language.sh
@@ -12,6 +12,10 @@ flake8:
 test:
 	make unittest
 	make flake8
+
+deploy:
+	debuild -S
+	dput ppa:jerem-ferry/tts ../gspeech*.changes
 
 clean:
 	rm -f MANIFEST
