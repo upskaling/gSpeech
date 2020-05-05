@@ -13,6 +13,6 @@ Type=Application
 Categories=Audio;TextTools;
 Keywords=gspeech;tts;text to speech;
 Name=gSpeech
-Comment=A GUI for the Text To Speech Svoxpico.
+Comment=A minimal GUI for the Text To Speech 'Svox Pico'. Read clipboard or selected text in different languages and manage it : pause, stop, replay.
 Keywords[fr]=gspeech;tts;synthèse vocale;liseuse;synthétiseur vocal;
 Comment[fr]=Interface graphique au synthétiseur vocal Svoxpico.

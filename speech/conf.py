@@ -84,6 +84,7 @@ class Conf:
         self.temp_path = join(self.cache_path, 'speech.wav')
 
         self.dir = join(expanduser('~'), '.config/gSpeech')
+
         self.share_path = join(
             dirname(sys.modules['speech'].__file__),
             '..', '..', '..', '..', 'share'
@@ -159,7 +160,6 @@ class Conf:
         )
 
         if not isfile(self.path):
-            os.makedirs(self.dir, exist_ok=True)
             self.update()
 
     def update(self):
@@ -180,5 +180,8 @@ class Conf:
             'SHOWNOTIFICATION',
             self.show_notification
         )
+        if not os.access(self.path, os.W_OK):
+            return
+        os.makedirs(self.dir, exist_ok=True)
         with open(self.path, 'w') as stream:
             raw.write(stream)

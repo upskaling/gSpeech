@@ -11,10 +11,11 @@
 , libnotify
 , libappindicator-gtk3
 , gst_all_1
+, sox
 }:
 
 python3.pkgs.buildPythonApplication rec {
-  pname = "gspeech";
+  pname = "gSpeech";
   version = "0.9.0";
 
   src = lib.cleanSource ./.;
@@ -39,19 +40,14 @@ python3.pkgs.buildPythonApplication rec {
     python3
   ];
 
-  makeWrapperArgs = [
-    "--set LOCALE_ARCHIVE ${glibcLocales}/lib/locale/locale-archive"
-    "--set CHARSET en_us.UTF-8"
-  ];
-
   propagatedBuildInputs = with python3.pkgs; [
     pygobject3
   ];
 
   meta = with lib; {
-    description = "A GUI for the Text To Speech Svoxpico.";
-    homepage = "https://github.com/mothsART/gspeech";
-    maintainers = with maintainers; [ "mothsart" ];
+    description = "A minimal GUI for the Text To Speech 'Svox Pico'. Read clipboard or selected text in different languages and manage it : pause, stop, replay.";
+    homepage = "https://github.com/mothsART/gSpeech";
+    maintainers = with maintainers; [ mothsart ];
     license = licenses.gpl3;
     platforms = platforms.unix;
   };
