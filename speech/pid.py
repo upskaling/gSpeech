@@ -1,5 +1,5 @@
 import os
-from os.path import isfile
+from os.path import dirname, isfile
 
 
 def kill_if_already_exist(app_name, pid_path):
@@ -20,6 +20,7 @@ def kill_if_already_exist(app_name, pid_path):
                 )
             )
             quit()
+    os.makedirs(dirname(pid_path), exist_ok=True)
     with open(pid_path, 'w') as f:
         f.write(str(os.getpid()))
 
