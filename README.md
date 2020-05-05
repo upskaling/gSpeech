@@ -5,7 +5,8 @@
 
 ## Introduction
 
-gSpeech: a simple GUI for SVox Pico TTS
+gSpeech is a minimal GUI for the Text To Speech 'Svox Pico'.
+Read clipboard or selected text in different languages and manage it : pause, stop, replay.
 
 
 ## Installation instruction

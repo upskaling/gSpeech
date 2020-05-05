@@ -34,7 +34,9 @@ setup(
     name='gspeech',
     version=__version__,
     description=(
-        'A GUI for the Text To Speech Svoxpico.'
+        """A minimal GUI for the Text To Speech 'Svox Pico'. 
+        Read clipboard or selected text in different languages 
+        and manage it : pause, stop, replay.";'"""
     ),
     author='mothsart',
     author_email='jerem.ferry@gmail.com',
