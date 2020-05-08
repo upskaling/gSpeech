@@ -228,5 +228,23 @@ datas = [
             vous les voulez à quoi vos beurgueurs ?
             """
         )),
-    }
+    },
+    {
+        'ini': ''.join((
+            """on commence par un baby-foot.
+            on continue avec un foot puis un footing.
+            Enfin, babyfoot et encore une partie de football.
+            """
+        )),
+        'new': ''.join((
+            """on commence par un babifoute.
+            on continue avec un foute pu is un fouting.
+            enfin, babifoute et encore une partie de fouteball.
+            """
+        )),
+    },
+    {
+        'ini': 'Il est trop beau ton baby! On attend son babysitter.',
+        'new': 'il ai trop beau ton baibi! on attend son baibissiteur.'
+    },
 ]
