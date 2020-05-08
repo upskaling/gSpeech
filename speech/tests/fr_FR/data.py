@@ -189,4 +189,44 @@ datas = [
         'ini': 'Je suis un grand fan.',
         'new': 'je suis un grand fane.'
     },
+    {
+        'ini': 'Il met son t-shirt.',
+        'new': 'il met son ti cheurte.'
+    },
+    {
+        'ini': 'Bientôt le week-end',
+        'new': 'bientôt le wouikènde'
+    },
+    {
+        'ini': """C'est cosy chez toi!""",
+        'new': """c'est cozy chez toi!"""
+    },
+    {
+        'ini': 'un deal, le dealer ou le dealeur',
+        'new': 'un dil, le dileur ou le dileur'
+    },
+    {
+        'ini': 'un docker',
+        'new': 'un dokeur'
+    },
+    {
+        'ini': 'je mange du bacon',
+        'new': 'je mange du bécone'
+    },
+    {
+        'ini': 'Nous regardons un western',
+        'new': 'nous regardons un houest erne'
+    },
+    {
+        'ini': ''.join((
+            """j'ai commandé des hamburgers.
+            Vous les voulez à quoi vos burgers ?
+            """
+        )),
+        'new': ''.join((
+            """j'ai commandé des hambeurgueurs.
+            vous les voulez à quoi vos beurgueurs ?
+            """
+        )),
+    }
 ]
