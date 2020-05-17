@@ -8,6 +8,11 @@
 gSpeech is a minimal GUI for the Text To Speech 'Svox Pico'.
 Read clipboard or selected text in different languages and manage it : pause, stop, replay.
 
+### Last stable version
+
+[![Packaging status](https://repology.org/badge/vertical-allrepos/gspeech.svg)](https://repology.org/project/gspeech/versions)
+
+- Ubuntu 18.04, 19.10 and 20.04: [PPA](https://launchpad.net/~jerem-ferry/+archive/ubuntu/tts)
 
 ## Installation instruction
 
