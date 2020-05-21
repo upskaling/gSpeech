@@ -1,7 +1,7 @@
 import gi
-gi.require_version('Gdk', '3.0')  # noqa E402
-gi.require_version('Gst', '1.0')  # noqa E402
-gi.require_version('Gtk', '3.0')  # noqa E402
+gi.require_version('Gdk', '3.0')
+gi.require_version('Gst', '1.0')
+gi.require_version('Gtk', '3.0')
 from gi.repository import Gdk, Gst, Gtk
 
 from . import pid
@@ -16,6 +16,7 @@ from .widgets.events import (
 )
 from .widgets.menu import on_right_click
 from .widgets.save import on_save
+
 
 Gst.init('')
 
