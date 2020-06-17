@@ -26,6 +26,13 @@ def on_lang(widget, ind, tray, lang, conf):
     tray.set_from_file(conf.icon_path)
 
 
+def on_speed(widget, speed, conf):
+    """Action on voice speed submenu items"""
+    conf.set_speed(float(speed))
+    conf.voice_speed = float(speed)
+    conf.update()
+
+
 def on_reload(
     widget,
     window=None,
@@ -73,9 +80,15 @@ def on_destroy(
 def changed_cb(combobox, ind, tray, conf):
     model = combobox.get_model()
     index = combobox.get_active()
-    if index:
+    if index is not None:
         on_lang(None, ind, tray, model[index][0], conf)
-    return
+
+
+def changed_speed(combobox, conf):
+    model = combobox.get_model()
+    index = combobox.get_active()
+    if index is not None:
+        on_speed(None, model[index][0], conf)
 
 
 def on_message(bus, message, player):
@@ -123,7 +136,8 @@ def on_execute(
         text,
         conf.temp_path,
         conf.lang,
-        conf.cache_path
+        conf.cache_path,
+        conf.voice_speed
     )
     run_audio_files(names, cmds, conf.temp_path)
     if player:

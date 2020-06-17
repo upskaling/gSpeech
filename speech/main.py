@@ -7,11 +7,12 @@ from gi.repository import Gdk, Gst, Gtk
 from . import pid
 from .conf import Conf
 from .i18n import (
-    _languages, _pause, _read_clipboard, _read_selected, _tooltip
+    _languages, _pause, _read_clipboard, _read_selected,
+    _tooltip, _voice_speed
 )
 from .widgets import notify
 from .widgets.events import (
-    changed_cb, on_execute, on_left_click,
+    changed_cb, changed_speed, on_execute, on_left_click,
     on_play_pause, on_player, on_stop
 )
 from .widgets.menu import on_right_click
@@ -80,6 +81,20 @@ def lang_combobox(hbox, ind, tray, conf):
             combobox.set_active(count)
         count += 1
     combobox.connect('changed', changed_cb, ind, tray, conf)
+
+
+def voice_speed_box(hbox, conf):
+    combobox = Gtk.ComboBoxText.new()
+    label = Gtk.Label(_voice_speed)
+    hbox.pack_end(combobox, False, False, 0)
+    hbox.pack_end(label, False, False, 0)
+    count = 0
+    for speed in conf.list_voice_speed:
+        combobox.append_text(str(speed))
+        if speed == conf.voice_speed:
+            combobox.set_active(count)
+        count += 1
+    combobox.connect('changed', changed_speed, conf)
 
 
 class MainApp:
@@ -239,7 +254,9 @@ class MainApp:
 
         hbox = Gtk.HBox()
         lang_combobox(hbox, ind, tray, conf)
+        voice_speed_box(hbox, conf)
         vbox.pack_start(hbox, False, False, 0)
+
         window.add(vbox)
 
     def main(self):

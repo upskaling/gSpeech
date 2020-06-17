@@ -5,11 +5,21 @@ import subprocess
 from .i18n import _text_to_long
 
 
-def get_audio_commands(text, outfile, lang, cache_path):
+def effect(text, speed=100, pitch=100, volume=120):
+    _speed = '<speed level="%s">%s</speed>' % (speed, text)
+    _pitch = '<pitch level="%s">%s</pitch>' % (pitch, _speed)
+    return '<volume level="%s">%s</volume>' % (volume, _pitch)
+
+
+def get_audio_commands(text, outfile, lang, cache_path, speed):
     cmds = []
     names = []
     if len(text) <= 32768:
-        stream = 'pico2wave -l %s -w %s \"%s\" ' % (lang, outfile, text)
+        stream = """pico2wave -l %s -w %s '%s'""" % (
+            lang,
+            outfile,
+            effect(text, speed * 100)
+        )
         cmds.append(stream)
         names.append(outfile)
         return names, cmds
@@ -23,8 +33,8 @@ def get_audio_commands(text, outfile, lang, cache_path):
         ):
             filename = cache_path + 'speech' + str(idx) + '.wav'
             cmds.append(
-                'pico2wave -l %s -w %s \"%s\" ' % (
-                    lang, filename, text
+                """pico2wave -l %s -w %s '%s'""" % (
+                    lang, filename, effect(text, speed * 100)
                 )
             )
             names.append(filename)

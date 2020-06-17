@@ -30,7 +30,8 @@ def create_sound(text, file_name):
         text,
         output_file,
         lang,
-        join(os.getenv('HOME'), '.cache', 'gSpeech')
+        join(os.getenv('HOME'), '.cache', 'gSpeech'),
+        1
     )
     os.system(cmds[0])
 

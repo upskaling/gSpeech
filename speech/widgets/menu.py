@@ -5,13 +5,14 @@ from gi.repository import Gtk
 from .about import on_about
 from .events import (
     on_destroy, on_execute, on_lang, on_media_dialog,
-    on_play_pause, on_reload, on_stop
+    on_play_pause, on_reload, on_speed, on_stop
 )
 from .option import on_options
 from .save import on_save
 from ..i18n import (
     _about, _languages, _multimedia_window, _options, _quit,
-    _read_clipboard, _read_selected, _refresh, _save, _stop
+    _read_clipboard, _read_selected, _refresh,
+    _save, _stop, _voice_speed
 )
 
 
@@ -63,6 +64,29 @@ def langs_item(menu, ind, tray, conf):
             'toggled', on_lang, ind, tray, lang, conf
         )
         if lang == conf.lang:
+            sub_item.set_active(True)
+        sub_item.show()
+    menu.append(item)
+
+
+def voice_speed_item(menu, conf):
+    item = Gtk.MenuItem.new_with_label(_voice_speed)
+    item.show()
+    # Creating and linking voice speed submenu
+    menu_voice_speed = Gtk.Menu()
+    item.set_submenu(menu_voice_speed)
+    # Creating voice speed items in submenu
+    sub_item = Gtk.RadioMenuItem()
+    for speed in conf.list_voice_speed:
+        sub_item = Gtk.RadioMenuItem.new_with_label_from_widget(
+            sub_item,
+            str(speed)
+        )
+        menu_voice_speed.append(sub_item)
+        sub_item.connect(
+            'toggled', on_speed, speed, conf
+        )
+        if speed == conf.voice_speed:
             sub_item.set_active(True)
         sub_item.show()
     menu.append(item)
@@ -122,6 +146,7 @@ def on_right_click(
     generic_item(menu, _multimedia_window, on_media_dialog, window)
     separator_item(menu)
     langs_item(menu, ind, tray, conf)
+    voice_speed_item(menu, conf)
     generic_item(menu, _refresh, on_reload)
     generic_item(menu, _about, on_about, window, conf)
     generic_item(menu, _options, on_options, window, conf)

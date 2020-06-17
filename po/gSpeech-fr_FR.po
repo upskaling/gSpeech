@@ -101,3 +101,6 @@ msgstr "Afficher les notifications"
 
 msgid "this text is too long for reading without SOX"
 msgstr "Le text est trop long pour être lue sans utiliser SOX"
+
+msgid "Voice speed"
+msgstr "Vitesse de lecture"

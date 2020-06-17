@@ -45,6 +45,10 @@ class Conf:
     # Supported SVOX Pico's languages
     list_langs = ['de-DE', 'en-GB', 'en-US', 'es-ES', 'fr-FR', 'it-IT']
 
+    voice_speed = 1
+
+    list_voice_speed = [0.6, 0.8, 1, 1.2, 1.4, 1.6, 1.8, 2, 2.2]
+
     translators = [
         'Dupouy Paul (it-IT)',
         'Ferry Jérémie (fr-FR)'
@@ -79,6 +83,10 @@ class Conf:
             )
         self.set_dict(lang)
 
+    def set_speed(self, speed):
+        if speed in self.list_voice_speed:
+            self.voice_speed = speed
+
     def __init__(self, script_dir=None):
         self.pid = join(self.cache_path, 'gspeech.pid')
         self.temp_path = join(self.cache_path, 'speech.wav')
@@ -103,9 +111,15 @@ class Conf:
         self.has_app_indicator = bool(ini_read(
             self.path, 'CONFIGURATION', 'USEAPPINDICATOR', 'True'
         ))
+
         lang = str(ini_read(
             self.path, 'CONFIGURATION', 'DEFAULTLANGUAGE', ''
         ))
+
+        self.voice_speed = float(ini_read(
+            self.path, 'CONFIGURATION', 'VOICESPEED', '1'
+        ))
+
         self.show_notification = bool(ini_read(
             self.path,
             'CONFIGURATION',
@@ -177,11 +191,17 @@ class Conf:
         )
         raw.set(
             'CONFIGURATION',
+            'VOICESPEED',
+            self.voice_speed
+        )
+        raw.set(
+            'CONFIGURATION',
             'SHOWNOTIFICATION',
             self.show_notification
         )
         if not os.access(self.path, os.W_OK):
             return
         os.makedirs(self.dir, exist_ok=True)
+        print(self.path)
         with open(self.path, 'w') as stream:
             raw.write(stream)

@@ -68,6 +68,13 @@ class CliOptions:
             '                   language\n'
         )
 
+    @staticmethod
+    def speed():
+        return CliOption(
+            '-s', '--speed',
+            '                   voice speed\n'
+        )
+
 
 def cli_help():
     value = (
@@ -82,10 +89,17 @@ def cli_help():
         str(CliOptions.input_file()),
         str(CliOptions.output_file()),
         str(CliOptions.lang()),
-        '\npossible languages:',
+        '\npossible languages :',
     )
     for lang in conf.list_langs:
         value += ('\n%s' % lang,)
+    value += (
+        '\n\n',
+        str(CliOptions.speed()),
+        '\npossible speech values :',
+    )
+    for speed in conf.list_voice_speed:
+        value += ('\n%s' % str(speed),)
     return ''.join(value)
 
 
@@ -102,13 +116,14 @@ def main():
     try:
         opts, args = getopt.getopt(
             sys.argv[1:],
-            'hvi:f:l:o:',
+            'hvi:f:l:s:o:',
             [
                 'help',
                 'version',
                 'input-text=',
                 'input-file',
                 'lang=',
+                'speed=',
                 'output-file='
             ]
         )
@@ -116,6 +131,7 @@ def main():
         print(cli_help())
         exit(2)
     input_file = text = lang = ''
+    speed = 1
     outfile = 'speech.wav'
     if len(opts) == 0:
         print(cli_help())
@@ -129,6 +145,8 @@ def main():
             exit()
         if opt in CliOptions.lang():
             lang = arg
+        elif opt in CliOptions.speed():
+            speed = float(arg)
         elif opt in CliOptions.output_file():
             outfile = arg
         elif opt in CliOptions.input_file():
@@ -137,6 +155,10 @@ def main():
             text = arg
     if lang in conf.list_langs:
         conf.set_lang(lang)
+    if speed in conf.list_voice_speed:
+        conf.set_speed(speed)
+    else:
+        speed = conf.voice_speed
     if input_file:
         text = text_file(input_file)
     text = text_to_dict(text, conf.dict_path, conf.lang)
@@ -144,6 +166,7 @@ def main():
         text,
         outfile,
         conf.lang,
-        conf.cache_path
+        conf.cache_path,
+        speed
     )
     run_audio_files(names, cmds, outfile)
