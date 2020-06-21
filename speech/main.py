@@ -69,18 +69,17 @@ def generic_button(
     hbox.pack_end(button, False, False, 0)
 
 
-def lang_combobox(hbox, ind, tray, conf):
-    combobox = Gtk.ComboBoxText.new()
+def get_lang_combobox(lang_combobox, hbox, ind, tray, conf, lang_sub_item):
     label = Gtk.Label(_languages)
     hbox.pack_start(label, False, False, 0)
-    hbox.pack_start(combobox, False, False, 0)
+    hbox.pack_start(lang_combobox, False, False, 0)
     count = 0
     for lang in conf.list_langs:
-        combobox.append_text(lang)
+        lang_combobox.append_text(lang)
         if lang == conf.lang:
-            combobox.set_active(count)
+            lang_combobox.set_active(count)
         count += 1
-    combobox.connect('changed', changed_cb, ind, tray, conf)
+    lang_combobox.connect('changed', changed_cb, ind, tray, conf, lang_sub_item)
 
 
 def voice_speed_box(hbox, conf):
@@ -110,6 +109,9 @@ class MainApp:
 
         ind = None
         tray = None
+        lang_combobox = Gtk.ComboBoxText.new()
+        # Creating and linking langues submenu
+        menu_langs = Gtk.Menu()
         if conf.has_app_indicator:
             ind = appindicator.Indicator.new(
                 conf.app_name,
@@ -124,7 +126,9 @@ class MainApp:
                 conf,
                 menu_play_pause,
                 win_play_pause,
-                player
+                player,
+                lang_combobox,
+                menu_langs
             )
         else:
             tray = Gtk.StatusIcon()
@@ -138,7 +142,9 @@ class MainApp:
                 conf,
                 menu_play_pause,
                 win_play_pause,
-                player
+                player,
+                lang_combobox,
+                menu_langs
             )
             tray.connect(
                 'activate',
@@ -253,7 +259,7 @@ class MainApp:
         vbox.pack_start(hbox, False, False, 0)
 
         hbox = Gtk.HBox()
-        lang_combobox(hbox, ind, tray, conf)
+        get_lang_combobox(lang_combobox, hbox, ind, tray, conf, menu_langs)
         voice_speed_box(hbox, conf)
         vbox.pack_start(hbox, False, False, 0)
 

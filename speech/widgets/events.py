@@ -15,7 +15,7 @@ from ..i18n import _pause, _play, _read_selected
 from ..textutils import text_to_dict
 
 
-def on_lang(widget, ind, tray, lang, conf):
+def on_lang(ind, tray, lang, conf):
     """Action on language submenu items"""
     conf.set_lang(lang)
     conf.lang = lang
@@ -77,11 +77,19 @@ def on_destroy(
     Gtk.main_quit()
 
 
-def changed_cb(combobox, ind, tray, conf):
+def changed_menu(widget, ind, tray, lang, conf, lang_combobox, index=None):
+    on_lang(ind, tray, lang, conf)
+    lang_combobox.active = index
+    if widget.get_active():
+        lang_combobox.set_active(index)
+
+
+def changed_cb(combobox, ind, tray, conf, menu_langs):
     model = combobox.get_model()
     index = combobox.get_active()
     if index is not None:
-        on_lang(None, ind, tray, model[index][0], conf)
+        on_lang(ind, tray, model[index][0], conf)
+        menu_langs.get_children()[index].set_active(True)
 
 
 def changed_speed(combobox, conf):

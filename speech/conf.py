@@ -202,6 +202,5 @@ class Conf:
         if not os.access(self.path, os.W_OK):
             return
         os.makedirs(self.dir, exist_ok=True)
-        print(self.path)
         with open(self.path, 'w') as stream:
             raw.write(stream)

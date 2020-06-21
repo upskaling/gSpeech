@@ -4,8 +4,8 @@ from gi.repository import Gtk
 
 from .about import on_about
 from .events import (
-    on_destroy, on_execute, on_lang, on_media_dialog,
-    on_play_pause, on_reload, on_speed, on_stop
+    on_destroy, on_execute, on_media_dialog,
+    on_play_pause, on_reload, on_speed, on_stop, changed_menu
 )
 from .option import on_options
 from .save import on_save
@@ -46,22 +46,20 @@ def separator_item(menu):
     menu.append(item)
 
 
-def langs_item(menu, ind, tray, conf):
+def langs_item(menu, ind, tray, conf, lang_combobox, menu_langs):
     item = Gtk.MenuItem.new_with_label(_languages)
     item.show()
-    # Creating and linking langues submenu
-    menu_langs = Gtk.Menu()
     item.set_submenu(menu_langs)
     # Creating languages items in submenu
     sub_item = Gtk.RadioMenuItem()
-    for lang in conf.list_langs:
+    for index, lang in enumerate(conf.list_langs):
         sub_item = Gtk.RadioMenuItem.new_with_label_from_widget(
             sub_item,
             lang
         )
         menu_langs.append(sub_item)
         sub_item.connect(
-            'toggled', on_lang, ind, tray, lang, conf
+            'toggled', changed_menu, ind, tray, lang, conf, lang_combobox, index
         )
         if lang == conf.lang:
             sub_item.set_active(True)
@@ -99,7 +97,9 @@ def on_right_click(
     conf=None,
     menu_play_pause=None,
     win_play_pause=None,
-    player=None
+    player=None,
+    lang_combobox=None,
+    menu_langs=None
 ):
     """action on right click : create menu"""
     menu = Gtk.Menu()
@@ -145,7 +145,7 @@ def on_right_click(
     separator_item(menu)
     generic_item(menu, _multimedia_window, on_media_dialog, window)
     separator_item(menu)
-    langs_item(menu, ind, tray, conf)
+    langs_item(menu, ind, tray, conf, lang_combobox, menu_langs)
     voice_speed_item(menu, conf)
     generic_item(menu, _refresh, on_reload)
     generic_item(menu, _about, on_about, window, conf)
