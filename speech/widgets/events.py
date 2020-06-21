@@ -77,7 +77,9 @@ def on_destroy(
     Gtk.main_quit()
 
 
-def changed_lang_menu(widget, ind, tray, lang, conf, lang_combobox, index=None):
+def changed_lang_menu(
+    widget, ind, tray, lang, conf, lang_combobox, index=None
+):
     on_lang(ind, tray, lang, conf)
     lang_combobox.active = index
     if widget.get_active():
@@ -92,13 +94,15 @@ def changed_cb(lang_combobox, ind, tray, conf, menu_langs):
         menu_langs.get_children()[index].set_active(True)
 
 
-def changed_speed_menu(widget, speed, conf, speed_combobox, index=None):
+def changed_speed_menu(
+    widget, speed, conf, speed_combobox, index=None
+):
     on_speed(speed, conf)
     speed_combobox.active = index
     if widget.get_active():
         speed_combobox.set_active(index)
 
- 
+
 def changed_speed(speed_combobox, conf, menu_voice_speed):
     model = speed_combobox.get_model()
     index = speed_combobox.get_active()

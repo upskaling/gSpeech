@@ -4,9 +4,9 @@ from gi.repository import Gtk
 
 from .about import on_about
 from .events import (
+    changed_lang_menu, changed_speed_menu,
     on_destroy, on_execute, on_media_dialog,
-    on_play_pause, on_reload, on_stop,
-    changed_lang_menu, changed_speed_menu
+    on_play_pause, on_reload, on_stop
 )
 from .option import on_options
 from .save import on_save
@@ -60,7 +60,14 @@ def langs_item(menu, ind, tray, conf, lang_combobox, menu_langs):
         )
         menu_langs.append(sub_item)
         sub_item.connect(
-            'toggled', changed_lang_menu, ind, tray, lang, conf, lang_combobox, index
+            'toggled',
+            changed_lang_menu,
+            ind,
+            tray,
+            lang,
+            conf,
+            lang_combobox,
+            index
         )
         if lang == conf.lang:
             sub_item.set_active(True)
@@ -81,7 +88,12 @@ def voice_speed_item(menu, conf, voice_combobox, menu_voice_speed):
         )
         menu_voice_speed.append(sub_item)
         sub_item.connect(
-            'toggled', changed_speed_menu, speed, conf, voice_combobox, index
+            'toggled',
+            changed_speed_menu,
+            speed,
+            conf,
+            voice_combobox,
+            index
         )
         if speed == conf.voice_speed:
             sub_item.set_active(True)

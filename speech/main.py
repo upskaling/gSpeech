@@ -112,7 +112,7 @@ class MainApp:
         menu_langs = Gtk.Menu()
         voice_combobox = Gtk.ComboBoxText.new()
         menu_voice_speed = Gtk.Menu()
-        
+
         if conf.has_app_indicator:
             ind = appindicator.Indicator.new(
                 conf.app_name,
