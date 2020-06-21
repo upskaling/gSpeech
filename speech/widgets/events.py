@@ -26,7 +26,7 @@ def on_lang(ind, tray, lang, conf):
     tray.set_from_file(conf.icon_path)
 
 
-def on_speed(widget, speed, conf):
+def on_speed(speed, conf):
     """Action on voice speed submenu items"""
     conf.set_speed(float(speed))
     conf.voice_speed = float(speed)
@@ -77,26 +77,34 @@ def on_destroy(
     Gtk.main_quit()
 
 
-def changed_menu(widget, ind, tray, lang, conf, lang_combobox, index=None):
+def changed_lang_menu(widget, ind, tray, lang, conf, lang_combobox, index=None):
     on_lang(ind, tray, lang, conf)
     lang_combobox.active = index
     if widget.get_active():
         lang_combobox.set_active(index)
 
 
-def changed_cb(combobox, ind, tray, conf, menu_langs):
-    model = combobox.get_model()
-    index = combobox.get_active()
+def changed_cb(lang_combobox, ind, tray, conf, menu_langs):
+    model = lang_combobox.get_model()
+    index = lang_combobox.get_active()
     if index is not None:
         on_lang(ind, tray, model[index][0], conf)
         menu_langs.get_children()[index].set_active(True)
 
 
-def changed_speed(combobox, conf):
-    model = combobox.get_model()
-    index = combobox.get_active()
+def changed_speed_menu(widget, speed, conf, speed_combobox, index=None):
+    on_speed(speed, conf)
+    speed_combobox.active = index
+    if widget.get_active():
+        speed_combobox.set_active(index)
+
+ 
+def changed_speed(speed_combobox, conf, menu_voice_speed):
+    model = speed_combobox.get_model()
+    index = speed_combobox.get_active()
     if index is not None:
-        on_speed(None, model[index][0], conf)
+        on_speed(model[index][0], conf)
+        menu_voice_speed.get_children()[index].set_active(True)
 
 
 def on_message(bus, message, player):
