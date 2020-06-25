@@ -1,3 +1,11 @@
+gspeech (0.10.0.0) xenial; urgency=medium
+  * feature : speed management : voice speech integration on cli, tray and multimedia menu
+  * bugfix : better sox integration : trigger when text to reach is too long.
+  * bugfix : edit speed on tray change speed on multimedia popup and vice versa
+  * bugfix : edit lang on tray change lang on multimedia popup and vice versa
+
+ -- Jérémie Ferry <jerem.ferry@gmail.com>  Sun, 21 Jun 2020 14:26:10 +0100
+
 gspeech (0.9.2.0) xenial; urgency=medium
   * bugfix : create all directories on a pid new path
 

@@ -9,7 +9,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - GTK unit tests
-- speed management
+
+## [0.10]
+
+### Bugfix
+
+- better sox integration : trigger when text to reach is too long.
+- setup.py whith new dict tree
+- edit speed on tray change speed on multimedia popup and vice versa
+- edit lang on tray change lang on multimedia popup and vice versa
+
+### Added
+
+- speed management : voice speech integration on cli, tray and multimedia menu
+- integrate sox into nix
+- screenshots
 
 ## [0.9.2]
 
