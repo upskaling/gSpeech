@@ -8,7 +8,7 @@
 gSpeech is a minimal GUI for the Text To Speech 'Svox Pico'.
 Read clipboard or selected text in different languages and manage it : pause, stop, replay.
 
-### Last stable version
+## Last stable version
 
 [![Packaging status](https://repology.org/badge/vertical-allrepos/gspeech.svg)](https://repology.org/project/gspeech/versions)
 
@@ -21,6 +21,13 @@ Ubuntu:
 Depends: python (>=3.5) python-gst1.0 (>=1.0) python3-gi (>=2.24) libttspico-utils (>= 1.0) python-notify (>=0.1) gstreamer1.0-plugins-base gstreamer1.0-plugins-good gstreamer1.0-pulseaudio
 
 Suggests: sox (is needed to speech text with more than 2^15 characters)
+
+## Screenshots
+
+<div align="center">
+    <img src="./interface_example.png" alt="interface example" width="500"/>
+    <img src="./cli_example.png" alt="cli example" width="500"/>
+</div>
 
 ## CLI usage
 
