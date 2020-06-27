@@ -19,7 +19,7 @@
 
 python3.pkgs.buildPythonApplication rec {
   pname = "gSpeech";
-  version = "0.9.2";
+  version = "0.10.0";
 
   src = lib.cleanSource ./.;
 
