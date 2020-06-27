@@ -64,7 +64,7 @@ def on_options(
 ):
     """show options dialog"""
     title = 'gSpeech : options'
-    if conf.has_access():
+    if conf.update():
         OptionDialog(window, conf, title)
         return
     OptionWarningDialog(window, conf, title)

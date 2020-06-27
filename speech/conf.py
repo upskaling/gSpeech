@@ -176,11 +176,6 @@ class Conf:
         if not isfile(self.path):
             self.update()
 
-    def has_access(self):
-        if not os.access(self.path, os.W_OK):
-            return False
-        return True
-
     def update(self):
         raw = RawConfigParser()
         raw.add_section('CONFIGURATION')
@@ -204,8 +199,10 @@ class Conf:
             'SHOWNOTIFICATION',
             self.show_notification
         )
-        if not self.has_access():
-            return
-        os.makedirs(self.dir, exist_ok=True)
-        with open(self.path, 'w') as stream:
-            raw.write(stream)
+        try:
+            os.makedirs(self.dir, exist_ok=True)
+            with open(self.path, 'w+') as stream:
+                raw.write(stream)
+        except:
+            return False
+        return True

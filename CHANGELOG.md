@@ -10,6 +10,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - GTK unit tests
 
+## [0.10.1]
+
+### Bugfix
+
+- option doesn't write new conf file.
+
 ## [0.10]
 
 ### Bugfix
