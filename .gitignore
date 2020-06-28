@@ -1,3 +1,7 @@
+### specific to gSpeech
+
+gspeech.conf
+
 ### Debian package
 
 debian/files
