@@ -15,7 +15,7 @@ test:
 
 deploy:
 	debuild -S
-	dput ppa:jerem-ferry/tts ../gspeech*.changes
+	dput ppa:jerem-ferry/tts `/bin/ls -d ../gspeech*.changes`
 
 clean:
 	rm -f MANIFEST

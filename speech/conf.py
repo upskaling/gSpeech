@@ -203,6 +203,6 @@ class Conf:
             os.makedirs(self.dir, exist_ok=True)
             with open(self.path, 'w+') as stream:
                 raw.write(stream)
-        except:
+        except Exception:
             return False
         return True
