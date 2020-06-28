@@ -1,4 +1,4 @@
-gspeech (0.10.1.1) xenial; urgency=medium
+gspeech (0.10.1.2) xenial; urgency=medium
   * bugfix : option doesn't write new conf file.
 
  -- Jérémie Ferry <jerem.ferry@gmail.com>  Sun, 28 Jun 2020 00:26:10 +0100
