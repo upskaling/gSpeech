@@ -247,4 +247,8 @@ datas = [
         'ini': 'Il est trop beau ton baby! On attend son babysitter.',
         'new': 'il ai trop beau ton baibi! on attend son baibissiteur.'
     },
+    {
+        'ini': 'Le contenu du presse-papiers est vide.',
+        'new': 'le contenu du presse papiers ai vide.'
+    },
 ]

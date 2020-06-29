@@ -8,4 +8,4 @@ Package: gspeech
 Architecture: all
 Depends: ${python3:Depends}, python3-gst-1.0, python3-gi, gstreamer1.0-plugins-base, gstreamer1.0-plugins-good, gstreamer1.0-pulseaudio, libttspico-utils, sox 
 Description: Interface graphique au synthétiseur vocal Svoxpico.
-    Permet de lire le contenu du presse-papier ou d'un texte sélectionné, de mettre pause, gérer la vitesse de lecture etc.
+    Permet de lire le contenu du presse-papiers ou d'un texte sélectionné, de mettre pause, gérer la vitesse de lecture etc.
