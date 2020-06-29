@@ -121,6 +121,9 @@ class MainApp:
             )
             ind.set_status(appindicator.IndicatorStatus.ACTIVE)
             on_right_click(
+                None,
+                None,
+                None,
                 window,
                 ind,
                 tray,

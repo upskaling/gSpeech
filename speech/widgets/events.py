@@ -124,13 +124,19 @@ def on_message(bus, message, player):
         print('Error: %s' % err, debug)
 
 
-def on_left_click(widget, conf, menu_play_pause, win_play_pause, player):
+def on_left_click(
+    widget,
+    conf,
+    menu_play_pause,
+    win_play_pause,
+    player
+):
     """
     left click on status icon function
     function like this and not merge with on_execute
     to have possibility to use for something different
     """
-    on_execute(widget, conf, menu_play_pause, win_play_pause, player)
+    on_execute(widget, None, conf, menu_play_pause, win_play_pause, player)
 
 
 def on_execute(
@@ -142,7 +148,10 @@ def on_execute(
     player=None
 ):
     """ execute text to speech"""
-    if widget.get_label() == _read_selected:
+    if (
+        hasattr(widget, 'get_label')
+        and widget.get_label() == _read_selected
+    ):
         text = Gtk.Clipboard.get(Gdk.SELECTION_PRIMARY).wait_for_text()
     else:
         text = Gtk.Clipboard.get(Gdk.SELECTION_CLIPBOARD).wait_for_text()

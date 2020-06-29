@@ -102,17 +102,20 @@ def voice_speed_item(menu, conf, voice_combobox, menu_voice_speed):
 
 
 def on_right_click(
-    window=None,
-    ind=None,
-    tray=None,
-    conf=None,
-    menu_play_pause=None,
-    win_play_pause=None,
-    player=None,
-    lang_combobox=None,
-    menu_langs=None,
-    voice_combobox=None,
-    menu_voice_speed=None
+    icon,
+    event_button,
+    event_time,
+    window,
+    ind,
+    tray,
+    conf,
+    menu_play_pause,
+    win_play_pause,
+    player,
+    lang_combobox,
+    menu_langs,
+    voice_combobox,
+    menu_voice_speed
 ):
     """action on right click : create menu"""
     menu = Gtk.Menu()
@@ -172,5 +175,7 @@ def on_right_click(
         None,
         None,
         None,
-        tray
+        tray,
+        event_button,
+        event_time
     )
