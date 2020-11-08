@@ -251,4 +251,8 @@ datas = [
         'ini': 'Le contenu du presse-papiers est vide.',
         'new': 'le contenu du presse papiers ai vide.'
     },
+    {
+        'ini': "Je dis n'importe quoi et j'aime ça.",
+        'new': "je dis nimportequoi et j'aime ça."
+    },
 ]
