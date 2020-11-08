@@ -1,4 +1,4 @@
-.PHONY: unittest flake8 test docker.build.test docker.build.debian docker.run.test docker.run.debian build.debian deploy.debian clean
+.PHONY: unittest flake8 test docker.build.test docker.run.test docker.build.ubuntu-18.04 docker.run.ubuntu-18.04 docker.build.ubuntu-20.04 docker.run.ubuntu-20.04 build.debian deploy.debian clean
 
 mo:
 	./compile_language.sh
@@ -16,14 +16,20 @@ test:
 docker.build.test:
 	docker build -t gspeech/test docker/tests
 
-docker.build.debian:
-	docker build -t gspeech/debian docker/debian
-
 docker.run.test:
 	docker run -i -t gspeech/test /bin/bash
 
-docker.run.debian:
-	docker run -i -t gspeech/debian /bin/bash
+docker.build.ubuntu-18.04:
+	docker build -t gspeech/ubuntu-18.04 docker/ubuntu-18.04
+
+docker.run.ubuntu-18.04:
+	docker run -i -t gspeech/ubuntu-18.04 /bin/bash
+
+docker.build.ubuntu-20.04:
+	docker build -t gspeech/ubuntu-20.04 docker/ubuntu-20.04
+
+docker.run.ubuntu-20.04:
+	docker run -i -t gspeech/ubuntu-20.04 /bin/bash
 
 build.debian:
 	debuild #binary package : .deb, alias of dpkg-buildpackage -rfakeroot -d -us -uc
