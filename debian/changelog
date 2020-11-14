@@ -1,3 +1,8 @@
+gspeech (0.10.2.1) xenial; urgency=medium
+  * bugfix : debian "gir1.2-appindicator3-0.1" dependance
+
+ -- Jérémie Ferry <jerem.ferry@gmail.com>  Sat, 14 Nov 2020 22:18:10 +0100
+
 gspeech (0.10.2) xenial; urgency=medium
   * bugfix : systray when appindicator doesn't exist
 

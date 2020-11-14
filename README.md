@@ -18,7 +18,7 @@ Read clipboard or selected text in different languages and manage it : pause, st
 
 Ubuntu:
 
-Depends: python (>=3.5) python3-gst-1.0 (>=1.0) python3-gi (>=2.24) libttspico-utils (>= 1.0) python-notify (>=0.1) gstreamer1.0-plugins-base gstreamer1.0-plugins-good gstreamer1.0-pulseaudio
+Depends: python (>=3.5) python3-gst-1.0 (>=1.0) python3-gi (>=2.24) libttspico-utils (>= 1.0) python-notify (>=0.1) gstreamer1.0-plugins-base gstreamer1.0-plugins-good gstreamer1.0-pulseaudio gir1.2-appindicator3-0.1
 
 Suggests: sox (is needed to speech text with more than 2^15 characters)
 
