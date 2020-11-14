@@ -138,8 +138,10 @@ class Conf:
         try:
             gi.require_version('AppIndicator3', '0.1')
             from gi.repository import AppIndicator3  # noqa: F401
+            print('status : appindicator 3')
         except (ValueError, ImportError):
             self.has_app_indicator = False
+            print('status : other')
 
         self.set_lang(self.lang)
 
