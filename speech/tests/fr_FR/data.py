@@ -253,5 +253,9 @@ datas = [
     {
         'ini': 'Zoomer une photo. Il partit avec son APN sans son zoom.',
         'new': 'zoumer une photo. il partit avec son a p n sans son zoum.'
-    }
+    },
+    {
+        'ini': 'Fichiers au format jpg, png, gif et jpeg',
+        'new': 'fichiers au format j peg, p n g, gif et j peg'
+    },
 ]
