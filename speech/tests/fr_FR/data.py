@@ -275,9 +275,15 @@ datas = [
             """,
     },
     {
-        'ini': '''La casquette est aussi bien un
-             couvre-chef qu'un accessoire tendance.''',
-        'new': '''la casquette ai aussi bien un
-             couvre-chef cain accessoire tendance.''',
+        'ini': """"La casquette est aussi bien un
+             couvre-chef qu'un accessoire tendance.
+            """,
+        'new': """la casquette ai aussi bien un
+             couvre-chef cain accessoire tendance.
+            """,
+    },
+    {
+        'ini': 'Désirez-vous supprimer les indices sélectionnés ?',
+        'new': 'désirévou supprimer les indices sélectionnés ?'
     },
 ]
