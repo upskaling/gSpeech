@@ -1,5 +1,4 @@
-NAT=nate
-DHCP=d h c p
+nat =nate 
 dvd=dévédé
 usb= u s b
 pdf= p d f
@@ -12,4 +11,4 @@ erp=e r p
 pc=p c
 
 avc=a v c
-
+apn=a p n

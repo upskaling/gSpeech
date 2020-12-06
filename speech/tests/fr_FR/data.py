@@ -250,4 +250,8 @@ datas = [
         'ini': "Je dis n'importe quoi et j'aime ça.",
         'new': "je dis nimportequoi et j'aime ça."
     },
+    {
+        'ini': 'Zoomer une photo. Il partit avec son APN sans son zoom.',
+        'new': 'zoumer une photo. il partit avec son a p n sans son zoum.'
+    }
 ]
