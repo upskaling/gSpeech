@@ -4,6 +4,7 @@ gspeech.conf
 
 ### Debian package
 
+debian/tmp
 debian/files
 debian/debhelper-build-stamp
 debian/*.debhelper.log
@@ -74,10 +75,6 @@ coverage.xml
 .pytest_cache/
 cover/
 
-# Flask stuff:
-instance/
-.webassets-cache
-
 # Scrapy stuff:
 .scrapy
 
@@ -107,3 +104,6 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+
+
+.zcache
