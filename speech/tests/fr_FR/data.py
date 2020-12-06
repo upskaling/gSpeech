@@ -258,4 +258,26 @@ datas = [
         'ini': 'Fichiers au format jpg, png, gif et jpeg',
         'new': 'fichiers au format j peg, p n g, gif et j peg'
     },
+    {
+        'ini': 'Je suis évidement le dernier.',
+        'new': 'je suis évidament le dernier.'
+    },
+    {
+        'ini': 'Mettez ça là ou glissez-le ici.',
+        'new': 'mettésala ou glisséleu ici.'
+    },
+    {
+        'ini': """Comment s'appelle le fait de
+             confondre la droite et la gauche ?
+            """,
+        'new': """comment s'appelle le fait de
+             confondre la droi tt et la gauche ?
+            """,
+    },
+    {
+        'ini': '''La casquette est aussi bien un
+             couvre-chef qu'un accessoire tendance.''',
+        'new': '''la casquette ai aussi bien un
+             couvre-chef cain accessoire tendance.''',
+    },
 ]
