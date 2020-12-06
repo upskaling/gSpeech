@@ -86,18 +86,13 @@ datas = [
     },
     {
         'ini': """C'est ma chaise.""",
-        'new': """c'est ma chaise.""",
+        'new': """sè ma chaise.""",
         'file': 'cest_ma_chaise'
     },
     {
         'ini': """Cette tache est invisible à l'oeil nu.""",
         'new': """cette tache ai invisible à l'euil nu.""",
         'file': 'cette_tache_est_invisible_a_loeil_nu'
-    },
-    {
-        'ini': """C'est ma chaise.""",
-        'new': """c'est ma chaise.""",
-        'file': 'cest_ma_chaise'
     },
     {
         'ini': 'Dirigez-vous vers la sortie.',
@@ -136,7 +131,7 @@ datas = [
     },
     {
         'ini': """C'est à toi ou à moi.""",
-        'new': """c'est à toi ou à moi.""",
+        'new': """sè à toi ou à moi.""",
         'file': 'cest_a_toi_ou_a_moi'
     },
     {
@@ -199,7 +194,7 @@ datas = [
     },
     {
         'ini': """C'est cosy chez toi!""",
-        'new': """c'est cozy chez toi!"""
+        'new': """sè cozy chez toi!"""
     },
     {
         'ini': 'un deal, le dealer ou le dealeur',

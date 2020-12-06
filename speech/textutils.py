@@ -9,7 +9,8 @@ def _replace_txt(text, line):
     if line.find('=') == -1:
         return text
     good = line.split('=')[1].replace('\n', '')
-    return text.replace(bad, good)
+    text = text.replace(bad, good)
+    return text.replace(bad.capitalize(), good)
 
 
 def _replace_ponctuation(text, line):
