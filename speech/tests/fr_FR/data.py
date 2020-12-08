@@ -286,4 +286,18 @@ datas = [
         'ini': 'Désirez-vous supprimer les indices sélectionnés ?',
         'new': 'désirévou supprimer les indices sélectionnés ?'
     },
+    {
+        'ini': """Plus il en parle, plus il m’énerve.
+            """,
+        'new': """pluse il en parle, pluse il m'énerve.
+            """
+    },
+    {
+        'ini': 'Plus de 10 kilomètres. Plus du quart.',
+        'new': 'plu de 10 kilomètres. plu du quart.'
+    },
+    {
+        'ini': 'la somme des carrés des longueurs des deux autres côtés.',
+        'new': 'la somme des carrés des longueurs des deuse autre côtés.'
+    },
 ]
