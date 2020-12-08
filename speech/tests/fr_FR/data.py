@@ -297,6 +297,10 @@ datas = [
         'new': 'plu de 10 kilomètres. plu du quart.'
     },
     {
+        'ini': 'De plus grands espaces. Du plus petit au plus grand.',
+        'new': 'de plu grands espaces. du plu petit au plu grand.'
+    },
+    {
         'ini': 'la somme des carrés des longueurs des deux autres côtés.',
         'new': 'la somme des carrés des longueurs des deuse autre côtés.'
     },
