@@ -50,9 +50,11 @@ def find_left(text, indice, symbol):
     inc = 1
     while True:
         inc += 1
+        if len(text) == indice + inc:
+            break
         if text[indice + inc] not in symboles:
             break
-    if text[indice + inc] == 'e':
+    if len(text) != indice + inc and text[indice + inc] == 'e':
         if (
             text[indice + inc + 1] not in ponctuation
         ):
@@ -80,9 +82,11 @@ def find_right(text, indice, symbol):
     inc = 0
     while True:
         inc += 1
+        if len(text) == indice + inc:
+            break
         if text[indice - inc] not in symboles:
             break
-    if text[indice + 1: indice + 2] == 'e':
+    if len(text) != indice + inc and text[indice + 1: indice + 2] == 'e':
         _substr = text[indice - inc + 1:indice + 3]
         if _substr in ['Le ', 'Ce ']:
             return text

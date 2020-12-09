@@ -320,4 +320,8 @@ datas = [
         'ini': 'La première démocratie est apparue au Ve siècle.',
         'new': 'la première démocratie ai apparue au 5ème siècle.'
     },
+    {
+        'ini': 'Henri IV',
+        'new': 'henri 4'
+    },
 ]
