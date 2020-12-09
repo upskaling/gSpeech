@@ -328,4 +328,12 @@ datas = [
         'ini': 'Tu veux échanger mes € contre des $ ?',
         'new': 'tu veux échanger mes € contre des $ ?'
     },
+    {
+        'ini': 'anus, Marius, bus, phalus, minus, diplodocus',
+        'new': 'anu-ce, mariu-ce, bu-ce, phalu-ce, minu-ce, diplodocu-ce'
+    },
+    {
+        'ini': 'Sacha, Sam, Marc; Tom, Mohamed, Raphaël et Paul',
+        'new': 'sacha, same, marque; tomme, moamaide, raphaèle et peaule'
+    },
 ]
