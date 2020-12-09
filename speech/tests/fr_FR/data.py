@@ -304,4 +304,20 @@ datas = [
         'ini': 'la somme des carrés des longueurs des deux autres côtés.',
         'new': 'la somme des carrés des longueurs des deuse autre côtés.'
     },
+    {
+        'ini': 'V siècles se sont écoulés.',
+        'new': '5 siècles se sont écoulés.'
+    },
+    {
+        'ini': 'Au XVIIème siècle naquit Louis XIV.',
+        'new': 'au 17ème siècle naquit louis 14.'
+    },
+    {
+        'ini': 'Le mardi IV Novembre MCMLXXXVII à XII heure XLVI.',
+        'new': 'le mardi 4 novembre 1987 à 12 heure 46.'
+    },
+    {
+        'ini': 'La première démocratie est apparue au Ve siècle.',
+        'new': 'la première démocratie ai apparue au 5ème siècle.'
+    },
 ]

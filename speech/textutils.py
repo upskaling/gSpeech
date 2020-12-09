@@ -69,8 +69,9 @@ def text_to_dict(text, dict_path, lang):
     text = text.replace('´', '')
     if lang != 'fr-FR':
         text = text.replace('-', '')
-    text = replace(text, dict_path)
     if lang == 'fr-FR':
-        from .workers.fr_FR import acronyme
+        from .workers.fr_FR import acronyme, roman_numerals
+        text = roman_numerals.replace(text)
         text = acronyme.too_consonnant(text)
+    text = replace(text, dict_path)
     return text.lower()
