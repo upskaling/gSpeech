@@ -1,6 +1,7 @@
 ### specific to gSpeech
 
 gspeech.conf
+speech.wav
 
 ### Debian package
 
