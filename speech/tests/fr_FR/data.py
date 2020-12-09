@@ -324,4 +324,8 @@ datas = [
         'ini': 'Henri IV',
         'new': 'henri 4'
     },
+    {
+        'ini': 'Tu veux échanger mes € contre des $ ?',
+        'new': 'tu veux échanger mes € contre des $ ?'
+    },
 ]
