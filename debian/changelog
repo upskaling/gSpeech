@@ -1,3 +1,10 @@
+gspeech (0.11.0) xenial; urgency=medium
+  * feature : read roman numerals
+  * feature : support of the thousand most popular French male firstname : https://motperdu.fr/top-1000-des-prenoms-de-garcons
+  * feature : support of the thousand most popular French female firstname : https://motperdu.fr/top-1000-des-prenoms-de-filles
+
+ -- Jérémie Ferry <jerem.ferry@gmail.com>  Fri, 01 Dec 2020 00:42:10 +0100
+
 gspeech (0.10.2.1) xenial; urgency=medium
   * bugfix : debian "gir1.2-appindicator3-0.1" dependance
 
