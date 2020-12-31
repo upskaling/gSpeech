@@ -34,8 +34,10 @@ def _replace_ponctuation(text, line):
     text = text.replace(bad + '?', good + '?')
     text = text.replace(bad + '!', good + '!')
     text = re.sub(bad + '$', good, text)
-
-    text = text.replace(bad + ' ', good + ' ')
+    if text.startswith(bad):
+        text = text.replace(bad + ' ', good + ' ')
+    if text.find(' %s' % bad) != -1:
+        text = text.replace(bad + ' ', good + ' ')
     text = re.sub(bad + ' $', good, text)
     return text
 

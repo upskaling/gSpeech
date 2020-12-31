@@ -9,6 +9,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - GTK unit tests
+- support of the two hundred most popular french lastname https://fr.wikipedia.org/wiki/Liste_des_noms_de_famille_les_plus_courants_en_France
+- support most popular history names : https://www.histoire-pour-tous.fr/biographies.html
+
+## [Unreleased : 0.11]
+
+### Added
+- read roman numerals
+- support of the thousand most popular French male firstname : https://motperdu.fr/top-1000-des-prenoms-de-garcons
+- support of the thousand most popular French female firstname : https://motperdu.fr/top-1000-des-prenoms-de-filles
 
 ## [0.10.1]
 

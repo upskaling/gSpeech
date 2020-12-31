@@ -169,20 +169,20 @@ datas = [
         'new': 'nous chantons en coeur.'
     },
     {
-        'ini': 'Le lapin et la lapine.',
-        'new': 'le lapun et la lapine.'
+        'ini': 'Histoire de lapins : Le lapin, la lapine, les lapereaux.',
+        'new': 'histoire de lapins : le lapin, la lapine, les lapereaux.'
     },
     {
-        'ini': 'Un coq et le coquin.',
-        'new': 'un coque et le coquin.'
+        'ini': 'Le chant des coqs. Un coq et le coquin.',
+        'new': 'le chant des coqs. un coque et le coquin.'
     },
     {
         'ini': """J'ai de plus en plus peur.""",
         'new': """j'ai de plusanplu peur."""
     },
     {
-        'ini': 'Je suis un grand fan.',
-        'new': 'je suis un grand fane.'
+        'ini': 'Je suis un grand fan. Plein de fans.',
+        'new': 'je suis un grand fane. plein de fane.'
     },
     {
         'ini': 'Il met son t-shirt.',
@@ -334,6 +334,22 @@ datas = [
     },
     {
         'ini': 'Sacha, Sam, Marc; Tom, Mohamed, Raphaël et Paul',
-        'new': 'sacha, same, marque; tomme, moamaide, raphaèle et peaule'
+        'new': 'sacha, same, marque; tomme, moamaide, rafaèle et peaule'
+    },
+    {
+        'ini': 'Tu peux me passer la mayonaise ?',
+        'new': 'tu peux me passer la ma yonaise ?'
+    },
+    {
+        'ini': 'Ils plantent du riz et du maïs.',
+        'new': 'ils plantent du riz et du ma ice.'
+    },
+    {
+        'ini': 'Je lui offre une rose car elle aime les roses.',
+        'new': 'je lui offre une ro oze car elle aime les ro oze.'
+    },
+    {
+        'ini': 'Des sacs de course. Un sac à main.',
+        'new': 'des saque de course. un saque à main.'
     },
 ]
