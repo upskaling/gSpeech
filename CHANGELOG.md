@@ -12,7 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - support of the two hundred most popular french lastname https://fr.wikipedia.org/wiki/Liste_des_noms_de_famille_les_plus_courants_en_France
 - support most popular history names : https://www.histoire-pour-tous.fr/biographies.html
 
-## [Unreleased : 0.11]
+## [0.11.0]
 
 ### Added
 - read roman numerals
