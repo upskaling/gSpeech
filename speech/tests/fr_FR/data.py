@@ -365,4 +365,12 @@ datas = [
             """ce qu'il faut déduire"""
         ))
     },
+    {
+        'ini': """L'arm et amd sont des architectures de CPU.""",
+        'new': """l'a r m et a m d sont des architectures de c p u.""",
+    },
+    {
+        'ini': """Ce site a des soucis d'IHM.""",
+        'new': """ce site a des soucis d'i h m.""",
+    },
 ]

@@ -31,12 +31,30 @@ def _replace_ponctuation(text, line):
     if line.find('=') == -1:
         return text
     good = line.split('=')[1].replace('\n', '')
+
+    text = text.replace(
+        """l'%s """ % bad,
+        """l'%s """ % good,
+    )
+    text = text.replace(
+        """d'%s """ % bad,
+        """d'%s """ % good,
+    )
+    text = text.replace(
+        """L'%s """ % bad,
+        """l'%s """ % good,
+    )
+    text = text.replace(
+        """D'%s """ % bad,
+        """d'%s """ % good,
+    )
     text = text.replace(bad + '.', good + '.')
     text = text.replace(bad + ';', good + ';')
     text = text.replace(bad + ',', good + ',')
     text = text.replace(bad + '?', good + '?')
     text = text.replace(bad + '!', good + '!')
     text = re.sub(bad + '$', good, text)
+
     if text.startswith(bad):
         text = text.replace(bad + ' ', good + ' ')
     if text.find(' %s' % bad) != -1:
