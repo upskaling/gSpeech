@@ -213,30 +213,24 @@ datas = [
         'new': 'nous regardons un houest erne'
     },
     {
-        'ini': ''.join((
-            """j'ai commandé des hamburgers.
-            Vous les voulez à quoi vos burgers ?
-            """
-        )),
-        'new': ''.join((
-            """j'ai commandé des hambeurgueurs.
-            vous les voulez à quoi vos beurgueurs ?
-            """
-        )),
+        'ini': "j'ai commandé des hamburgers.",
+        'new': "j'ai commandé des hambeurgueurs."
     },
     {
-        'ini': ''.join((
-            """on commence par un baby-foot.
-            on continue avec un foot puis un footing.
-            Enfin, babyfoot et encore une partie de football.
-            """
-        )),
-        'new': ''.join((
-            """on commence par un babifoute.
-            on continue avec un foute pu is un fouting.
-            enfin, babifoute et encore une partie de fouteball.
-            """
-        )),
+        'ini': """vous les voulez à quoi vos burgers ?""",
+        'new': """vous les voulez à quoi vos beurgueurs ?"""
+    },
+    {
+        'ini': """on commence par un baby-foot.""",
+        'new': """on commence par un babifoute."""
+    },
+    {
+        'ini': """on continue avec un foot puis un footing.""",
+        'new': """on continue avec un foute pu is un fouting."""
+    },
+    {
+        'ini': """Enfin, babyfoot et encore une partie de football.""",
+        'new': """enfin, babifoute et encore une partie de fouteball."""
     },
     {
         'ini': 'Il est trop beau ton baby! On attend son babysitter.',
@@ -267,30 +261,26 @@ datas = [
         'new': 'mettésala ou glisséleu ici.'
     },
     {
-        'ini': """Comment s'appelle le fait de
-             confondre la droite et la gauche ?
-            """,
-        'new': """comment s'appelle le fait de
-             confondre la droi tt et la gauche ?
-            """,
+        'ini': """Confondre la droite et la gauche ?""",
+        'new': """confondre la droi tt et la gauche ?""",
     },
     {
-        'ini': """"La casquette est aussi bien un
-             couvre-chef qu'un accessoire tendance.
-            """,
-        'new': """la casquette ai aussi bien un
-             couvre-chef cain accessoire tendance.
-            """,
+        'ini': ''.join((
+            """La casquette est aussi bien un """,
+            """couvre-chef qu'un accessoire tendance."""
+        )),
+        'new': ''.join((
+            """la casquette ai aussi bien un """,
+            """couvre-chef cain accessoire tendance."""
+        ))
     },
     {
         'ini': 'Désirez-vous supprimer les indices sélectionnés ?',
         'new': 'désirévou supprimer les indices sélectionnés ?'
     },
     {
-        'ini': """Plus il en parle, plus il m’énerve.
-            """,
-        'new': """pluse il en parle, pluse il m'énerve.
-            """
+        'ini': """Plus il en parle, plus il m’énerve.""",
+        'new': """pluse il en parle, pluse il m'énerve."""
     },
     {
         'ini': 'Plus de 10 kilomètres. Plus du quart.',
@@ -351,5 +341,28 @@ datas = [
     {
         'ini': 'Des sacs de course. Un sac à main.',
         'new': 'des saque de course. un saque à main.'
+    },
+    {
+        'ini': 'Ca peut paraitre verbeux.',
+        'new': 'sa peut paraitre verbeux.'
+    },
+    {
+        'ini': "j'aime bcp les fleurs et le vin brut.",
+        'new': "j'aime beaucoup les fleurs et le vin brute."
+    },
+    {
+        'ini': 'La racine de PI est égale à 3,14',
+        'new': 'la racine de pi ai égale à 3,14'
+    },
+    {
+        'ini': 'Le langage C et C++ sont très utilisés.',
+        'new': 'le langage cé et c++ sont très utilisés.',
+    },
+    {
+        'ini': 'qq abréviations. bcp de techniques. cqfd',
+        'new': ''.join((
+            """quelques abréviations. beaucoup de techniques. """,
+            """ce qu'il faut déduire"""
+        ))
     },
 ]

@@ -30,7 +30,13 @@ roman_map = {
     'CM': 900
 }
 
-ponctuation = [' ', '.', ';', ',', '?', '!']
+sufix_ponctuation = [' ', '.', ';', ',', '?', '!']
+prefix_ponctuation = [
+    ' ', '.', ';', ',', '?', '!'
+]
+prefix_space_ponctuation = [
+    ' .', '; ', ', ', '? ', '! '
+]
 
 
 def roman_to_int(roman):
@@ -56,7 +62,7 @@ def find_left(text, indice, symbol):
             break
     if len(text) != indice + inc and text[indice + inc] == 'e':
         if (
-            text[indice + inc + 1] not in ponctuation
+            text[indice + inc + 1] not in sufix_ponctuation
         ):
             return text
         _substr = text[indice + 1:indice + inc + 2]
@@ -66,7 +72,7 @@ def find_left(text, indice, symbol):
     else:
         if (
             len(text) != indice + inc
-            and text[indice + inc] not in ponctuation
+            and text[indice + inc] not in sufix_ponctuation
         ):
             return text
         _substr = text[indice + 1:indice + inc]
@@ -95,7 +101,14 @@ def find_right(text, indice, symbol):
         _substr = text[indice - inc + 1:indice + 1]
         if _substr in ['Le ', 'Ce ']:
             return text
-        _replace = roman_to_int(_substr)
+        if indice - 1 == -1:
+            _replace = roman_to_int(_substr)
+        elif text[indice - inc] in prefix_ponctuation:
+            _replace = roman_to_int(_substr)
+        elif text[indice - 2:indice - 1] in prefix_space_ponctuation:
+            _replace = roman_to_int(_substr)
+        else:
+            return text
     text = text.replace(_substr, _replace)
     indice = text.find(' %s' % symbol)
     if indice == -1:

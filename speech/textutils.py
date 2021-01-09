@@ -4,6 +4,9 @@ import os
 import re
 
 
+from .workers.fr_FR import acronyme, roman_numerals
+
+
 def _replace_txt(text, line):
     bad = line.split('=')[0]
     if line.find('=') == -1:
@@ -65,15 +68,20 @@ def replace(text, dict_path):
     return text
 
 
-def text_to_dict(text, dict_path, lang):
+def text_to_dict(text, dict_path, lang, debug=False):
+    if debug:
+        print('before :', text)
+    # remove multiple spaces in a string
+    text = " ".join(text.split())
+    # remove quotes
     text = text.replace('\"', '')
     text = text.replace('`', '')
     text = text.replace('´', '')
-    if lang != 'fr-FR':
-        text = text.replace('-', '')
+
+    text = replace(text, dict_path)
     if lang == 'fr-FR':
-        from .workers.fr_FR import acronyme, roman_numerals
         text = roman_numerals.replace(text)
         text = acronyme.too_consonnant(text)
-    text = replace(text, dict_path)
+    if debug:
+        print('after :', text.lower())
     return text.lower()

@@ -75,6 +75,12 @@ class CliOptions:
             '                   voice speed\n'
         )
 
+    @staticmethod
+    def debug():
+        return CliOption(
+            '-d', '--debug',
+            '                  debug mode\n'
+        )
 
 def cli_help():
     value = (
@@ -88,6 +94,7 @@ def cli_help():
         str(CliOptions.input_text()),
         str(CliOptions.input_file()),
         str(CliOptions.output_file()),
+        str(CliOptions.debug()),
         str(CliOptions.lang()),
         '\npossible languages :',
     )
@@ -98,8 +105,11 @@ def cli_help():
         str(CliOptions.speed()),
         '\npossible speech values :',
     )
-    for speed in conf.list_voice_speed:
-        value += ('\n%s' % str(speed),)
+    for indice, speed in enumerate(conf.list_voice_speed):
+        if indice == 0:
+            value += (' %s' % str(speed),)
+            continue
+        value += (', %s' % str(speed),)
     return ''.join(value)
 
 
@@ -116,7 +126,7 @@ def main():
     try:
         opts, args = getopt.getopt(
             sys.argv[1:],
-            'hvi:f:l:s:o:',
+            'hvi:f:l:s:o:d',
             [
                 'help',
                 'version',
@@ -124,13 +134,16 @@ def main():
                 'input-file',
                 'lang=',
                 'speed=',
-                'output-file='
+                'output-file=',
+                'debug='
             ]
         )
     except getopt.GetoptError:
+        print('hum')
         print(cli_help())
         exit(2)
     input_file = text = lang = ''
+    debug = False
     speed = 1
     outfile = 'speech.wav'
     if len(opts) == 0:
@@ -143,6 +156,8 @@ def main():
         if opt in CliOptions.version():
             print('%s version %s' % (conf.app_name, __version__))
             exit()
+        if opt in CliOptions.debug():
+            debug = True
         if opt in CliOptions.lang():
             lang = arg
         elif opt in CliOptions.speed():
@@ -161,7 +176,7 @@ def main():
         speed = conf.voice_speed
     if input_file:
         text = text_file(input_file)
-    text = text_to_dict(text, conf.dict_path, conf.lang)
+    text = text_to_dict(text, conf.dict_path, conf.lang, debug)
     names, cmds = get_audio_commands(
         text,
         outfile,
