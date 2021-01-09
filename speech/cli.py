@@ -82,6 +82,7 @@ class CliOptions:
             '                  debug mode\n'
         )
 
+
 def cli_help():
     value = (
         '%s version %s' % (conf.app_name, __version__),

@@ -72,7 +72,7 @@ def text_to_dict(text, dict_path, lang, debug=False):
     if debug:
         print('before :', text)
     # remove multiple spaces in a string
-    text = " ".join(text.split())
+    text = ' '.join(text.split())
     # remove quotes
     text = text.replace('\"', '')
     text = text.replace('`', '')
