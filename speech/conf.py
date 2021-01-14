@@ -45,6 +45,13 @@ class Conf:
     # Supported SVOX Pico's languages
     list_langs = ['de-DE', 'en-GB', 'en-US', 'es-ES', 'fr-FR', 'it-IT']
 
+    list_langs_trans = ['de-DE', 'en-GB', 'en-US', 'es-ES', 'fr-FR', 'it-IT']
+
+    list_engine_trans = ['argos_translate', 'requests', 'translate_shell']
+
+    list_synthesis_voice = ['pico', 'spd-say']
+    synthesis_voice = ''
+
     voice_speed = 1
 
     list_voice_speed = [0.6, 0.8, 1, 1.2, 1.4, 1.6, 1.8, 2, 2.2]
@@ -59,6 +66,8 @@ class Conf:
     show_notification = True
     has_app_indicator = True
     lang = ''
+    lang_sources = ''
+    engine_trans = ''
 
     def set_dict(self, lang):
         self.dict_path = join(
@@ -83,9 +92,21 @@ class Conf:
             )
         self.set_dict(lang)
 
+    def set_lang_sources(self, lang_sources):
+        if lang_sources in self.list_langs_trans:
+            self.lang_sources = lang_sources
+
+    def set_engine_trans(self, engine_trans):
+        if engine_trans in self.list_engine_trans:
+            self.engine_trans = engine_trans
+
     def set_speed(self, speed):
         if speed in self.list_voice_speed:
             self.voice_speed = speed
+
+    def set_synthesis_voice(self, synthesis_voice):
+        if synthesis_voice in self.list_synthesis_voice:
+            self.synthesis_voice = synthesis_voice
 
     def __init__(self, script_dir=None):
         self.pid = join(self.cache_path, 'gspeech.pid')
@@ -116,8 +137,20 @@ class Conf:
             self.path, 'CONFIGURATION', 'DEFAULTLANGUAGE', ''
         ))
 
+        self.lang_sources = str(ini_read(
+            self.path, 'CONFIGURATION', 'DEFAULTLANGUAGSOURCES', ''
+        ))
+
+        self.engine_trans = str(ini_read(
+            self.path, 'CONFIGURATION', 'ENGINETRANS', ''
+        ))
+
         self.voice_speed = float(ini_read(
             self.path, 'CONFIGURATION', 'VOICESPEED', '1'
+        ))
+
+        self.synthesis_voice = str(ini_read(
+            self.path, 'CONFIGURATION', 'SYNTHESISVOICE', 'pico'
         ))
 
         self.show_notification = bool(ini_read(
@@ -193,6 +226,16 @@ class Conf:
         )
         raw.set(
             'CONFIGURATION',
+            'DEFAULTLANGUAGSOURCES',
+            self.lang_sources
+        )
+        raw.set(
+            'CONFIGURATION',
+            'ENGINETRANS',
+            self.engine_trans
+        )
+        raw.set(
+            'CONFIGURATION',
             'VOICESPEED',
             self.voice_speed
         )
@@ -200,6 +243,11 @@ class Conf:
             'CONFIGURATION',
             'SHOWNOTIFICATION',
             self.show_notification
+        )
+        raw.set(
+            'CONFIGURATION',
+            'SYNTHESISVOICE',
+            self.synthesis_voice
         )
         try:
             os.makedirs(self.dir, exist_ok=True)

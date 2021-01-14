@@ -47,7 +47,8 @@ def on_save(
     conf=None,
     menu_play_pause=None,
     win_play_pause=None,
-    player=None
+    player=None,
+    sources=None
 ):
     """Saving file speech on clicking Save item"""
     SaveFileDialog(window, conf.temp_path)

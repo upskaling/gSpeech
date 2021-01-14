@@ -3,16 +3,21 @@ import subprocess
 import sys
 
 import gi
+
 gi.require_version('Gdk', '3.0')
 gi.require_version('Gst', '1.0')
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gdk, Gst, Gtk
 
-from . import notify
 from .. import pid
 from ..audioutils import get_audio_commands, run_audio_files
-from ..i18n import _pause, _play, _read_selected
+from ..i18n import (_pause, _play, _read_clipboard, _read_ocr, _read_selected,
+                    _trans_read_clipboard, _trans_read_ocr,
+                    _trans_read_selected)
 from ..textutils import text_to_dict
+from ..translate.main import translate
+from ..widgets.ocr import ocr
+from . import notify
 
 
 def on_lang(ind, tray, lang, conf):
@@ -26,10 +31,31 @@ def on_lang(ind, tray, lang, conf):
     tray.set_from_file(conf.icon_path)
 
 
+def on_lang_trans(ind, tray, lang, conf):
+    """Action on language submenu items"""
+    conf.set_lang_sources(lang)
+    conf.lang_sources = lang
+    conf.update()
+
+
+def on_engine_trans(ind, tray, lang, conf):
+    """Action on language submenu items"""
+    conf.set_engine_trans(lang)
+    conf.engine_trans = lang
+    conf.update()
+
+
 def on_speed(speed, conf):
     """Action on voice speed submenu items"""
     conf.set_speed(float(speed))
     conf.voice_speed = float(speed)
+    conf.update()
+
+
+def on_synthesis_voice(synthesis_voice, conf):
+    """Action on voice speed submenu items"""
+    conf.set_synthesis_voice(synthesis_voice)
+    conf.synthesis_voice = synthesis_voice
     conf.update()
 
 
@@ -39,7 +65,8 @@ def on_reload(
     conf=None,
     menu_play_pause=None,
     win_play_pause=None,
-    player=None
+    player=None,
+    sources=None
 ):
     """Reload GUI"""
     myscript = os.path.abspath(sys.argv[0])
@@ -53,7 +80,8 @@ def on_media_dialog(
     conf=None,
     menu_play_pause=None,
     win_play_pause=None,
-    player=None
+    player=None,
+    sources=None
 ):
     """Show multimedia control dialog"""
     if window.get_property('visible'):
@@ -68,7 +96,8 @@ def on_destroy(
     conf=None,
     menu_play_pause=None,
     win_play_pause=None,
-    player=None
+    player=None,
+    sources=None
 ):
     """Destroy app on clicking Quit item"""
     if os.path.isfile(conf.temp_path):
@@ -86,6 +115,20 @@ def changed_lang_menu(
         lang_combobox.set_active(index)
 
 
+def changed_lang_sources_menu(widget, ind, tray, lang, conf, lang_combobox, index=None):
+    on_lang_trans(ind, tray, lang, conf)
+    lang_combobox.active = index
+    if widget.get_active():
+        lang_combobox.set_active(index)
+
+
+def changed_engine_trans_menu(widget, ind, tray, lang, conf, lang_combobox, index=None):
+    on_engine_trans(ind, tray, lang, conf)
+    lang_combobox.active = index
+    if widget.get_active():
+        lang_combobox.set_active(index)
+
+
 def changed_cb(lang_combobox, ind, tray, conf, menu_langs):
     model = lang_combobox.get_model()
     index = lang_combobox.get_active()
@@ -94,13 +137,18 @@ def changed_cb(lang_combobox, ind, tray, conf, menu_langs):
         menu_langs.get_children()[index].set_active(True)
 
 
-def changed_speed_menu(
-    widget, speed, conf, speed_combobox, index=None
-):
+def changed_speed_menu(widget, speed, conf, speed_combobox, index=None):
     on_speed(speed, conf)
     speed_combobox.active = index
     if widget.get_active():
         speed_combobox.set_active(index)
+
+
+def synthesis_voice_menu(widget, synthesis_voice, conf, synthesis_voice_combobox, index=None):
+    on_synthesis_voice(synthesis_voice, conf)
+    synthesis_voice_combobox.active = index
+    if widget.get_active():
+        synthesis_voice_combobox.set_active(index)
 
 
 def changed_speed(speed_combobox, conf, menu_voice_speed):
@@ -145,20 +193,33 @@ def on_execute(
     conf=None,
     menu_play_pause=None,
     win_play_pause=None,
-    player=None
+    player=None,
+    sources=None
 ):
     """ execute text to speech"""
-    if (
-        hasattr(widget, 'get_label')
-        and widget.get_label() == _read_selected
-    ):
+
+    if sources is None:
+        sources = conf.lang
+
+    if widget.get_label() == _read_selected or widget.get_label() == _trans_read_selected:
         text = Gtk.Clipboard.get(Gdk.SELECTION_PRIMARY).wait_for_text()
-    else:
+    elif widget.get_label() == _read_clipboard or widget.get_label() == _trans_read_clipboard:
         text = Gtk.Clipboard.get(Gdk.SELECTION_CLIPBOARD).wait_for_text()
+    elif widget.get_label() == _read_ocr or widget.get_label() == _trans_read_ocr:
+        text = ocr(sources[:2])
+    else:
+        text = "error"
+
     notify.get(conf, text)
+
     if text is None:
         return
+
     conf.set_lang(conf.lang)
+
+    if sources:
+        text = translate(text, sources[:2], conf.lang[:2], {
+                         "engine": conf.engine_trans})
 
     text = text_to_dict(text, conf.dict_path, conf.lang)
     names, cmds = get_audio_commands(
@@ -193,7 +254,8 @@ def on_play_pause(
     conf=None,
     menu_play_pause=None,
     win_play_pause=None,
-    player=None
+    player=None,
+    sources=None
 ):
     """play, pause and stop function for respectives items"""
     if (
@@ -215,7 +277,8 @@ def on_stop(
     conf=None,
     menu_play_pause=None,
     win_play_pause=None,
-    player=None
+    player=None,
+    sources=None
 ):
     player.set_state(Gst.State.NULL)
     button_state(menu_play_pause, win_play_pause, player)

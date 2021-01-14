@@ -17,13 +17,18 @@ gettext.textdomain('gSpeech')
 _ = gettext.gettext
 
 _tooltip = _('SVOX Pico simple GUI')
+_trans_read_selected = _('Traduire et lire la sélection')
+_trans_read_clipboard = _('Traduire et lire le presse-papier')
+_trans_read_ocr = _('Traduire et lire image')
 _read_clipboard = _('Read clipboard content')
 _read_selected = _('Read selected text')
+_read_ocr = _('Read image content')
 _comment = _(
     'A little script to read SVOX Pico texts selected with the mouse.'
 )
 _developpers = _('Developers :')
 _languages = _('Languages')
+_sources = _('Sources')
 _play = _('Play')
 _pause = _('Pause')
 _stop = _('Stop')
@@ -33,6 +38,7 @@ _refresh = _('Refresh')
 _about = _('About')
 _options = _('Options')
 _quit = _('Quit')
+_engine_trans = _('Engine trans')
 
 _wave_file = _('Wave file (*.wav)')
 _reading_text_loading = _(
@@ -44,4 +50,5 @@ _save_speech = _('Save the speech')
 _text_to_long = _('this text is too long for reading without SOX')
 
 _voice_speed = _('Voice speed')
+_synthesis_voice = _('Synthesis voice')
 _acces_denied_path = _('Acces denied on config path "%s"')

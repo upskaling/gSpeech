@@ -20,7 +20,54 @@ Ubuntu:
 
 Depends: python (>=3.5) python3-gst-1.0 (>=1.0) python3-gi (>=2.24) libttspico-utils (>= 1.0) python-notify (>=0.1) gstreamer1.0-plugins-base gstreamer1.0-plugins-good gstreamer1.0-pulseaudio gir1.2-appindicator3-0.1
 
+### install pico
+
 Suggests: sox (is needed to speech text with more than 2^15 characters)
+
+```sh
+sudo apt install libttspico-utils sox
+```
+
+### install speech-dispatcher
+
+```sh
+sudo apt install espeak mbrola-fr1 mbrola-fr4 speech-dispatcher
+```
+
+### install tesseract
+
+will be used to read the text in the images
+
+```sh
+sudo apt install tesseract tesseract-ocr-fra xfce4-screenshooter
+```
+
+### install argos-translate
+
+Attention it is installation takes more than 1go destocking
+
+- https://github.com/argosopentech/argos-translate
+
+```sh
+cd ~/.local/share
+mkdir argos-translate
+cd argos-translate
+python3 -m venv venv
+source venv/bin/activate
+pip install argostranslate
+ln -s $(which argos-translate-cli) ~/.local/bin/
+```
+
+### install translate-shell
+
+- https://github.com/soimort/translate-shell
+
+```shell
+cd ~/.local/share
+git clone https://github.com/soimort/translate-shell
+cd translate-shell
+make PREFIX=~/.local/bin/ install
+```
 
 ## Screenshots
 
@@ -34,6 +81,24 @@ Suggests: sox (is needed to speech text with more than 2^15 characters)
 ```sh
 ./gspeech-cli -i "mon chat s'appelle maurice" -o speech/tests/fr_FR/assets/chat_maurice.wav
 ```
+
+```sh
+./gspeech-cli2 --input-text "mon chat s'appelle maurice"
+```
+
+Stop playback
+
+```sh
+./gspeech-cli2 -S
+```
+
+## Ajouter des raccourcis clavier par exemple
+
+| commande                        | raccourcis clavier |
+| ------------------------------- | ------------------ |
+| `./gspeech-cli2 --selection`    | `Super+²`          |
+| `./gspeech-cli2 --selection -t` | `Super+É`          |
+| `./gspeech-cli2 -S`             | `Maj+Échap`        |
 
 ## Docker
 
