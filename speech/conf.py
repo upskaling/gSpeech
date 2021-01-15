@@ -138,11 +138,11 @@ class Conf:
         ))
 
         self.lang_sources = str(ini_read(
-            self.path, 'CONFIGURATION', 'DEFAULTLANGUAGSOURCES', ''
+            self.path, 'CONFIGURATION', 'DEFAULTLANGUAGSOURCES', 'en-US'
         ))
 
         self.engine_trans = str(ini_read(
-            self.path, 'CONFIGURATION', 'ENGINETRANS', ''
+            self.path, 'CONFIGURATION', 'ENGINETRANS', 'requests'
         ))
 
         self.voice_speed = float(ini_read(
