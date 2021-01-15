@@ -82,6 +82,13 @@ def parse_arguments():
         choices=conf.list_langs_trans,
         help=f"""traduction Langue sur source default:{conf.lang_sources}""")
     parser.add_argument(
+        '--engine-trans',
+        dest='engine_trans',
+        nargs='?',
+        const=conf.engine_trans,
+        choices=conf.list_engine_trans,
+        help=f"""engine traduction default:{conf.engine_trans}""")
+    parser.add_argument(
         '-s', '--speed',
         dest='speed',
         nargs='?',
@@ -141,11 +148,16 @@ def main():
     if args.sources in conf.list_voice_speed:
         conf.set_lang_sources(args.sources)
 
+    if args.engine_trans in conf.list_engine_trans:
+        conf.set_engine_trans(args.engine_trans)
+
     if args.speed in conf.list_voice_speed:
         conf.set_speed(args.speed)
 
     if args.synthesis_voice in conf.synthesis_voice:
         conf.set_synthesis_voice(args.synthesis_voice)
+
+    # conf.update()
 
     if args.stop:
         if args.synthesis_voice == "pico":
