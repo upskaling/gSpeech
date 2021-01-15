@@ -14,6 +14,7 @@ from ..audioutils import get_audio_commands, run_audio_files
 from ..i18n import (_pause, _play, _read_clipboard, _read_ocr, _read_selected,
                     _trans_read_clipboard, _trans_read_ocr,
                     _trans_read_selected)
+from ..spd_say import spd_say
 from ..textutils import text_to_dict
 from ..translate.main import translate
 from ..widgets.ocr import ocr
@@ -201,11 +202,11 @@ def on_execute(
     if sources is None:
         sources = conf.lang
 
-    if widget.get_label() == _read_selected or widget.get_label() == _trans_read_selected:
+    if _read_selected in widget.get_label() or _trans_read_selected in widget.get_label():
         text = Gtk.Clipboard.get(Gdk.SELECTION_PRIMARY).wait_for_text()
-    elif widget.get_label() == _read_clipboard or widget.get_label() == _trans_read_clipboard:
+    elif _read_clipboard in widget.get_label() or _trans_read_clipboard in widget.get_label():
         text = Gtk.Clipboard.get(Gdk.SELECTION_CLIPBOARD).wait_for_text()
-    elif widget.get_label() == _read_ocr or widget.get_label() == _trans_read_ocr:
+    elif _read_ocr in widget.get_label() or _trans_read_ocr() in widget.get_label():
         text = ocr(sources[:2])
     else:
         text = "error"
@@ -221,19 +222,22 @@ def on_execute(
         text = translate(text, sources[:2], conf.lang[:2], {
                          "engine": conf.engine_trans})
 
-    text = text_to_dict(text, conf.dict_path, conf.lang)
-    names, cmds = get_audio_commands(
-        text,
-        conf.temp_path,
-        conf.lang,
-        conf.cache_path,
-        conf.voice_speed
-    )
-    run_audio_files(names, cmds, conf.temp_path)
-    if player:
-        player.set_state(Gst.State.NULL)
-    player.set_state(Gst.State.PLAYING)
-    button_state(menu_play_pause, win_play_pause, player)
+    if conf.synthesis_voice == "pico":
+        text = text_to_dict(text, conf.dict_path, conf.lang)
+        names, cmds = get_audio_commands(
+            text,
+            conf.temp_path,
+            conf.lang,
+            conf.cache_path,
+            conf.voice_speed
+        )
+        run_audio_files(names, cmds, conf.temp_path)
+        if player:
+            player.set_state(Gst.State.NULL)
+        player.set_state(Gst.State.PLAYING)
+        button_state(menu_play_pause, win_play_pause, player)
+    elif conf.synthesis_voice == "spd-say":
+        spd_say(text, conf.voice_speed)
 
 
 def on_player(path):
@@ -280,8 +284,11 @@ def on_stop(
     player=None,
     sources=None
 ):
-    player.set_state(Gst.State.NULL)
-    button_state(menu_play_pause, win_play_pause, player)
+    if conf.synthesis_voice == "pico":
+        player.set_state(Gst.State.NULL)
+        button_state(menu_play_pause, win_play_pause, player)
+    elif conf.synthesis_voice == "spd-say":
+        os.system('spd-say --cancel')
 
 
 def button_state(menu_play_pause, win_play_pause, player):
