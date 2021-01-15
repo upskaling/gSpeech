@@ -4,7 +4,9 @@ gi.require_version('Gdk', '3.0')
 gi.require_version('Gtk', '3.0')
 import argparse
 import os
+import socket
 from sys import exit as sysexit
+from sys import stderr
 
 from gi.repository import Gdk, Gtk
 
@@ -63,25 +65,30 @@ def parse_arguments():
         '-y',
         dest='synthesis_voice',
         choices=conf.list_synthesis_voice,
-        default='pico',
-        help="""Set the synthesis voice""")
+        default=conf.synthesis_voice,
+        help=f"""Set the synthesis voice default:{conf.synthesis_voice}""")
+    parser.add_argument(
+        '-l', '--lang',
+        dest='lang',
+        nargs='?',
+        const=conf.lang,
+        choices=conf.list_langs,
+        help="language")
     parser.add_argument(
         '-t', '--traduction',
         dest='sources',
         nargs='?',
-        const='en-US',
+        const=conf.lang_sources,
         choices=conf.list_langs_trans,
-        help="""traduction
-                Langue sur source
-                default:en-US""")
+        help=f"""traduction Langue sur source default:{conf.lang_sources}""")
     parser.add_argument(
         '-s', '--speed',
         dest='speed',
         nargs='?',
-        const='1',
+        const=conf.voice_speed,
         type=float,
         choices=conf.list_voice_speed,
-        help="""voice speed""")
+        help=f"""voice speed default:{conf.voice_speed}""")
     parser.add_argument(
         '-o', '--output-file',
         dest='outfile',
@@ -109,8 +116,53 @@ def text_file(file_name):
         return f.read()
 
 
+class LockError(Exception):
+    def __init__(self, message='[lock]'):
+        super(LockError, self).__init__(message)
+
+
+def get_lock(process_name):
+    # https://stackoverflow.com/questions/788411/check-to-see-if-python-script-is-running/7758075#7758075
+
+    get_lock._lock_socket = socket.socket(socket.AF_UNIX, socket.SOCK_DGRAM)
+
+    try:
+        get_lock._lock_socket.bind('\0' + process_name)
+    except OSError as erreur:
+        raise LockError(erreur)
+
+
 def main():
     args = parse_arguments()
+
+    if args.lang in conf.list_langs:
+        conf.set_lang(args.lang)
+
+    if args.sources in conf.list_voice_speed:
+        conf.set_lang_sources(args.sources)
+
+    if args.speed in conf.list_voice_speed:
+        conf.set_speed(args.speed)
+
+    if args.synthesis_voice in conf.synthesis_voice:
+        conf.set_synthesis_voice(args.synthesis_voice)
+
+    if args.stop:
+        if args.synthesis_voice == "pico":
+            os.system('killall paplay')
+        elif args.synthesis_voice == "spd-say":
+            os.system('spd-say --cancel')
+            os.system('killall spd-say')
+        return
+
+    try:
+        get_lock(conf.app_name)
+    except LockError as erreur:
+        print(erreur, file=stderr)
+        if args.synthesis_voice == "pico":
+            os.system('killall paplay')
+        elif args.synthesis_voice == "spd-say":
+            os.system('spd-say --cancel')
 
     if args.selection:
         text = Gtk.Clipboard.get(Gdk.SELECTION_PRIMARY).wait_for_text()
@@ -129,7 +181,7 @@ def main():
     elif args.input_text:
         text = args.input_text
     else:
-        text = "error"
+        return
 
     if args.speed in conf.list_voice_speed:
         conf.set_speed(args.speed)
