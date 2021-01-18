@@ -34,6 +34,10 @@ sudo apt install libttspico-utils sox
 sudo apt install espeak mbrola-fr1 mbrola-fr4 speech-dispatcher
 ```
 
+```sh
+cp -r ./speech-dispatcher  ~/.config
+```
+
 ### install tesseract
 
 will be used to read the text in the images
