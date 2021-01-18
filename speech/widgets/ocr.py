@@ -7,8 +7,8 @@ def screenshooter(screenshooter):
 
     if which('xfce4-screenshooter'):
         return ['xfce4-screenshooter', '--region', '--save', screenshooter]
-    # elif which('mate-screenshot'):
-    #     return ['mate-screenshot', '--region', '--save', screenshooter]
+    elif which('gnome-screenshot'):
+        return ['gnome-screenshot', '--area', f'--file={screenshooter}']
 
 
 def ocr(lang='fr'):
@@ -16,10 +16,11 @@ def ocr(lang='fr'):
         'fr': 'fra',
         'en': 'eng'
     }
-    temp_dir = TemporaryDirectory(suffix='_screen-reader')
-    run(screenshooter(f'{temp_dir.name}/screenshooter.png'), check=True)
+    temp_dir = TemporaryDirectory(suffix='_gSpeech')
+    screenshooter_image = f'{temp_dir.name}/screenshooter.png'
+    run(screenshooter(screenshooter_image), check=True)
 
-    tesseract = Popen(['tesseract', '-l', lang_dit[lang], screenshooter, '-'],
+    tesseract = Popen(['tesseract', '-l', lang_dit[lang], screenshooter_image, '-'],
                       stdout=PIPE,
                       stderr=DEVNULL)
 
