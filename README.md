@@ -76,8 +76,9 @@ make PREFIX=~/.local/bin/ install
 ## Screenshots
 
 <div align="center">
-    <img src="./interface_example.png" alt="interface example" width="500"/>
-    <img src="./cli_example.png" alt="cli example" width="500"/>
+    <img src="./screenshots/interface2_example.png" alt="interface example" width="500"/>
+    <img src="./screenshots/cli_example.png" alt="cli example" width="500"/>
+    <img src="./screenshots/cli2_example.png" alt="cli2 example" width="500"/>
 </div>
 
 ## CLI usage
@@ -96,9 +97,9 @@ Stop playback
 ./gspeech-cli2 -S
 ```
 
-## Ajouter des raccourcis clavier par exemple
+## Add keyboard shortcuts for example
 
-| commande                        | raccourcis clavier |
+| commande                        | keyboard shortcuts |
 | ------------------------------- | ------------------ |
 | `./gspeech-cli2 --selection`    | `Super+²`          |
 | `./gspeech-cli2 --selection -t` | `Super+É`          |
