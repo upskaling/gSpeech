@@ -1,6 +1,4 @@
-from shutil import which
-
-from speech.widgets.paplay import paplay
+from speech.audioutils import paplay
 
 from .argos_translate import argos_translate
 from .requests import translate_requests
@@ -41,12 +39,3 @@ def translate(stdin, sources='en', targets='fr', config={"engine": 'requests', "
         raise TransError("Could not be translated!")
 
     return stdout
-
-
-def on_trans():
-    if which('argos-translate-cli'):
-        return True
-    elif which('trans'):
-        return True
-
-    return False

@@ -2,11 +2,13 @@ import os
 import sys
 from configparser import RawConfigParser, SafeConfigParser
 from os.path import dirname, expanduser, isfile, join
+from shutil import which
 
 import gi
 
 from .debug import is_debug_mode
-from .i18n import _comment, _developpers
+from .i18n import (_comment, _developpers, _read_clipboard, _read_ocr,
+                   _read_selected)
 
 
 def ini_read(config_path, section, key, default):
@@ -45,16 +47,30 @@ class Conf:
     # Supported SVOX Pico's languages
     list_langs = ['de-DE', 'en-GB', 'en-US', 'es-ES', 'fr-FR', 'it-IT']
 
-    list_langs_trans = ['de-DE', 'en-GB', 'en-US', 'es-ES', 'fr-FR', 'it-IT']
+    list_source_languages = ['de-DE', 'en-GB',
+                             'en-US', 'es-ES', 'fr-FR', 'it-IT']
 
-    list_engine_trans = ['argos_translate', 'requests', 'translate_shell']
+    list_engine_trans = ['requests']
+    if which('argos-translate-cli'):
+        list_engine_trans.append('argos_translate')
+    if which('trans'):
+        list_engine_trans.append('translate_shell')
 
-    list_synthesis_voice = ['pico', 'spd-say']
+    list_synthesis_voice = ['pico']
+    if which('espeak'):
+        list_synthesis_voice.append('espeak')
+    if which('spd-say'):
+        list_synthesis_voice.append('spd-say')
+
     synthesis_voice = ''
 
     voice_speed = 1
 
     list_voice_speed = [0.6, 0.8, 1, 1.2, 1.4, 1.6, 1.8, 2, 2.2]
+
+    list_option = [_read_clipboard, _read_selected]
+    if which('tesseract'):
+        list_option.append(_read_ocr)
 
     translators = [
         'Dupouy Paul (it-IT)',
@@ -66,8 +82,9 @@ class Conf:
     show_notification = True
     has_app_indicator = True
     lang = ''
-    lang_sources = ''
+    source_languages = ''
     engine_trans = ''
+    option = ''
 
     def set_dict(self, lang):
         self.dict_path = join(
@@ -92,9 +109,9 @@ class Conf:
             )
         self.set_dict(lang)
 
-    def set_lang_sources(self, lang_sources):
-        if lang_sources in self.list_langs_trans:
-            self.lang_sources = lang_sources
+    def set_source_languages(self, source_languages):
+        if source_languages in self.list_source_languages:
+            self.source_languages = source_languages
 
     def set_engine_trans(self, engine_trans):
         if engine_trans in self.list_engine_trans:
@@ -103,6 +120,10 @@ class Conf:
     def set_speed(self, speed):
         if speed in self.list_voice_speed:
             self.voice_speed = speed
+
+    def set_option(self, option):
+        if option in self.list_option:
+            self.option = option
 
     def set_synthesis_voice(self, synthesis_voice):
         if synthesis_voice in self.list_synthesis_voice:
@@ -137,8 +158,8 @@ class Conf:
             self.path, 'CONFIGURATION', 'DEFAULTLANGUAGE', ''
         ))
 
-        self.lang_sources = str(ini_read(
-            self.path, 'CONFIGURATION', 'DEFAULTLANGUAGSOURCES', 'en-US'
+        self.source_languages = str(ini_read(
+            self.path, 'CONFIGURATION', 'DEFAULTLSOURCELANGUAGES', 'en-US'
         ))
 
         self.engine_trans = str(ini_read(
@@ -151,6 +172,10 @@ class Conf:
 
         self.synthesis_voice = str(ini_read(
             self.path, 'CONFIGURATION', 'SYNTHESISVOICE', 'pico'
+        ))
+
+        self.option = str(ini_read(
+            self.path, 'CONFIGURATION', 'OPTION', ''
         ))
 
         self.show_notification = bool(ini_read(
@@ -226,8 +251,8 @@ class Conf:
         )
         raw.set(
             'CONFIGURATION',
-            'DEFAULTLANGUAGSOURCES',
-            self.lang_sources
+            'DEFAULTLSOURCELANGUAGES',
+            self.source_languages
         )
         raw.set(
             'CONFIGURATION',
@@ -248,6 +273,11 @@ class Conf:
             'CONFIGURATION',
             'SYNTHESISVOICE',
             self.synthesis_voice
+        )
+        raw.set(
+            'CONFIGURATION',
+            'OPTION',
+            self.option
         )
         try:
             os.makedirs(self.dir, exist_ok=True)

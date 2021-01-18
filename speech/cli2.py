@@ -10,13 +10,13 @@ from sys import stderr
 
 from gi.repository import Gdk, Gtk
 
-from speech.audioutils import get_audio_commands, run_audio_files
+from speech.audioutils import (get_audio_commands, get_espeak_commands, paplay,
+                               run_audio_files)
 from speech.conf import Conf
 from speech.spd_say import spd_say
 from speech.textutils import text_to_dict
 from speech.translate.main import TransError, translate
 from speech.widgets.ocr import ocr
-from speech.widgets.paplay import paplay
 
 conf = Conf()
 
@@ -31,42 +31,42 @@ def parse_arguments():
         '--selection',
         dest='selection',
         action='store_true',
-        help='Depuis sélection'
+        help='Since selection'
     )
     parser.add_argument(
         '--clipboard',
         dest='clipboard',
         action='store_true',
-        help='Depuis le presse-papier'
+        help='From the clipboard'
     )
     parser.add_argument(
         '--ocr',
         dest='ocr',
         action='store_true',
-        help='Reconnaissance optique de caractères'
+        help='Optical Character Recognition'
     )
     parser.add_argument(
         '--stdin',
         dest='stdin',
         action='store_true',
-        help="Depuis l'entrée standard"
+        help="From the standard entrance"
     )
     parser.add_argument(
         '--input-file',
         dest='input_file',
-        help='Depuis un ficher'
+        help='From a file'
     )
     parser.add_argument(
         '--input-text',
         dest='input_text',
-        help='Depuis un ficher'
+        help='Text to read'
     )
     parser.add_argument(
         '-y',
         dest='synthesis_voice',
         choices=conf.list_synthesis_voice,
         default=conf.synthesis_voice,
-        help=f"""Set the synthesis voice default:{conf.synthesis_voice}""")
+        help=f"Set the synthesis voice default:{conf.synthesis_voice}")
     parser.add_argument(
         '-l', '--lang',
         dest='lang',
@@ -75,19 +75,19 @@ def parse_arguments():
         choices=conf.list_langs,
         help="language")
     parser.add_argument(
-        '-t', '--traduction',
+        '-t', '--translation',
         dest='sources',
         nargs='?',
-        const=conf.lang_sources,
-        choices=conf.list_langs_trans,
-        help=f"""traduction Langue sur source default:{conf.lang_sources}""")
+        const=conf.source_languages,
+        choices=conf.list_source_languages,
+        help=f"Language to source translation default:{conf.source_languages}")
     parser.add_argument(
         '--engine-trans',
         dest='engine_trans',
         nargs='?',
         const=conf.engine_trans,
         choices=conf.list_engine_trans,
-        help=f"""engine traduction default:{conf.engine_trans}""")
+        help=f"engine translation default:{conf.engine_trans}")
     parser.add_argument(
         '-s', '--speed',
         dest='speed',
@@ -95,17 +95,17 @@ def parse_arguments():
         const=conf.voice_speed,
         type=float,
         choices=conf.list_voice_speed,
-        help=f"""voice speed default:{conf.voice_speed}""")
+        help=f"Voice speed default:{conf.voice_speed}")
     parser.add_argument(
         '-o', '--output-file',
         dest='outfile',
         nargs='?',
-        help="""name of the audio output file (wav type)""")
+        help="Name of the audio output file (wav type)")
     parser.add_argument(
         '-S', '--stop',
         dest='stop',
         action='store_true',
-        help="arrête la lecture")
+        help="stops playback")
     parser.add_argument(
         '-d', '--debug',
         dest='debug',
@@ -146,7 +146,7 @@ def main():
         conf.set_lang(args.lang)
 
     if args.sources in conf.list_voice_speed:
-        conf.set_lang_sources(args.sources)
+        conf.set_source_languages(args.sources)
 
     if args.engine_trans in conf.list_engine_trans:
         conf.set_engine_trans(args.engine_trans)
@@ -162,6 +162,8 @@ def main():
     if args.stop:
         if args.synthesis_voice == "pico":
             os.system('killall paplay')
+        elif args.synthesis_voice == "espeak":
+            os.system('killall paplay')
         elif args.synthesis_voice == "spd-say":
             os.system('spd-say --cancel')
             os.system('killall spd-say')
@@ -172,6 +174,8 @@ def main():
     except LockError as erreur:
         print(erreur, file=stderr)
         if args.synthesis_voice == "pico":
+            os.system('killall paplay')
+        elif args.synthesis_voice == "espeak":
             os.system('killall paplay')
         elif args.synthesis_voice == "spd-say":
             os.system('spd-say --cancel')
@@ -185,7 +189,7 @@ def main():
         if args.sources:
             text = ocr(conf.lang)
         else:
-            text = ocr(conf.lang_sources)
+            text = ocr(conf.source_languages)
     elif args.stdin:
         text = input()
     elif args.input_file:
@@ -208,7 +212,7 @@ def main():
         try:
             text = translate(
                 text,
-                sources=conf.lang_sources[:2],
+                sources=conf.source_languages[:2],
                 targets=conf.lang[:2],
                 config={'engine': conf.engine_trans})
         except TransError:
@@ -222,6 +226,18 @@ def main():
             conf.lang,
             conf.cache_path,
             args.speed
+        )
+        run_audio_files(names, cmds, outfile)
+        if not args.outfile:
+            paplay(outfile)
+    elif conf.synthesis_voice == "espeak":
+        text = text_to_dict(text, conf.dict_path, conf.lang)
+        names, cmds = get_espeak_commands(
+            text,
+            outfile,
+            conf.lang,
+            conf.cache_path,
+            conf.voice_speed
         )
         run_audio_files(names, cmds, outfile)
         if not args.outfile:

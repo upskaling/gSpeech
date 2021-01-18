@@ -92,3 +92,15 @@ msgstr ""
 #: gSpeech.py:516
 msgid "Wave file (*.wav)"
 msgstr ""
+
+msgid "Read"
+msgstr ""
+
+msgid "Translate and read"
+msgstr ""
+
+msgid "Read image content"
+msgstr ""
+
+msgid "Translation engine"
+msgstr ""

@@ -48,6 +48,18 @@ def get_audio_commands(text, outfile, lang, cache_path, speed):
     return names, cmds
 
 
+def get_espeak_commands(text, outfile='out.wav', lang='fr-FR', cache_path='', speed=1):
+    speed = round((speed * 320) / 2)
+    cmds = []
+    names = []
+    volume = 80
+    pitch = round((speed * 45) / 320)
+    stream = f"""espeak -v mb-{str(lang)[:2]}4 -s {str(speed)} -p {str(pitch)} -a {str(volume)} -w {outfile} -- '{text}'"""
+    cmds.append(stream)
+    names.append(outfile)
+    return names, cmds
+
+
 def run_audio_files(names, cmds, outfile='out.wav'):
     if len(cmds) == 1:
         os.system(cmds[0])
@@ -72,3 +84,12 @@ def run_audio_files(names, cmds, outfile='out.wav'):
     os.system('sox %s %s' % (' '.join(names), outfile))
     for _file in names:
         os.remove(_file)
+
+
+def paplay(outfile, ampersand=False, name='gspeech-cli'):
+    if ampersand:
+        ampersand_srt = '&'
+    else:
+        ampersand_srt = ''
+
+    os.system(f"paplay --client-name={name} '{outfile}' {ampersand_srt}")

@@ -10,10 +10,9 @@ gi.require_version('Gtk', '3.0')
 from gi.repository import Gdk, Gst, Gtk
 
 from .. import pid
-from ..audioutils import get_audio_commands, run_audio_files
+from ..audioutils import get_audio_commands, run_audio_files, get_espeak_commands
 from ..i18n import (_pause, _play, _read_clipboard, _read_ocr, _read_selected,
-                    _trans_read_clipboard, _trans_read_ocr,
-                    _trans_read_selected)
+                    _trans_read)
 from ..spd_say import spd_say
 from ..textutils import text_to_dict
 from ..translate.main import translate
@@ -32,15 +31,13 @@ def on_lang(ind, tray, lang, conf):
     tray.set_from_file(conf.icon_path)
 
 
-def on_lang_trans(ind, tray, lang, conf):
-    """Action on language submenu items"""
-    conf.set_lang_sources(lang)
-    conf.lang_sources = lang
+def on_source_languages(lang, conf):
+    conf.set_source_languages(lang)
+    conf.source_languages = lang
     conf.update()
 
 
-def on_engine_trans(ind, tray, lang, conf):
-    """Action on language submenu items"""
+def on_engine_trans(lang, conf):
     conf.set_engine_trans(lang)
     conf.engine_trans = lang
     conf.update()
@@ -53,8 +50,13 @@ def on_speed(speed, conf):
     conf.update()
 
 
+def on_option(option, conf):
+    conf.set_option(option)
+    conf.option = option
+    conf.update()
+
+
 def on_synthesis_voice(synthesis_voice, conf):
-    """Action on voice speed submenu items"""
     conf.set_synthesis_voice(synthesis_voice)
     conf.synthesis_voice = synthesis_voice
     conf.update()
@@ -107,35 +109,49 @@ def on_destroy(
     Gtk.main_quit()
 
 
-def changed_lang_menu(
-    widget, ind, tray, lang, conf, lang_combobox, index=None
-):
+def changed_lang_menu(widget, ind, tray, lang, conf, lang_combobox, index=None):
     on_lang(ind, tray, lang, conf)
     lang_combobox.active = index
     if widget.get_active():
         lang_combobox.set_active(index)
 
 
-def changed_lang_sources_menu(widget, ind, tray, lang, conf, lang_combobox, index=None):
-    on_lang_trans(ind, tray, lang, conf)
-    lang_combobox.active = index
-    if widget.get_active():
-        lang_combobox.set_active(index)
-
-
-def changed_engine_trans_menu(widget, ind, tray, lang, conf, lang_combobox, index=None):
-    on_engine_trans(ind, tray, lang, conf)
-    lang_combobox.active = index
-    if widget.get_active():
-        lang_combobox.set_active(index)
-
-
-def changed_cb(lang_combobox, ind, tray, conf, menu_langs):
+def changed_lang(lang_combobox, ind, tray, conf, menu_langs):
     model = lang_combobox.get_model()
     index = lang_combobox.get_active()
     if index is not None:
         on_lang(ind, tray, model[index][0], conf)
         menu_langs.get_children()[index].set_active(True)
+
+
+def changed_engine_trans_menu(widget, engine_trans, conf, engine_trans_combobox, index=None):
+    on_engine_trans(engine_trans, conf)
+    engine_trans_combobox.active = index
+    if widget.get_active():
+        engine_trans_combobox.set_active(index)
+
+
+def changed_engine_trans(synthesis_voice_combobox, conf, menu_synthesis_voice):
+    model = synthesis_voice_combobox.get_model()
+    index = synthesis_voice_combobox.get_active()
+    if index is not None:
+        on_engine_trans(model[index][0], conf)
+        menu_synthesis_voice.get_children()[index].set_active(True)
+
+
+def changed_source_languages_menu(widget, source_languages, conf, source_languages_combobox, index=None):
+    on_source_languages(source_languages, conf)
+    source_languages_combobox.active = index
+    if widget.get_active():
+        source_languages_combobox.set_active(index)
+
+
+def changed_source_languages(source_languages_combobox, conf, menu_source_languages):
+    model = source_languages_combobox.get_model()
+    index = source_languages_combobox.get_active()
+    if index is not None:
+        on_source_languages(model[index][0], conf)
+        menu_source_languages.get_children()[index].set_active(True)
 
 
 def changed_speed_menu(widget, speed, conf, speed_combobox, index=None):
@@ -145,19 +161,42 @@ def changed_speed_menu(widget, speed, conf, speed_combobox, index=None):
         speed_combobox.set_active(index)
 
 
-def synthesis_voice_menu(widget, synthesis_voice, conf, synthesis_voice_combobox, index=None):
-    on_synthesis_voice(synthesis_voice, conf)
-    synthesis_voice_combobox.active = index
-    if widget.get_active():
-        synthesis_voice_combobox.set_active(index)
-
-
 def changed_speed(speed_combobox, conf, menu_voice_speed):
     model = speed_combobox.get_model()
     index = speed_combobox.get_active()
     if index is not None:
         on_speed(model[index][0], conf)
         menu_voice_speed.get_children()[index].set_active(True)
+
+
+def changed_synthesis_voice_menu(widget, synthesis_voice, conf, synthesis_voice_combobox, index=None):
+    on_synthesis_voice(synthesis_voice, conf)
+    synthesis_voice_combobox.active = index
+    if widget.get_active():
+        synthesis_voice_combobox.set_active(index)
+
+
+def changed_synthesis_voice(synthesis_voice_combobox, conf, menu_synthesis_voice):
+    model = synthesis_voice_combobox.get_model()
+    index = synthesis_voice_combobox.get_active()
+    if index is not None:
+        on_synthesis_voice(model[index][0], conf)
+        menu_synthesis_voice.get_children()[index].set_active(True)
+
+
+def changed_option_menu(widget, option, conf, option_combobox, index=None):
+    option_combobox.active = index
+    on_option(option, conf)
+    if widget.get_active():
+        option_combobox.set_active(index)
+
+
+def changed_option(option_combobox, conf, menu_option):
+    model = option_combobox.get_model()
+    index = option_combobox.get_active()
+    if index is not None:
+        on_option(model[index][0], conf)
+        menu_option.get_children()[index].set_active(True)
 
 
 def on_message(bus, message, player):
@@ -200,31 +239,46 @@ def on_execute(
     """ execute text to speech"""
 
     if sources is None:
-        sources = conf.lang
+        sources = conf.source_languages
 
-    if _read_selected in widget.get_label() or _trans_read_selected in widget.get_label():
+    if conf.option in _read_selected:
         text = Gtk.Clipboard.get(Gdk.SELECTION_PRIMARY).wait_for_text()
-    elif _read_clipboard in widget.get_label() or _trans_read_clipboard in widget.get_label():
+    elif conf.option in _read_clipboard:
         text = Gtk.Clipboard.get(Gdk.SELECTION_CLIPBOARD).wait_for_text()
-    elif _read_ocr in widget.get_label() or _trans_read_ocr() in widget.get_label():
+    elif conf.option in _read_ocr:
         text = ocr(sources[:2])
     else:
-        text = "error"
+        text = None
 
-    notify.get(conf, text)
+    if conf.show_notification:
+        notify.get(conf, text)
 
     if text is None:
         return
 
     conf.set_lang(conf.lang)
 
-    if sources:
+    if _trans_read in widget.get_label():
         text = translate(text, sources[:2], conf.lang[:2], {
                          "engine": conf.engine_trans})
 
     if conf.synthesis_voice == "pico":
         text = text_to_dict(text, conf.dict_path, conf.lang)
         names, cmds = get_audio_commands(
+            text,
+            conf.temp_path,
+            conf.lang,
+            conf.cache_path,
+            conf.voice_speed
+        )
+        run_audio_files(names, cmds, conf.temp_path)
+        if player:
+            player.set_state(Gst.State.NULL)
+        player.set_state(Gst.State.PLAYING)
+        button_state(menu_play_pause, win_play_pause, player)
+    elif conf.synthesis_voice == "espeak":
+        text = text_to_dict(text, conf.dict_path, conf.lang)
+        names, cmds = get_espeak_commands(
             text,
             conf.temp_path,
             conf.lang,

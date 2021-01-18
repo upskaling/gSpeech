@@ -3,21 +3,20 @@ import gi
 gi.require_version('Gdk', '3.0')
 gi.require_version('Gst', '1.0')
 gi.require_version('Gtk', '3.0')
-from shutil import which
 
 from gi.repository import Gdk, Gst, Gtk
 
-from speech.translate.main import on_trans
-
 from . import pid
 from .conf import Conf
-from .i18n import (_engine_trans, _languages, _pause, _read_clipboard,
-                   _read_ocr, _read_selected, _sources, _synthesis_voice,
-                   _tooltip, _trans_read_clipboard, _trans_read_ocr,
-                   _trans_read_selected, _voice_speed)
+from .i18n import (_engine_trans, _languages, _menu_option, _pause, _read,
+                   _sources, _synthesis_voice, _tooltip, _trans_read,
+                   _voice_speed)
 from .widgets import notify
-from .widgets.events import (changed_cb, changed_speed, on_execute,
-                             on_left_click, on_play_pause, on_player, on_stop)
+from .widgets.events import (changed_engine_trans, changed_lang,
+                             changed_option, changed_source_languages,
+                             changed_speed, changed_synthesis_voice,
+                             on_execute, on_left_click, on_play_pause,
+                             on_player, on_stop)
 from .widgets.menu import on_right_click
 from .widgets.save import on_save
 
@@ -73,6 +72,19 @@ def generic_button(
     hbox.pack_end(button, False, False, 0)
 
 
+def get_option_combobox(option_combobox, hbox, ind, tray, conf, menu_option):
+    label = Gtk.Label(_menu_option)
+    hbox.pack_start(label, False, False, 0)
+    hbox.pack_start(option_combobox, False, False, 0)
+    count = 0
+    for option in conf.list_option:
+        option_combobox.append_text(option)
+        if option == conf.option:
+            option_combobox.set_active(count)
+        count += 1
+    option_combobox.connect('changed', changed_option, conf, menu_option)
+
+
 def get_lang_combobox(lang_combobox, hbox, ind, tray, conf, menu_langs):
     label = Gtk.Label(_languages)
     hbox.pack_start(label, False, False, 0)
@@ -83,22 +95,24 @@ def get_lang_combobox(lang_combobox, hbox, ind, tray, conf, menu_langs):
         if lang == conf.lang:
             lang_combobox.set_active(count)
         count += 1
-    lang_combobox.connect('changed', changed_cb, ind, tray, conf, menu_langs)
+    lang_combobox.connect('changed', changed_lang, ind, tray, conf, menu_langs)
 
 
-def get_lang_trans_combobox(lang_combobox, hbox, ind, tray, conf, menu_langs):
+def get_source_languages_combobox(source_languages_combobox, hbox, conf, menu_source_languages):
     label = Gtk.Label(_sources)
     hbox.pack_start(label, False, False, 0)
-    hbox.pack_start(lang_combobox, False, False, 0)
+    hbox.pack_start(source_languages_combobox, False, False, 0)
     count = 0
-    for lang in conf.list_langs_trans:
-        lang_combobox.append_text(lang)
-        if lang == conf.lang_sources:
-            lang_combobox.set_active(count)
+    for lang in conf.list_source_languages:
+        source_languages_combobox.append_text(lang)
+        if lang == conf.source_languages:
+            source_languages_combobox.set_active(count)
         count += 1
+    source_languages_combobox.connect(
+        'changed', changed_source_languages, conf, menu_source_languages)
 
 
-def get_engine_trans_combobox(lang_combobox, hbox, ind, tray, conf, menu_langs):
+def get_engine_trans_combobox(lang_combobox, hbox, conf, menu_engine_trans):
     label = Gtk.Label(_engine_trans)
     hbox.pack_start(label, False, False, 0)
     hbox.pack_start(lang_combobox, False, False, 0)
@@ -108,18 +122,22 @@ def get_engine_trans_combobox(lang_combobox, hbox, ind, tray, conf, menu_langs):
         if lang == conf.engine_trans:
             lang_combobox.set_active(count)
         count += 1
+    lang_combobox.connect('changed', changed_engine_trans,
+                          conf, menu_engine_trans)
 
 
-def get_synthesis_voice_combobox(lang_combobox, hbox, ind, tray, conf, menu_langs):
+def get_synthesis_voice_combobox(synthesis_voice_combobox, hbox, conf, menu_synthesis_voice):
     label = Gtk.Label(_synthesis_voice)
     hbox.pack_start(label, False, False, 0)
-    hbox.pack_start(lang_combobox, False, False, 0)
+    hbox.pack_start(synthesis_voice_combobox, False, False, 0)
     count = 0
     for lang in conf.list_synthesis_voice:
-        lang_combobox.append_text(lang)
+        synthesis_voice_combobox.append_text(lang)
         if lang == conf.synthesis_voice:
-            lang_combobox.set_active(count)
+            synthesis_voice_combobox.set_active(count)
         count += 1
+    synthesis_voice_combobox.connect(
+        'changed', changed_synthesis_voice, conf, menu_synthesis_voice)
 
 
 def voice_speed_box(voice_combobox, hbox, conf, menu_voice_speed):
@@ -149,10 +167,12 @@ class MainApp:
 
         ind = None
         tray = None
+        menu_option = Gtk.Menu()
+        option_combobox = Gtk.ComboBoxText.new()
         lang_combobox = Gtk.ComboBoxText.new()
-        lang_trans_combobox = Gtk.ComboBoxText.new()
+        source_languages_combobox = Gtk.ComboBoxText.new()
         menu_langs = Gtk.Menu()
-        menu_langs_trans = Gtk.Menu()
+        menu_source_languages = Gtk.Menu()
         engine_trans_combobox = Gtk.ComboBoxText.new()
         menu_engine_trans = Gtk.Menu()
         voice_combobox = Gtk.ComboBoxText.new()
@@ -178,10 +198,12 @@ class MainApp:
                 menu_play_pause,
                 win_play_pause,
                 player,
+                option_combobox,
+                menu_option,
                 lang_combobox,
-                lang_trans_combobox,
+                source_languages_combobox,
                 menu_langs,
-                menu_langs_trans,
+                menu_source_languages,
                 engine_trans_combobox,
                 menu_engine_trans,
                 voice_combobox,
@@ -203,7 +225,7 @@ class MainApp:
                 win_play_pause,
                 player,
                 lang_combobox,
-                lang_trans_combobox,
+                source_languages_combobox,
                 menu_langs,
                 voice_combobox,
                 menu_voice_speed
@@ -243,7 +265,7 @@ class MainApp:
             button,
             accel_group,
             'p',
-            _read_clipboard,
+            _read,
             on_execute,
             window,
             conf,
@@ -251,54 +273,6 @@ class MainApp:
             win_play_pause,
             player
         )
-        if on_trans():
-            button = Gtk.Button()
-            button.set_image(
-                Gtk.Image.new_from_stock(
-                    Gtk.STOCK_EXECUTE,
-                    Gtk.IconSize.MENU
-                )
-            )
-            generic_button(
-                hbox,
-                button,
-                accel_group,
-                'm',
-                _trans_read_clipboard,
-                on_execute,
-                window,
-                conf,
-                menu_play_pause,
-                win_play_pause,
-                player,
-                conf.lang_sources
-            )
-        if which('tesseract'):
-            button = Gtk.Button()
-            button.set_image(
-                Gtk.Image.new_from_stock(
-                    Gtk.STOCK_EXECUTE,
-                    Gtk.IconSize.MENU
-                )
-            )
-            generic_button(
-                hbox,
-                button,
-                accel_group,
-                'o',
-                _read_ocr,
-                on_execute,
-                window,
-                conf,
-                menu_play_pause,
-                win_play_pause,
-                player,
-                conf.lang_sources
-            )
-        vbox.pack_start(hbox, False, False, 0)
-
-        hbox = Gtk.HBox()
-
         button = Gtk.Button()
         button.set_image(
             Gtk.Image.new_from_stock(
@@ -311,7 +285,7 @@ class MainApp:
             button,
             accel_group,
             'c',
-            _read_selected,
+            _trans_read,
             on_execute,
             window,
             conf,
@@ -319,50 +293,8 @@ class MainApp:
             win_play_pause,
             player
         )
-        if on_trans():
-            button = Gtk.Button()
-            button.set_image(
-                Gtk.Image.new_from_stock(
-                    Gtk.STOCK_EXECUTE,
-                    Gtk.IconSize.MENU
-                )
-            )
-            generic_button(
-                hbox,
-                button,
-                accel_group,
-                'w',
-                _trans_read_selected,
-                on_execute,
-                window,
-                conf,
-                menu_play_pause,
-                win_play_pause,
-                player,
-                conf.lang_sources
-            )
-            button = Gtk.Button()
-            button.set_image(
-                Gtk.Image.new_from_stock(
-                    Gtk.STOCK_EXECUTE,
-                    Gtk.IconSize.MENU
-                )
-            )
-            generic_button(
-                hbox,
-                button,
-                accel_group,
-                't',
-                _trans_read_ocr,
-                on_execute,
-                window,
-                conf,
-                menu_play_pause,
-                win_play_pause,
-                player,
-                conf.lang_sources
-            )
-
+        get_option_combobox(option_combobox, hbox, ind,
+                            tray, conf, menu_option)
         vbox.pack_start(hbox, False, False, 0)
 
         hbox = Gtk.HBox()
@@ -413,13 +345,15 @@ class MainApp:
         vbox.pack_start(hbox, False, False, 0)
 
         hbox = Gtk.HBox()
-        get_lang_combobox(lang_combobox, hbox, ind, tray, conf, menu_langs)
-        get_lang_trans_combobox(lang_trans_combobox,
-                                hbox, ind, tray, conf, menu_langs_trans)
+        get_source_languages_combobox(source_languages_combobox,
+                                hbox, conf, menu_source_languages)
         get_engine_trans_combobox(
-            engine_trans_combobox, hbox, ind, tray, conf, menu_engine_trans)
+            engine_trans_combobox, hbox, conf, menu_engine_trans)
+        vbox.pack_start(hbox, False, False, 0)
+        hbox = Gtk.HBox()
+        get_lang_combobox(lang_combobox, hbox, ind, tray, conf, menu_langs)
         get_synthesis_voice_combobox(
-            synthesis_voice_combobox, hbox, ind, tray, conf, menu_synthesis_voice)
+            synthesis_voice_combobox, hbox, conf, menu_synthesis_voice)
         voice_speed_box(voice_combobox, hbox, conf, menu_voice_speed)
         vbox.pack_start(hbox, False, False, 0)
 
