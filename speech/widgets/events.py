@@ -258,7 +258,7 @@ def on_execute(
 
     conf.set_lang(conf.lang)
 
-    if _trans_read in widget.get_label():
+    if hasattr(widget, 'get_label') and _trans_read in widget.get_label():
         text = translate(text, sources[:2], conf.lang[:2], {
                          "engine": conf.engine_trans})
 

@@ -224,11 +224,18 @@ class MainApp:
                 menu_play_pause,
                 win_play_pause,
                 player,
+                option_combobox,
+                menu_option,
                 lang_combobox,
                 source_languages_combobox,
                 menu_langs,
+                menu_source_languages,
+                engine_trans_combobox,
+                menu_engine_trans,
                 voice_combobox,
-                menu_voice_speed
+                menu_voice_speed,
+                synthesis_voice_combobox,
+                menu_synthesis_voice
             )
             tray.connect(
                 'activate',
