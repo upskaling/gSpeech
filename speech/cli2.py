@@ -186,11 +186,10 @@ def main():
     elif args.clipboard:
         text = Gtk.Clipboard.get(Gdk.SELECTION_CLIPBOARD).wait_for_text()
     elif args.ocr:
-        print(args.sources)
         if args.sources:
-            text = ocr(conf.lang)
+            text = ocr(conf.lang[:2])
         else:
-            text = ocr(conf.source_languages)
+            text = ocr(conf.source_languages[:2])
     elif args.stdin:
         text = input()
     elif args.input_file:
