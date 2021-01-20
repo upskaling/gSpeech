@@ -10,8 +10,8 @@ from sys import stderr
 
 from gi.repository import Gdk, Gtk
 
-from speech.audioutils import (get_audio_commands, get_espeak_commands, paplay,
-                               run_audio_files)
+from speech.audioutils import (get_audio_commands, get_audio_commands_espeak,
+                               paplay, run_audio_files)
 from speech.conf import Conf
 from speech.spd_say import spd_say
 from speech.textutils import text_to_dict
@@ -59,6 +59,7 @@ def parse_arguments():
     parser.add_argument(
         '--input-text',
         dest='input_text',
+        type=str,
         help='Text to read'
     )
     parser.add_argument(
@@ -204,7 +205,7 @@ def main():
     else:
         args.speed = conf.voice_speed
 
-    outfile = 'speech.wav'
+    outfile = conf.temp_path
     if args.outfile:
         outfile = args.outfile
 
@@ -232,7 +233,7 @@ def main():
             paplay(outfile)
     elif conf.synthesis_voice == "espeak":
         text = text_to_dict(text, conf.dict_path, conf.lang)
-        names, cmds = get_espeak_commands(
+        names, cmds = get_audio_commands_espeak(
             text,
             outfile,
             conf.lang,

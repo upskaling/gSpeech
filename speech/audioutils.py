@@ -16,11 +16,10 @@ def get_audio_commands(text, outfile, lang, cache_path, speed):
     cmds = []
     names = []
     # remove parenthesis to avoid bugs with pico2wave command
-    text = text.replace('"', '')
-    text = text.replace("'", '')
+    text = text.replace('"', '').replace("'", '')
     # low the limits to avoid overflow
     if len(text) <= overflow_len:
-        stream = """pico2wave -l %s -w %s '%s'""" % (
+        stream = """pico2wave -l %s -w %s -- '%s'""" % (
             lang,
             outfile,
             effect(text, speed * 100)
@@ -39,7 +38,7 @@ def get_audio_commands(text, outfile, lang, cache_path, speed):
         ):
             filename = cache_path + 'speech' + str(idx) + '.wav'
             cmds.append(
-                """pico2wave -l %s -w %s '%s'""" % (
+                """pico2wave -l %s -w %s -- '%s'""" % (
                     lang, filename, effect(text, speed * 100)
                 )
             )
@@ -48,7 +47,9 @@ def get_audio_commands(text, outfile, lang, cache_path, speed):
     return names, cmds
 
 
-def get_espeak_commands(text, outfile='out.wav', lang='fr-FR', cache_path='', speed=1):
+def get_audio_commands_espeak(text, outfile='out.wav', lang='fr-FR', cache_path='', speed=1):
+    # remove parenthesis to avoid bugs with espeak command
+    text = text.replace('"', '').replace("'", '')
     speed = round((speed * 320) / 2)
     cmds = []
     names = []

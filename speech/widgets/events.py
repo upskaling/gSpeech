@@ -10,7 +10,8 @@ gi.require_version('Gtk', '3.0')
 from gi.repository import Gdk, Gst, Gtk
 
 from .. import pid
-from ..audioutils import get_audio_commands, run_audio_files, get_espeak_commands
+from ..audioutils import (get_audio_commands, get_audio_commands_espeak,
+                          run_audio_files)
 from ..i18n import (_pause, _play, _read_clipboard, _read_ocr, _read_selected,
                     _trans_read)
 from ..spd_say import spd_say
@@ -278,7 +279,7 @@ def on_execute(
         button_state(menu_play_pause, win_play_pause, player)
     elif conf.synthesis_voice == "espeak":
         text = text_to_dict(text, conf.dict_path, conf.lang)
-        names, cmds = get_espeak_commands(
+        names, cmds = get_audio_commands_espeak(
             text,
             conf.temp_path,
             conf.lang,
