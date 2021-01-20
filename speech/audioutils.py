@@ -2,6 +2,8 @@ import multiprocessing
 import os
 import subprocess
 
+import psutil
+
 from .i18n import _text_to_long
 
 
@@ -101,3 +103,9 @@ def paplay(outfile, ampersand=False, name='gspeech-cli'):
         ampersand_srt = ''
 
     os.system(f"paplay --client-name={name} '{outfile}' {ampersand_srt}")
+
+
+def paplay_stop():
+    for proc in psutil.process_iter():
+        if '--client-name=gspeech-cli' in proc.cmdline():
+            proc.kill()

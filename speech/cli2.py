@@ -11,7 +11,7 @@ from sys import stderr
 from gi.repository import Gdk, Gtk
 
 from speech.audioutils import (get_audio_commands, get_audio_commands_espeak,
-                               paplay, run_audio_files)
+                               paplay, paplay_stop, run_audio_files)
 from speech.conf import Conf
 from speech.spd_say import spd_say
 from speech.textutils import text_to_dict
@@ -163,9 +163,9 @@ def main():
 
     if args.stop:
         if args.synthesis_voice == "pico":
-            os.system('killall paplay')
+            paplay_stop()
         elif args.synthesis_voice == "espeak":
-            os.system('killall paplay')
+            paplay_stop()
         elif args.synthesis_voice == "spd-say":
             os.system('spd-say --cancel')
             os.system('killall spd-say')
@@ -176,9 +176,9 @@ def main():
     except LockError as erreur:
         print(erreur, file=stderr)
         if args.synthesis_voice == "pico":
-            os.system('killall paplay')
+            paplay_stop()
         elif args.synthesis_voice == "espeak":
-            os.system('killall paplay')
+            paplay_stop()
         elif args.synthesis_voice == "spd-say":
             os.system('spd-say --cancel')
 
@@ -232,7 +232,6 @@ def main():
         if not args.outfile:
             paplay(outfile)
     elif conf.synthesis_voice == "espeak":
-        text = text_to_dict(text, conf.dict_path, conf.lang, args.debug)
         names, cmds = get_audio_commands_espeak(
             text,
             outfile,
