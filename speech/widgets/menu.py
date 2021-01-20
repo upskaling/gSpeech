@@ -277,7 +277,8 @@ def on_right_click(
     generic_item(menu, _multimedia_window, on_media_dialog, window)
     separator_item(menu)
     langs_item(menu, ind, tray, conf, lang_combobox, menu_langs)
-    source_languages_item(menu, conf, source_languages_combobox, menu_source_languages)
+    source_languages_item(
+        menu, conf, source_languages_combobox, menu_source_languages)
     engine_trans_item(menu, conf, engine_trans_combobox, menu_engine_trans)
     voice_speed_item(menu, conf, voice_combobox, menu_voice_speed)
     synthesis_voice_item(

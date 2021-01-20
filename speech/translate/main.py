@@ -10,7 +10,13 @@ class TransError(RuntimeError):
         self.args = arg
 
 
-def translate(stdin, sources='en', targets='fr', config={"engine": 'requests', "translate_url": 'https://libretranslate.com/translate'}):
+def translate(
+    stdin,
+    sources='en',
+    targets='fr',
+    config={"engine": 'requests',
+            "translate_url": 'https://libretranslate.com/translate'}
+):
     '''
     translate
     '''
@@ -18,8 +24,9 @@ def translate(stdin, sources='en', targets='fr', config={"engine": 'requests', "
     if len(stdin) >= 5000:
         return "5000 max caractère"
 
-    paplay(outfile='/usr/share/sounds/freedesktop/stereo/device-added.oga',
-           ampersand=True)
+    paplay(
+        outfile='/usr/share/sounds/freedesktop/stereo/device-added.oga',
+        ampersand=True)
 
     if config['engine'] == 'argos_translate':
         translate = argos_translate(stdin, sources, targets)
@@ -34,8 +41,9 @@ def translate(stdin, sources='en', targets='fr', config={"engine": 'requests', "
         stdout = translate.communicate(stdin.encode())[0].decode()
 
     else:
-        paplay(outfile='/usr/share/sounds/freedesktop/stereo/device-removed.oga',
-               ampersand=True)
+        paplay(
+            outfile='/usr/share/sounds/freedesktop/stereo/device-removed.oga',
+            ampersand=True)
         raise TransError("Could not be translated!")
 
     return stdout

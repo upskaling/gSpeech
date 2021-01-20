@@ -98,7 +98,12 @@ def get_lang_combobox(lang_combobox, hbox, ind, tray, conf, menu_langs):
     lang_combobox.connect('changed', changed_lang, ind, tray, conf, menu_langs)
 
 
-def get_source_languages_combobox(source_languages_combobox, hbox, conf, menu_source_languages):
+def get_source_languages_combobox(
+        source_languages_combobox,
+        hbox,
+        conf,
+        menu_source_languages
+):
     label = Gtk.Label(_sources)
     hbox.pack_start(label, False, False, 0)
     hbox.pack_start(source_languages_combobox, False, False, 0)
@@ -126,7 +131,12 @@ def get_engine_trans_combobox(lang_combobox, hbox, conf, menu_engine_trans):
                           conf, menu_engine_trans)
 
 
-def get_synthesis_voice_combobox(synthesis_voice_combobox, hbox, conf, menu_synthesis_voice):
+def get_synthesis_voice_combobox(
+    synthesis_voice_combobox,
+    hbox,
+    conf,
+    menu_synthesis_voice
+):
     label = Gtk.Label(_synthesis_voice)
     hbox.pack_start(label, False, False, 0)
     hbox.pack_start(synthesis_voice_combobox, False, False, 0)
@@ -352,8 +362,8 @@ class MainApp:
         vbox.pack_start(hbox, False, False, 0)
 
         hbox = Gtk.HBox()
-        get_source_languages_combobox(source_languages_combobox,
-                                hbox, conf, menu_source_languages)
+        get_source_languages_combobox(
+            source_languages_combobox, hbox, conf, menu_source_languages)
         get_engine_trans_combobox(
             engine_trans_combobox, hbox, conf, menu_engine_trans)
         vbox.pack_start(hbox, False, False, 0)

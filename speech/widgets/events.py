@@ -110,7 +110,15 @@ def on_destroy(
     Gtk.main_quit()
 
 
-def changed_lang_menu(widget, ind, tray, lang, conf, lang_combobox, index=None):
+def changed_lang_menu(
+    widget,
+    ind,
+    tray,
+    lang,
+    conf,
+    lang_combobox,
+    index=None
+):
     on_lang(ind, tray, lang, conf)
     lang_combobox.active = index
     if widget.get_active():
@@ -125,7 +133,13 @@ def changed_lang(lang_combobox, ind, tray, conf, menu_langs):
         menu_langs.get_children()[index].set_active(True)
 
 
-def changed_engine_trans_menu(widget, engine_trans, conf, engine_trans_combobox, index=None):
+def changed_engine_trans_menu(
+    widget,
+    engine_trans,
+    conf,
+    engine_trans_combobox,
+    index=None
+):
     on_engine_trans(engine_trans, conf)
     engine_trans_combobox.active = index
     if widget.get_active():
@@ -140,14 +154,24 @@ def changed_engine_trans(synthesis_voice_combobox, conf, menu_synthesis_voice):
         menu_synthesis_voice.get_children()[index].set_active(True)
 
 
-def changed_source_languages_menu(widget, source_languages, conf, source_languages_combobox, index=None):
+def changed_source_languages_menu(
+    widget,
+    source_languages,
+    conf,
+    source_languages_combobox,
+    index=None
+):
     on_source_languages(source_languages, conf)
     source_languages_combobox.active = index
     if widget.get_active():
         source_languages_combobox.set_active(index)
 
 
-def changed_source_languages(source_languages_combobox, conf, menu_source_languages):
+def changed_source_languages(
+    source_languages_combobox,
+    conf,
+    menu_source_languages
+):
     model = source_languages_combobox.get_model()
     index = source_languages_combobox.get_active()
     if index is not None:
@@ -170,14 +194,16 @@ def changed_speed(speed_combobox, conf, menu_voice_speed):
         menu_voice_speed.get_children()[index].set_active(True)
 
 
-def changed_synthesis_voice_menu(widget, synthesis_voice, conf, synthesis_voice_combobox, index=None):
+def changed_synthesis_voice_menu(widget, synthesis_voice, conf,
+                                 synthesis_voice_combobox, index=None):
     on_synthesis_voice(synthesis_voice, conf)
     synthesis_voice_combobox.active = index
     if widget.get_active():
         synthesis_voice_combobox.set_active(index)
 
 
-def changed_synthesis_voice(synthesis_voice_combobox, conf, menu_synthesis_voice):
+def changed_synthesis_voice(synthesis_voice_combobox,
+                            conf, menu_synthesis_voice):
     model = synthesis_voice_combobox.get_model()
     index = synthesis_voice_combobox.get_active()
     if index is not None:

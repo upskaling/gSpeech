@@ -47,7 +47,13 @@ def get_audio_commands(text, outfile, lang, cache_path, speed):
     return names, cmds
 
 
-def get_audio_commands_espeak(text, outfile='out.wav', lang='fr-FR', cache_path='', speed=1):
+def get_audio_commands_espeak(
+    text,
+    outfile='out.wav',
+    lang='fr-FR',
+    cache_path='',
+    speed=1
+):
     # remove parenthesis to avoid bugs with espeak command
     text = text.replace('"', '').replace("'", '')
     speed = round((speed * 320) / 2)
@@ -55,7 +61,8 @@ def get_audio_commands_espeak(text, outfile='out.wav', lang='fr-FR', cache_path=
     names = []
     volume = 80
     pitch = round((speed * 45) / 320)
-    stream = f"""espeak -v mb-{str(lang)[:2]}4 -s {str(speed)} -p {str(pitch)} -a {str(volume)} -w {outfile} -- '{text}'"""
+    stream = f"""espeak -v mb-{str(lang)[:2]}4 -s {str(speed)}"""\
+        f""" -p {str(pitch)} -a {str(volume)} -w {outfile} -- '{text}'"""
     cmds.append(stream)
     names.append(outfile)
     return names, cmds

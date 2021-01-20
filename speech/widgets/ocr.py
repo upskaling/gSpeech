@@ -20,7 +20,8 @@ def ocr(lang='fr'):
     screenshooter_image = f'{temp_dir.name}/screenshooter.png'
     run(screenshooter(screenshooter_image), check=True)
 
-    tesseract = Popen(['tesseract', '-l', lang_dit[lang], screenshooter_image, '-'],
+    tesseract = Popen(['tesseract', '-l', lang_dit[lang],
+                       screenshooter_image, '-'],
                       stdout=PIPE,
                       stderr=DEVNULL)
 

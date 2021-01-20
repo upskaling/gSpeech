@@ -26,7 +26,8 @@ def parse_arguments():
     parse arguments
     '''
     parser = argparse.ArgumentParser(
-        description=f'{conf.app_name} is a small utility that allows you to read text.')
+        description=f'{conf.app_name}'
+        'is a small utility that allows you to read text.')
     parser.add_argument(
         '--selection',
         dest='selection',
@@ -231,7 +232,7 @@ def main():
         if not args.outfile:
             paplay(outfile)
     elif conf.synthesis_voice == "espeak":
-        text = text_to_dict(text, conf.dict_path, conf.lang)
+        text = text_to_dict(text, conf.dict_path, conf.lang, args.debug)
         names, cmds = get_audio_commands_espeak(
             text,
             outfile,
