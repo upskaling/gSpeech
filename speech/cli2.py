@@ -10,6 +10,7 @@ from sys import stderr
 
 from gi.repository import Gdk, Gtk
 
+from speech import __version__
 from speech.audioutils import (get_audio_commands, get_audio_commands_espeak,
                                paplay, paplay_stop, run_audio_files)
 from speech.conf import Conf
@@ -113,6 +114,11 @@ def parse_arguments():
         dest='debug',
         action='store_true',
         help="debug mode")
+    parser.add_argument(
+        '-v', '--version',
+        dest='version',
+        action='store_true',
+        help="show version information")
     return parser.parse_args()
 
 
@@ -143,6 +149,10 @@ def get_lock(process_name):
 
 def main():
     args = parse_arguments()
+
+    if args.version:
+        print(f'{conf.app_name} version {__version__}')
+        exit()
 
     if args.lang in conf.list_langs:
         conf.set_lang(args.lang)
