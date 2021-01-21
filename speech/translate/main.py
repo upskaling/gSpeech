@@ -24,9 +24,7 @@ def translate(
     if len(stdin) >= 5000:
         return "5000 max caractère"
 
-    paplay(
-        outfile='/usr/share/sounds/freedesktop/stereo/device-added.oga',
-        ampersand=True)
+    paplay(outfile='/usr/share/sounds/freedesktop/stereo/device-added.oga')
 
     if config['engine'] == 'argos_translate':
         translate = argos_translate(stdin, sources, targets)
@@ -42,8 +40,8 @@ def translate(
 
     else:
         paplay(
-            outfile='/usr/share/sounds/freedesktop/stereo/device-removed.oga',
-            ampersand=True)
+            outfile='/usr/share/sounds/freedesktop/stereo/device-removed.oga'
+        )
         raise TransError("Could not be translated!")
 
     return stdout

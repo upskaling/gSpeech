@@ -14,7 +14,7 @@ from speech import __version__
 from speech.audioutils import (get_audio_commands, get_audio_commands_espeak,
                                paplay, paplay_stop, run_audio_files)
 from speech.conf import Conf
-from speech.spd_say import spd_say
+from speech.spd_say import spd_say, spd_say_cancel, spd_say_kill
 from speech.textutils import text_to_dict
 from speech.translate.main import TransError, translate
 from speech.widgets.ocr import ocr
@@ -142,7 +142,7 @@ def get_lock(process_name):
     get_lock._lock_socket = socket.socket(socket.AF_UNIX, socket.SOCK_DGRAM)
 
     try:
-        get_lock._lock_socket.bind('\0' + process_name)
+        get_lock._lock_socket.bind(f'\0{process_name}')
     except OSError as erreur:
         raise LockError(erreur)
 
@@ -177,8 +177,8 @@ def main():
         elif args.synthesis_voice == "espeak":
             paplay_stop()
         elif args.synthesis_voice == "spd-say":
-            os.system('spd-say --cancel')
-            os.system('killall spd-say')
+            spd_say_cancel()
+            spd_say_kill()
         return
 
     try:
@@ -190,7 +190,7 @@ def main():
         elif args.synthesis_voice == "espeak":
             paplay_stop()
         elif args.synthesis_voice == "spd-say":
-            os.system('spd-say --cancel')
+            spd_say_cancel()
 
     if args.selection:
         text = Gtk.Clipboard.get(Gdk.SELECTION_PRIMARY).wait_for_text()
@@ -240,7 +240,7 @@ def main():
         )
         run_audio_files(names, cmds, outfile)
         if not args.outfile:
-            paplay(outfile)
+            paplay(outfile).communicate()
     elif conf.synthesis_voice == "espeak":
         names, cmds = get_audio_commands_espeak(
             text,
@@ -251,6 +251,6 @@ def main():
         )
         run_audio_files(names, cmds, outfile)
         if not args.outfile:
-            paplay(outfile)
+            paplay(outfile).communicate()
     elif args.synthesis_voice == "spd-say":
         spd_say(text, args.speed)
