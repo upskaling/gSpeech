@@ -33,7 +33,6 @@ _save = _('Save')
 _multimedia_window = _('Multimedia window')
 _refresh = _('Refresh')
 _about = _('About')
-_options = _('Options')
 _quit = _('Quit')
 _engine_trans = _('Translation engine')
 

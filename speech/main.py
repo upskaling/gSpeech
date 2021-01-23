@@ -11,7 +11,6 @@ from .conf import Conf
 from .i18n import (_engine_trans, _languages, _menu_option, _pause, _read,
                    _sources, _synthesis_voice, _tooltip, _trans_read,
                    _voice_speed)
-from .widgets import notify
 from .widgets.events import (changed_engine_trans, changed_lang,
                              changed_option, changed_source_languages,
                              changed_speed, changed_synthesis_voice,
@@ -167,7 +166,6 @@ class MainApp:
     """The main class of the software"""
 
     def __init__(self, conf):
-        notify.init(conf)
         window = Gtk.Window(title=conf.app_name, modal=True)
         player = on_player(conf.temp_path)
         win_play_pause = Gtk.Button(stock=Gtk.STOCK_MEDIA_PAUSE)

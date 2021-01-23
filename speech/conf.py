@@ -82,7 +82,7 @@ class Conf:
         'bathaya'
     ]
 
-    website = 'https://github.com/mothsart/gSpeech'
+    website = 'https://github.com/upskaling/gSpeech'
 
     show_notification = True
     has_app_indicator = True

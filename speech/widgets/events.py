@@ -18,7 +18,6 @@ from ..spd_say import spd_say, spd_say_cancel
 from ..textutils import text_to_dict
 from ..translate.main import translate
 from ..widgets.ocr import ocr
-from . import notify
 
 
 def on_lang(ind, tray, lang, conf):
@@ -276,9 +275,6 @@ def on_execute(
         text = ocr(sources[:2])
     else:
         text = None
-
-    if conf.show_notification:
-        notify.get(conf, text)
 
     if text is None:
         return

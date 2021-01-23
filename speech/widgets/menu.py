@@ -5,16 +5,15 @@ gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 
 from ..i18n import (_about, _engine_trans, _languages, _menu_option,
-                    _multimedia_window, _options, _quit, _read, _refresh,
-                    _save, _sources, _stop, _synthesis_voice, _trans_read,
+                    _multimedia_window, _quit, _read, _refresh, _save,
+                    _sources, _stop, _synthesis_voice, _trans_read,
                     _voice_speed)
 from .about import on_about
 from .events import (changed_engine_trans_menu, changed_lang_menu,
-                     changed_source_languages_menu, changed_option_menu,
+                     changed_option_menu, changed_source_languages_menu,
                      changed_speed_menu, changed_synthesis_voice_menu,
                      on_destroy, on_execute, on_media_dialog, on_play_pause,
                      on_reload, on_stop)
-from .option import on_options
 from .save import on_save
 
 
@@ -285,7 +284,6 @@ def on_right_click(
         menu, conf, synthesis_voice_combobox, menu_synthesis_voice)
     generic_item(menu, _refresh, on_reload)
     generic_item(menu, _about, on_about, window, conf)
-    generic_item(menu, _options, on_options, window, conf)
     generic_item(menu, _quit, on_destroy, conf=conf)
     if conf.has_app_indicator:
         menu.show_all()
