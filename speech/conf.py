@@ -36,9 +36,10 @@ class Conf:
     developers = [
         ['Lahire Biette', '<tuxmouraille@gmail.com>'],
         ['Sardi Carlo', '<lusumdev@zoho.eu>'],
-        ['Ferry Jérémie', '<jerem.ferry@gmail.com>']
+        ['Ferry Jérémie', '<jerem.ferry@gmail.com>'],
+        ['upskaling', '<upskaling@42fr.net>']
     ]
-    copyright_year = '2011, 2014, 2018, 2020'
+    copyright_year = '2011, 2014, 2018, 2020, 2021'
     copyrights = 'Copyright © %s %s' % (
         copyright_year,
         ', '.join([name for name, mail in developers])
@@ -75,6 +76,10 @@ class Conf:
     translators = [
         'Dupouy Paul (it-IT)',
         'Ferry Jérémie (fr-FR)'
+    ]
+
+    graphic_design = [
+        'bathaya'
     ]
 
     website = 'https://github.com/mothsart/gSpeech'

@@ -23,6 +23,7 @@ class AboutDialog(Gtk.AboutDialog):
         self.set_authors([mail for name, mail in conf.developers])
         self.set_comments(conf.comment)
         self.set_translator_credits('\n'.join(conf.translators))
+        self.set_artists(conf.graphic_design)
         self.set_website(conf.website)
         self.set_website_label(_("""%s's Website""") % conf.app_name)
         self.connect('response', lambda self, *f: self.destroy())
