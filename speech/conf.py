@@ -79,7 +79,7 @@ class Conf:
     ]
 
     graphic_design = [
-        'bathaya'
+        'Baptiste Lhopitault'
     ]
 
     website = 'https://github.com/upskaling/gSpeech'
