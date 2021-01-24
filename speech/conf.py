@@ -152,6 +152,11 @@ class Conf:
             self.dir = join(dirname(dirname(__file__)))
             self.local_dir = join(self.dir, 'locale')
             self.icons_dir = join(self.dir, 'icons')
+        
+        self.icon_tran_path = join(
+            self.icons_dir,
+            self.app_name + '-trad.png'
+        )
 
         self.path = join(self.dir, 'gspeech.conf')
 

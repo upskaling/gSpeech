@@ -2,12 +2,12 @@ import gi
 
 gi.require_version('Gtk', '3.0')
 
-from gi.repository import Gtk
+from gi.repository import Gtk, GdkPixbuf
 
 from ..i18n import (_about, _engine_trans, _languages, _menu_option,
                     _multimedia_window, _quit, _read, _refresh, _save,
                     _sources, _stop, _synthesis_voice, _trans_read,
-                    _voice_speed)
+                    _voice_speed, _preferences)
 from .about import on_about
 from .events import (changed_engine_trans_menu, changed_lang_menu,
                      changed_option_menu, changed_source_languages_menu,
@@ -26,9 +26,26 @@ def generic_item(
     menu_play_pause=None,
     win_play_pause=None,
     player=None,
+    image=None
 ):
     """Generic item menu"""
     item = Gtk.MenuItem.new_with_label(label)
+    if image:
+        item = Gtk.ImageMenuItem.new_with_label(label)
+        if "/" in image:
+            pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_scale(
+                image,
+                width=20, height=20,
+                preserve_aspect_ratio=False
+            )
+            image = Gtk.Image.new_from_pixbuf(pixbuf)
+            item.set_image(image)
+        else:
+            image = Gtk.Image.new_from_stock(
+                image,
+                Gtk.IconSize.MENU
+            )
+            item.set_image(image)
     item.connect(
         'activate',
         callback,
@@ -240,7 +257,8 @@ def on_right_click(
         conf,
         menu_play_pause,
         win_play_pause,
-        player
+        player,
+        Gtk.STOCK_MEDIA_PLAY
     )
     generic_item(
         menu,
@@ -250,9 +268,9 @@ def on_right_click(
         conf,
         menu_play_pause,
         win_play_pause,
-        player
+        player,
+        conf.icon_tran_path
     )
-    option_item(menu, conf, option_combobox, menu_option)
     menu_play_pause.connect(
         'activate',
         on_play_pause,
@@ -269,22 +287,37 @@ def on_right_click(
         on_stop,
         menu_play_pause=menu_play_pause,
         win_play_pause=win_play_pause,
-        player=player
+        player=player,
+        image=Gtk.STOCK_MEDIA_STOP
     )
-    generic_item(menu, _save, on_save, window, conf)
+    generic_item(menu, _save, on_save, window, conf, image=Gtk.STOCK_SAVE)
     separator_item(menu)
     generic_item(menu, _multimedia_window, on_media_dialog, window)
     separator_item(menu)
-    langs_item(menu, ind, tray, conf, lang_combobox, menu_langs)
+
+    preferences = Gtk.Menu()
+    item = Gtk.ImageMenuItem.new_with_label(_preferences)
+    image = Gtk.Image.new_from_stock(
+        Gtk.STOCK_PREFERENCES,
+        Gtk.IconSize.MENU
+    )
+    item.set_image(image)
+    item.set_submenu(preferences)
+    option_item(preferences, conf, option_combobox, menu_option)
+    langs_item(preferences, ind, tray, conf, lang_combobox, menu_langs)
     source_languages_item(
-        menu, conf, source_languages_combobox, menu_source_languages)
-    engine_trans_item(menu, conf, engine_trans_combobox, menu_engine_trans)
-    voice_speed_item(menu, conf, voice_combobox, menu_voice_speed)
+        preferences, conf, source_languages_combobox, menu_source_languages)
+    engine_trans_item(preferences, conf, engine_trans_combobox, menu_engine_trans)
+    voice_speed_item(preferences, conf, voice_combobox, menu_voice_speed)
     synthesis_voice_item(
-        menu, conf, synthesis_voice_combobox, menu_synthesis_voice)
-    generic_item(menu, _refresh, on_reload)
-    generic_item(menu, _about, on_about, window, conf)
-    generic_item(menu, _quit, on_destroy, conf=conf)
+        preferences, conf, synthesis_voice_combobox, menu_synthesis_voice)
+
+    item.show()
+    menu.append(item)
+
+    generic_item(menu, _refresh, on_reload, image=Gtk.STOCK_REFRESH)
+    generic_item(menu, _about, on_about, window, conf, image=Gtk.STOCK_ABOUT)
+    generic_item(menu, _quit, on_destroy, conf=conf, image=Gtk.STOCK_QUIT)
     if conf.has_app_indicator:
         menu.show_all()
         ind.set_menu(menu)

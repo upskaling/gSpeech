@@ -104,3 +104,9 @@ msgstr ""
 
 msgid "Translation engine"
 msgstr ""
+
+msgid "Reading mode"
+msgstr ""
+
+msgid "Preferences"
+msgstr ""

@@ -11,6 +11,7 @@ speech/workers/fr_FR/*.py                       usr/lib/python3/dist-packages/sp
 dict/*                                          usr/share/gspeech/dict
 
 icons/*.svg                                     usr/share/icons/hicolor/scalable/apps
+icons/*.png                                     usr/share/icons/hicolor/scalable/apps
 
 locale/*                                        usr/share/locale
 

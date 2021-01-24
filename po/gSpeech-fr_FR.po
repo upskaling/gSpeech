@@ -107,3 +107,21 @@ msgstr "Vitesse de lecture"
 
 msgid "Acces denied on config path \"%s\""
 msgstr "Accès refusé au fichier de configuration \"%s\""
+
+msgid "Read"
+msgstr "Lire"
+
+msgid "Translate and read"
+msgstr "Traduire et lire"
+
+msgid "Read image content"
+msgstr "Lire le contenu des images"
+
+msgid "Translation engine"
+msgstr "Moteur de traduction"
+
+msgid "Reading mode"
+msgstr "Mode de lecture"
+
+msgid "Preferences"
+msgstr "Préférences"

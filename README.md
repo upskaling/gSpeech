@@ -1,6 +1,5 @@
 # gSpeech
 
-[![Build Status](https://travis-ci.org/mothsART/gSpeech.png?branch=master)](https://travis-ci.org/mothsART/gSpeech)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
 ## Introduction
@@ -18,7 +17,7 @@ Read clipboard or selected text in different languages and manage it : pause, st
 
 Ubuntu:
 
-Depends: python (>=3.5) python3-gst-1.0 (>=1.0) python3-gi (>=2.24) libttspico-utils (>= 1.0) python-notify (>=0.1) gstreamer1.0-plugins-base gstreamer1.0-plugins-good gstreamer1.0-pulseaudio gir1.2-appindicator3-0.1
+Depends: python (>=3.5) python3-gst-1.0 (>=1.0) python3-gi (>=2.24) libttspico-utils (>= 1.0) gstreamer1.0-plugins-base gstreamer1.0-plugins-good gstreamer1.0-pulseaudio gir1.2-appindicator3-0.1
 
 ### install pico
 
@@ -43,7 +42,7 @@ cp -r ./speech-dispatcher  ~/.config
 will be used to read the text in the images
 
 ```sh
-sudo apt install tesseract tesseract-ocr-fra xfce4-screenshooter
+sudo apt install tesseract-ocr-fra xfce4-screenshooter
 ```
 
 ### install argos-translate
@@ -77,6 +76,7 @@ make PREFIX=~/.local/bin/ install
 
 <div align="center">
     <img src="./screenshots/interface2_example.png" alt="interface example" width="500"/>
+    <img src="./screenshots/main_example.png" alt="interface example" width="500"/>
     <img src="./screenshots/cli_example.png" alt="cli example" width="500"/>
     <img src="./screenshots/cli2_example.png" alt="cli2 example" width="500"/>
 </div>
