@@ -20,9 +20,10 @@ def get_audio_commands(text, outfile, lang, cache_path, speed):
     names = []
     # low the limits to avoid overflow
     if len(text) <= overflow_len:
-        stream = ['pico2wave', '-l', lang, '-w', outfile, '--',
-                  effect(text, speed * 100)]
-        cmds.append(stream)
+        cmds.append(
+            ['pico2wave', '-l', lang, '-w', outfile, '--',
+             effect(text, speed * 100)]
+        )
         names.append(outfile)
         return names, cmds
 
@@ -59,9 +60,10 @@ def get_audio_commands_espeak(
     volume = 80
     pitch = round((speed * 45) / 320)
     voice = f'mb-{lang[:2]}{voice_tip}'
-    stream = ['espeak', '-v', voice, '-s', str(speed),
-              '-p', str(pitch), '-a', str(volume), '-w', outfile, '--', text]
-    cmds.append(stream)
+    cmds.append(
+        ['espeak', '-v', voice, '-s', str(speed),
+         '-p', str(pitch), '-a', str(volume), '-w', outfile, '--', text]
+    )
     names.append(outfile)
     return names, cmds
 
