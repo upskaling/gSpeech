@@ -70,7 +70,7 @@ class Conf:
     list_voice_speed = [0.6, 0.8, 1, 1.2, 1.4, 1.6, 1.8, 2, 2.2]
 
     list_option = [_read_clipboard, _read_selected]
-    if which('tesseract'):
+    if which('tesseract') or which('cuneiform'):
         list_option.append(_read_ocr)
 
     translators = [
@@ -152,7 +152,7 @@ class Conf:
             self.dir = join(dirname(dirname(__file__)))
             self.local_dir = join(self.dir, 'locale')
             self.icons_dir = join(self.dir, 'icons')
-        
+
         self.icon_tran_path = join(
             self.icons_dir,
             self.app_name + '-trad.png'
