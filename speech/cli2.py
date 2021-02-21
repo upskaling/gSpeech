@@ -191,6 +191,7 @@ def main():
             paplay_stop()
         elif args.synthesis_voice == "spd-say":
             spd_say_cancel()
+        exit()
 
     if args.selection:
         text = Gtk.Clipboard.get(Gdk.SELECTION_PRIMARY).wait_for_text()
