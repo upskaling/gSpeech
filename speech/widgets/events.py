@@ -37,9 +37,15 @@ def on_source_languages(lang, conf):
     conf.update()
 
 
-def on_engine_trans(lang, conf):
-    conf.set_engine_trans(lang)
-    conf.engine_trans = lang
+def on_engine_trans(engine_trans, conf):
+    conf.set_engine_trans(engine_trans)
+    conf.engine_trans = engine_trans
+    conf.update()
+
+
+def on_translate_url(url, conf):
+    conf.set_translate_url(url)
+    conf.translate_url = url
     conf.update()
 
 
@@ -282,8 +288,13 @@ def on_execute(
     conf.set_lang(conf.lang)
 
     if hasattr(widget, 'get_label') and _trans_read in widget.get_label():
-        text = translate(text, sources[:2], conf.lang[:2], {
-                         "engine": conf.engine_trans})
+        text = translate(
+            text,
+            sources=sources[:2],
+            targets=conf.lang[:2],
+            engine=conf.engine_trans,
+            translate_url=conf.translate_url
+        )
 
     if conf.synthesis_voice == "pico":
         text = text_to_dict(text, conf.dict_path, conf.lang)

@@ -89,6 +89,7 @@ class Conf:
     lang = ''
     source_languages = ''
     engine_trans = ''
+    translate_url = ''
     option = ''
 
     def set_dict(self, lang):
@@ -121,6 +122,9 @@ class Conf:
     def set_engine_trans(self, engine_trans):
         if engine_trans in self.list_engine_trans:
             self.engine_trans = engine_trans
+
+    def set_translate_url(self, url):
+        self.engine_trans = url
 
     def set_speed(self, speed):
         if speed in self.list_voice_speed:
@@ -174,6 +178,10 @@ class Conf:
 
         self.engine_trans = str(ini_read(
             self.path, 'CONFIGURATION', 'ENGINETRANS', 'requests'
+        ))
+
+        self.translate_url = str(ini_read(
+            self.path, 'CONFIGURATION', 'TRANSLATE_URL', 'https://libretranslate.com/translate'
         ))
 
         self.voice_speed = float(ini_read(
@@ -268,6 +276,11 @@ class Conf:
             'CONFIGURATION',
             'ENGINETRANS',
             self.engine_trans
+        )
+        raw.set(
+            'CONFIGURATION',
+            'TRANSLATE_URL',
+            self.translate_url
         )
         raw.set(
             'CONFIGURATION',

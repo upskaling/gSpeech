@@ -14,8 +14,8 @@ def translate(
     stdin,
     sources='en',
     targets='fr',
-    config={"engine": 'requests',
-            "translate_url": 'https://libretranslate.com/translate'}
+    engine='requests',
+    translate_url='https://libretranslate.com/translate'
 ):
     '''
     translate
@@ -26,15 +26,15 @@ def translate(
 
     paplay(outfile='/usr/share/sounds/freedesktop/stereo/device-added.oga')
 
-    if config['engine'] == 'argos_translate':
+    if engine == 'argos_translate':
         translate = argos_translate(stdin, sources, targets)
         stdout = translate.communicate()[0].decode()
 
-    elif config['engine'] == 'requests':
+    elif engine == 'requests':
         stdout = translate_requests(
-            config['translate_url'], stdin, sources, targets)
+            translate_url, stdin, sources, targets)
 
-    elif config['engine'] == 'translate_shell':
+    elif engine == 'translate_shell':
         translate = trans(sources=sources, targets=targets)
         stdout = translate.communicate(stdin.encode())[0].decode()
 
