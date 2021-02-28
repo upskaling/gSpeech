@@ -1,7 +1,7 @@
 from speech.audioutils import paplay
 
 from .argos_translate import argos_translate
-from .requests import translate_requests
+from .libretranslate import translate_libretranslate
 from .translate_shell import trans
 
 
@@ -15,7 +15,8 @@ def translate(
     sources='en',
     targets='fr',
     engine='requests',
-    translate_url='https://libretranslate.com/translate'
+    translate_url='https://libretranslate.com/translate',
+    key='False'
 ):
     '''
     translate
@@ -30,9 +31,9 @@ def translate(
         translate = argos_translate(stdin, sources, targets)
         stdout = translate.communicate()[0].decode()
 
-    elif engine == 'requests':
-        stdout = translate_requests(
-            translate_url, stdin, sources, targets)
+    elif engine == 'libretranslate':
+        stdout = translate_libretranslate(
+            translate_url, stdin, sources, targets, key)
 
     elif engine == 'translate_shell':
         translate = trans(sources=sources, targets=targets)

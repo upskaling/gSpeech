@@ -98,6 +98,12 @@ def parse_arguments():
         const=conf.translate_url,
         help=f"instance of libretranslate default:{conf.translate_url}")
     parser.add_argument(
+        '--translate-key',
+        dest='translate_key',
+        nargs='?',
+        const=conf.translate_key,
+        help=f"set API Key")
+    parser.add_argument(
         '-s', '--speed',
         dest='speed',
         nargs='?',
@@ -168,9 +174,12 @@ def main():
 
     if args.engine_trans in conf.list_engine_trans:
         conf.set_engine_trans(args.engine_trans)
-    
+
     if args.translate_url:
         conf.set_translate_url(args.translate_url)
+
+    if args.translate_key:
+        conf.set_translate_key(args.translate_key)
 
     if args.speed in conf.list_voice_speed:
         conf.set_speed(args.speed)
@@ -236,8 +245,9 @@ def main():
                 sources=conf.source_languages[:2],
                 targets=conf.lang[:2],
                 engine=conf.engine_trans,
-                translate_url=conf.translate_url
-                )
+                translate_url=conf.translate_url,
+                key=conf.translate_key
+            )
         except TransError:
             sysexit(1)
 

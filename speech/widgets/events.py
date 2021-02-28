@@ -293,7 +293,8 @@ def on_execute(
             sources=sources[:2],
             targets=conf.lang[:2],
             engine=conf.engine_trans,
-            translate_url=conf.translate_url
+            translate_url=conf.translate_url,
+            key=conf.translate_key
         )
 
     if conf.synthesis_voice == "pico":

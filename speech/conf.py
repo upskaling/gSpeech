@@ -51,7 +51,7 @@ class Conf:
     list_source_languages = ['de-DE', 'en-GB',
                              'en-US', 'es-ES', 'fr-FR', 'it-IT']
 
-    list_engine_trans = ['requests']
+    list_engine_trans = ['libretranslate']
     if which('argos-translate-cli'):
         list_engine_trans.append('argos_translate')
     if which('trans'):
@@ -90,6 +90,7 @@ class Conf:
     source_languages = ''
     engine_trans = ''
     translate_url = ''
+    translate_key = ''
     option = ''
 
     def set_dict(self, lang):
@@ -124,7 +125,10 @@ class Conf:
             self.engine_trans = engine_trans
 
     def set_translate_url(self, url):
-        self.engine_trans = url
+        self.translate_url = url
+    
+    def set_translate_key(self, key):
+        self.translate_key = key
 
     def set_speed(self, speed):
         if speed in self.list_voice_speed:
@@ -182,6 +186,10 @@ class Conf:
 
         self.translate_url = str(ini_read(
             self.path, 'CONFIGURATION', 'TRANSLATE_URL', 'https://libretranslate.com/translate'
+        ))
+
+        self.translate_key = str(ini_read(
+            self.path, 'CONFIGURATION', 'TRANSLATE_KEY', 'False'
         ))
 
         self.voice_speed = float(ini_read(
@@ -281,6 +289,11 @@ class Conf:
             'CONFIGURATION',
             'TRANSLATE_URL',
             self.translate_url
+        )
+        raw.set(
+            'CONFIGURATION',
+            'TRANSLATE_KEY',
+            self.translate_key
         )
         raw.set(
             'CONFIGURATION',
